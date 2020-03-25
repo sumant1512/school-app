@@ -1,0 +1,14 @@
+.cardMargin {
+    padding: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top: 3px solid #d89721;
+}
+
+.formToolbar {
+    height: 40px;
+}
+
+.formCard {
+    margin: 10px;
+}

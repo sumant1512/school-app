@@ -1,0 +1,82 @@
+<div class="container-fluid pt-3">
+
+    <!-- body -->
+    <div *ngIf="!spinner" class="mt-5 pt-5">
+        <mat-spinner class="m-auto"></mat-spinner>
+    </div>
+
+    <mat-card *ngIf="spinner" class="card-border-top p-0">
+        <div>
+            <mat-toolbar class="form-toolbar" color="primary">
+                <mat-icon>add</mat-icon>
+                <span>Add Subject</span>
+            </mat-toolbar>
+        </div>
+
+        <div class="mt-1 mr-0 mr-xs-0 mr-sm-3 mr-md-3 mr-lg-3  text-center text-xs-right text-sm-right text-md-right text-lg-right">
+            <button [disabled]='!update' class="ml-1" (click)="addSubjectFormOpenOrClose()" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
+        </div>
+
+        <div class="row m-0 justify-content-center">
+            <div class="p-0 col-md-6 col-lg-4">
+                <mat-card class="card-border-top p-0 mat-elevation-z8 mt-1 mb-3 mx-3">
+                    <div>
+                        <mat-toolbar color="primary" class="form-toolbar">Add Subject</mat-toolbar>
+                    </div>
+                    <div class="p-3">
+                        <form [formGroup]="addSubjectForm" (ngSubmit)="subject()">
+                            <div class="formStyle">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Add Subject*</mat-label>
+                                    <input formControlName="subjectName" matInput placeholder="Add Subject*">
+                                    <mat-error *ngIf="addSubjectForm.get('subjectName').invalid && addSubjectForm.get('subjectName').touched">
+                                        <div> Subject Name is <strong>required*</strong></div>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="!update" class="w-100" appearance="outline">
+                                    <mat-label>Select Class*</mat-label>
+                                    <mat-select placeholder="Select Class*" formControlName="selectedClass" multiple>
+                                        <mat-option *ngFor="let class of classList" [value]="class.class_id">{{class.class_name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="row m-0">
+                                <div class="col-12 col-sm-12 text-md-center text-right text-lg-right">
+                                    <div *ngIf="update; else add">
+                                        <mat-error *ngIf="addSubjectForm.get('subjectName').invalid && addSubjectForm.get('subjectName').touched">
+                                            <div> Subject Name is <strong>required*</strong></div>
+                                        </mat-error>
+                                        <button mat-raised-button color="primary"><mat-icon class="mr-1">update</mat-icon>Update</button>
+                                    </div>
+                                    <ng-template #add>
+                                        <button [disabled]="addSubjectForm.invalid" mat-raised-button color="primary"><mat-icon>add</mat-icon>Add</button> </ng-template>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </mat-card>
+            </div>
+            <div class="p-0 col-12 col-lg-8">
+                <mat-card class="card-border-top p-0 mat-elevation-z8 mt-1 mb-3 mx-3">
+                    <div>
+                        <mat-toolbar color="primary" class="form-toolbar">All Subjects</mat-toolbar>
+                    </div>
+                    <div class="row m-0 pt-3">
+                        <div class="col-6"><b> Subject </b></div>
+                        <div class="col-6"><b> Action </b></div>
+                    </div>
+                    <div class="row m-0" *ngFor="let subject of subjectList">
+                        <div class="col-6">
+                            {{subject.subject_name}}
+                        </div>
+                        <div class="col-6">
+                            <mat-icon matTooltip="Delete" matTooltipPosition="left" matTooltipClass="bg-danger" (click)="deleteSubject(subject.subject_id)">delete</mat-icon>
+                            <mat-icon matTooltip="Assign" matTooltipPosition="right" matTooltipClass="bg-primary" (click)="assignSubject(subject.subject_id,subject.subject_name)">assignment_return</mat-icon>
+                            <mat-icon matTooltip="Edit" matTooltipPosition="right" matTooltipClass="bg-primary" (click)="editSubject(subject.subject_id,subject.subject_name)">edit</mat-icon>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </mat-card>
+</div>

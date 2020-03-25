@@ -1,0 +1,89 @@
+<div class="p-3">
+    <div class="card-border mb-3">
+        <div>
+            <mat-toolbar color="primary" class="form-toolbar mb-3">Search bar</mat-toolbar>
+        </div>
+        <div class="p-3">
+            <div class="row">
+                <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Admission Number</mat-label>
+                        <input matInput placeholder="Admission Number">
+                    </mat-form-field>
+                </div>
+                <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Student Name</mat-label>
+                        <input matInput placeholder="Student Name">
+                    </mat-form-field>
+                </div>
+                <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Class</mat-label>
+                        <input matInput placeholder="Class">
+                    </mat-form-field>
+                </div>
+                <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Section</mat-label>
+                        <input matInput placeholder="Section">
+                    </mat-form-field>
+                    <div class="text-right">
+                        <button type="submit" mat-raised-button color="primary">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-border">
+        <div>
+            <mat-toolbar class="form-toolbar" color="primary">Students List</mat-toolbar>
+        </div>
+        <div class="p-3">
+            <mat-accordion>
+                <div class="row">
+                    <div *ngFor="let student of studentList" class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <mat-expansion-panel class="mb-3 expansion-panel-height" (closed)="expansionPanel('true')" (opened)='expansionPanel("false")'>
+                            <mat-expansion-panel-header class="pl-0 expansion-panel-height">
+                                <div class="mx-0 row w-100 ">
+                                    <div class="text-center m-auto col-4 col-xs-4 col-sm-4 col-md-3 col-lg-3">
+                                        <img class=" br-50 student-image" src="{{student.student_image}}" alt="">
+                                    </div>
+                                    <div class="m-auto col-8 col-xs-8 col-sm-8 col-md-9 col-lg-9">
+                                        <div class="row">
+                                            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <p class="student-name mb-1">{{student.name}} S/O Mr. {{student.father_name}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <p class="f-14 mb-0">Class - {{student.class}}<sup>th</sup>({{student.section}})</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <p class="f-14 mb-0">Section - {{student.admsn_number}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel-header>
+                            <div class="row">
+                                <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                    sdgdfhsdfh
+                                </div>
+                                <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                    sdgdfhsdfh
+                                </div>
+                                <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                    sdgdfhsdfh
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </div>
+                </div>
+            </mat-accordion>
+        </div>
+    </div>
+</div>

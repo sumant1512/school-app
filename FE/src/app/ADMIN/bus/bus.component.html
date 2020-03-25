@@ -1,0 +1,74 @@
+<div class="container-fluid pt-3">
+
+    <!-- body -->
+    <div *ngIf="!spinner" class="mt-5 pt-5">
+        <mat-spinner class="m-auto"></mat-spinner>
+    </div>
+
+    <mat-card *ngIf="spinner" class="card-border-top p-0">
+        <div>
+            <mat-toolbar class="form-toolbar" color="primary">
+                <mat-icon>add</mat-icon>
+                <span>Add Bus</span>
+            </mat-toolbar>
+        </div>
+
+        <div class="row m-0 justify-content-center">
+            <div class="p-0 col-md-6 col-lg-4">
+                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
+                    <div>
+                        <mat-toolbar color="primary" class="form-toolbar">Add Bus</mat-toolbar>
+                    </div>
+                    <div class="p-3">
+                        <form [formGroup]="addBusForm" (ngSubmit)="addBus()">
+                            <div>
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Bus name*</mat-label>
+                                    <input formControlName="busNumber" matInput placeholder="Bus name*">
+                                    <mat-error *ngIf="addBusForm.get('busNumber').invalid && addBusForm.get('busNumber').touched">
+                                        <div> Bus number is <strong>required*</strong></div>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Bus Route*</mat-label>
+                                    <input formControlName="busRoute" matInput placeholder="Bus Route*">
+                                    <mat-error *ngIf="addBusForm.get('busRoute').invalid && addBusForm.get('busRoute').touched">
+                                        <div> Route is <strong>required*</strong></div>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-12 text-md-center text-right text-lg-right">
+                                    <button [disabled]="addBusForm.invalid" mat-raised-button color="primary"><mat-icon>add</mat-icon>Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </mat-card>
+            </div>
+            <div class="p-0 col-12 col-lg-8">
+                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
+                    <div>
+                        <mat-toolbar color="primary" class="form-toolbar">All Bus</mat-toolbar>
+                    </div>
+                    <div class="row mx-0 pt-3">
+                        <div class="col-4"><b> Bus </b></div>
+                        <div class="col-4"><b> Bus Route </b></div>
+                        <div class="col-4"><b> Action </b></div>
+                    </div>
+                    <div class="row mx-0" *ngFor="let bus of busList">
+                        <div class="col-4">
+                            {{bus.bus_number}}
+                        </div>
+                        <div class="col-4">
+                            {{bus.bus_Route}}
+                        </div>
+                        <div class="col-4">
+                            <mat-icon matTooltip="Delete" matTooltipPosition="left" matTooltipClass="bg-danger" (click)="deleteBus(bus.bus_id)">delete</mat-icon>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </mat-card>
+</div>

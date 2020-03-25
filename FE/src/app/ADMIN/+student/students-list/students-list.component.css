@@ -1,0 +1,17 @@
+.student-image {
+    width: 65px;
+    height: 65px;
+}
+
+.expansion-panel-height {
+    min-height: 100px !important;
+}
+
+.student-name {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {}
+
+@media only screen and (min-width: 300px) and (max-width: 767px) {}

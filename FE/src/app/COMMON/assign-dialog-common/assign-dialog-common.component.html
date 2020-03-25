@@ -1,0 +1,21 @@
+<div>
+    <h4>Select class for assigning {{assignData.property_to_be_assinged}} ({{assignData.name_to_be_assinged}})</h4>
+</div>
+
+<form [formGroup]="assignForm" (ngSubmit)="assignToClass()">
+    <div class="row">
+        <div class="col-12 col-sm-12">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Select Class*</mat-label>
+                <mat-select placeholder="Select Class*" formControlName="selectedClass" multiple>
+                    <mat-option *ngFor="let class of classList" [value]="class.class_id">{{class.class_name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-12  text-md-center text-right text-lg-right">
+            <button class="" mat-raised-button color="primary"><mat-icon>add</mat-icon>Add</button>
+        </div>
+    </div>
+</form>

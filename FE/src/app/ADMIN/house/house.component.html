@@ -1,0 +1,63 @@
+<div class="container-fluid pt-3">
+
+    <!-- body -->
+    <div *ngIf="!spinner" class="mt-5 pt-5">
+        <mat-spinner class="m-auto"></mat-spinner>
+    </div>
+
+    <mat-card *ngIf="spinner" class="card-border-top p-0">
+        <div>
+            <mat-toolbar class="form-toolbar" color="primary">
+                <mat-icon>add</mat-icon>
+                <span>Add House</span>
+            </mat-toolbar>
+        </div>
+
+        <div class="row m-0 justify-content-center">
+            <div class="p-0 col-md-6 col-lg-4">
+                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
+                    <div>
+                        <mat-toolbar color="primary" class="form-toolbar">Add House</mat-toolbar>
+                    </div>
+                    <div class="p-3">
+                        <form [formGroup]="addHouseForm" (ngSubmit)="addHouse()">
+                            <div>
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>House name*</mat-label>
+                                    <input formControlName="houseName" matInput placeholder="House name*">
+                                    <mat-error *ngIf="addHouseForm.get('houseName').invalid && addHouseForm.get('houseName').touched">
+                                        <div> House is <strong>required*</strong></div>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-12 text-md-center text-right text-lg-right">
+                                    <button [disabled]="addHouseForm.invalid" mat-raised-button color="primary"><mat-icon>add</mat-icon>Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </mat-card>
+            </div>
+            <div class="p-0 col-12 col-lg-8">
+                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
+                    <div>
+                        <mat-toolbar color="primary" class="form-toolbar">All House</mat-toolbar>
+                    </div>
+                    <div class="row mx-0 pt-3">
+                        <div class="col-6"><b> House </b></div>
+                        <div class="col-6"><b> Action </b></div>
+                    </div>
+                    <div class="row mx-0" *ngFor="let house of houseList">
+                        <div class="col-6">
+                            {{house.house_name}}
+                        </div>
+                        <div class="col-6">
+                            <mat-icon matTooltip="Delete" matTooltipPosition="left" matTooltipClass="bg-danger" (click)="deleteHouse(house.house_id)">delete</mat-icon>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </mat-card>
+</div>

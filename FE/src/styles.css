@@ -1,0 +1,49 @@
+@import "~roboto-fontface/css/roboto/roboto-fontface.css";
+@import "~material-design-icons/iconfont/material-icons.css";
+body {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
+::placeholder {
+    color: #3f51b5 !important;
+}
+
+.font-primary {
+    color: #3f51b5;
+}
+
+.f-14 {
+    font-size: 14px;
+}
+
+mat-icon {
+    cursor: pointer;
+}
+
+.card-border {
+    border: 2px solid #3f51b5;
+}
+
+.br-50 {
+    border-radius: 50%;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.card-border-top {
+    border-top: 3px solid #041263 !important;
+}
+
+.form-toolbar {
+    height: 40px !important;
+}
+
+.overflow-hidden-x {
+    overflow-x: hidden;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {}
+
+@media only screen and (min-width: 300px) and (max-width: 767px) {}

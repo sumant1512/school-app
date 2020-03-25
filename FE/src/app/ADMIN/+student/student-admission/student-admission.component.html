@@ -1,0 +1,530 @@
+<div class="container-fluid overflow-hidden-x">
+
+    <!-- body -->
+    <mat-card class="card-border-top p-0 mt-3 mb-3">
+        <form [formGroup]="registerStudentForm" (ngSubmit)="studentAdmissionSubmit()">
+            <div class="row">
+                <div class="col-12">
+                    <mat-toolbar color="primary" class="form-toolbar mb-3">Student Registration Form</mat-toolbar>
+                </div>
+            </div>
+
+            <div class="p-3">
+                <div class="row">
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="row">
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Admission Number*</mat-label>
+                                    <input formControlName="admissionNumber" matInput placeholder="Admission Number*">
+                                </mat-form-field>
+                                <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.admissionNumber.errors) || (validation.admissionNumber.touched && validation.admissionNumber.errors)">
+                                    <div *ngIf="validation.admissionNumber.errors.required">Admission Number is required.*</div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Roll Number*</mat-label>
+                                    <input formControlName="rollNumber" matInput placeholder="Roll Number*">
+                                </mat-form-field>
+                                <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.rollNumber.errors) || (validation.rollNumber.touched && validation.rollNumber.errors)">
+                                    <div *ngIf="validation.rollNumber.errors.required">Roll Number is required.*</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Select Class*</mat-label>
+                                    <mat-select placeholder="Select Class*" (ngModelChange)="getSectionByClass($event)" formControlName="class">
+                                        <mat-option *ngFor="let i of allClass" value="{{i.class}}">{{i.class}}<sup>st</sup></mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.class.errors) || (validation.class.touched && validation.class.errors)">
+                                    <div *ngIf="validation.class.errors.required">Class is required.*</div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Select Section*</mat-label>
+                                    <mat-select placeholder="Select Section*" formControlName="section">
+                                        <mat-option *ngFor="let i of allSection" value="{{i.section}}">{{i.section}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.section.errors) || (validation.section.touched && validation.section.errors)">
+                                    <div *ngIf="validation.section.errors.required">Section is required.*</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>First Name*</mat-label>
+                                    <input formControlName="firstName" matInput placeholder="First Name*">
+                                </mat-form-field>
+                                <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.firstName.errors) || (validation.firstName.touched && validation.firstName.errors)">
+                                    <div *ngIf="validation.firstName.errors.required">First Name is required.*</div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Last Name*</mat-label>
+                                    <input formControlName="lastName" matInput placeholder="Last Name*">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Gender*</mat-label>
+                                    <mat-select placeholder="Gender*" formControlName="gender">
+                                        <mat-option value="Male">Male</mat-option>
+                                        <mat-option value="Female">Female</mat-option>
+                                        <mat-option value="Others">Others</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Date Of Birth*</mat-label>
+                                    <input formControlName="dob" matInput [matDatepicker]="picker" placeholder="Date Of Birth*">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                                <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.dob.errors) || (validation.dob.touched && validation.dob.errors)">
+                                    <div *ngIf="validation.dob.errors.required">Date of Birth is required.*</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="row my-4 my-lg-0">
+                            <div class="col-12 text-center">
+                                <div><img class="image img-fluid mw-40" src="{{studentImageUrl}}"></div>
+                                <div><i class="camera-icon fa fa-camera camera"></i></div>
+                                <div><input class="cursor-pointer choose-image-input pb-5 mb-3 mb-lg-0" type="file" formControlName="studentImage" (change)="onFileChanged($event)"></div>
+                                <div class="upload-tag">Upload Student's Image</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                        <div class="row">
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Category*</mat-label>
+                                    <mat-select placeholder="Category*" formControlName="category">
+                                        <mat-option *ngFor="let i of allCategory" value="{{i.category}}">{{i.category}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Religion*</mat-label>
+                                    <mat-select placeholder="Religion" formControlName="religion">
+                                        <mat-option *ngFor="let i of allReligion" value="{{i.religion}}">{{i.religion}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Caste*</mat-label>
+                                    <input formControlName="caste" matInput placeholder="Caste*">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Mobile Number*</mat-label>
+                            <input formControlName="mobileNumber" matInput placeholder="Mobile Number*">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Email*</mat-label>
+                            <input formControlName="email" matInput placeholder="Email*">
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Admission Date*</mat-label>
+                            <input [matDatepickerFilter]="weekendBlock" formControlName="admissionDate" matInput [matDatepicker]="picker1" placeholder="Admission Date*" readonly>
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                        <!-- <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.admissionDate.errors) || (validation.admissionDate.touched && validation.admissionDate.errors)">
+                                <div *ngIf="validation.admissionDate.errors.required">Admission date is required.*</div>
+                            </div> -->
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Blood Group*</mat-label>
+                            <mat-select placeholder="Blood Group*" formControlName="bloodGroup">
+                                <mat-option value="O+">O+</mat-option>
+                                <mat-option value="A+">A+</mat-option>
+                                <mat-option value="B+">B+</mat-option>
+                                <mat-option value="AB+">AB+</mat-option>
+                                <mat-option value="O-">O-</mat-option>
+                                <mat-option value="A-">A-</mat-option>
+                                <mat-option value="B-">B-</mat-option>
+                                <mat-option value="AB-">AB-</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Student House*</mat-label>
+                            <mat-select placeholder="Student House*" formControlName="studentHouse">
+                                <mat-option *ngFor="let i of allHouse" value="{{i.studentHouse}}">{{i.studentHouse}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Height</mat-label>
+                            <input formControlName="height" matInput placeholder="Height">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Weight</mat-label>
+                            <input formControlName="weight" matInput placeholder="Weight">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Admission Date*</mat-label>
+                            <input [matDatepickerFilter]="weekendBlock" formControlName="asOnDate" matInput [matDatepicker]="picker2" placeholder="Admission Date*" readonly>
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                        <!-- <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.asOnDate.errors) || (validation.asOnDate.touched && validation.asOnDate.errors)">
+                                <div *ngIf="validation.asOnDate.errors.required">As On Date is required.*</div>
+                            </div> -->
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <div class="mb-3">
+                        <mat-toolbar color="primary" class="form-toolbar mb-3">Parent Guardian Detail</mat-toolbar>
+                    </div>
+                    <div>
+                        <div class="row">
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                <div class="row">
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Father Name*</mat-label>
+                                            <input formControlName="fatherName" matInput placeholder="Father Name*">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Father Phone*</mat-label>
+                                            <input formControlName="fatherPhone" matInput placeholder="Father Phone*">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Father Occupation*</mat-label>
+                                            <input formControlName="fatherOccupation" matInput placeholder="Father Occupation*">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Mother Name</mat-label>
+                                            <input formControlName="motherName" matInput placeholder="Mother Name">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Mother Phone</mat-label>
+                                            <input formControlName="motherPhone" matInput placeholder="Mother Phone">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Mother Occupation</mat-label>
+                                            <input formControlName="motherOccupation" matInput placeholder="Mother Occupation">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mb-4 mb-md-0 col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                                <div><img class="image img-fluid" src="{{studentFatherImageUrl}}"></div>
+                                <div><i class="camera-icon fa fa-camera camera"></i></div>
+                                <div><input class="cursor-pointer choose-image-input pb-5 mb-3 mb-lg-0" type="file" formControlName="studentFatherImage" (change)="onFileChangedFather($event)"></div>
+                                <div class="upload-tag">Upload Student's Father Image</div>
+                            </div>
+                            <div class="text-center mb-4 mb-md-0 col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                                <div><img class="image img-fluid" src="{{studentMotherImageUrl}}"></div>
+                                <div><i class="camera-icon fa fa-camera camera"></i></div>
+                                <div><input class="cursor-pointer choose-image-input pb-5 mb-3 mb-lg-0" type="file" formControlName="studentMotherImage" (change)="onFileChangedMother($event)"></div>
+                                <div class="upload-tag" color="primary">Upload Student's Mother Image</div>
+                            </div>
+                        </div>
+
+                        <div class="row my-0 my-md-4 my-lg-0">
+                            <div class="col-12 col-lg-6">
+                                <div class="row mt-4 mt-lg-0">
+                                    <div class="col-4">
+                                        <label>If Guardian is: </label>
+                                    </div>
+                                    <div class="col-8 col-lg-8">
+                                        <mat-radio-group (change)="guardianSelect($event)" formControlName="guardianSelect">
+                                            <div class="row">
+                                                <div class="col-12 col-md-4 col-lg-12">
+                                                    <mat-radio-button value="Father">Father</mat-radio-button>
+                                                </div>
+                                                <div class="col-12 col-md-4 col-lg-12">
+                                                    <mat-radio-button value="Mother">Mother</mat-radio-button>
+                                                </div>
+                                                <div class="col-12 col-md-4 col-lg-12">
+                                                    <mat-radio-button value="Other">Other</mat-radio-button>
+                                                </div>
+                                            </div>
+                                        </mat-radio-group>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                <div class="row">
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Guardian Name*</mat-label>
+                                            <input formControlName="guardianName" matInput placeholder="Guardian Name *">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Guardian Relation*</mat-label>
+                                            <input formControlName="guardianRelation" matInput placeholder="Guardian Relation*">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Guardian Email*</mat-label>
+                                            <input formControlName="guardianEmail" matInput placeholder="Guardian Email*">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Guardian Phone*</mat-label>
+                                            <input formControlName="guardianPhone" matInput placeholder="Guardian Phone*">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Guardian Occupation</mat-label>
+                                            <input formControlName="guardianOccupation" matInput placeholder="Guardian Occupation">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Guardian Address*</mat-label>
+                                            <textarea formControlName="guardianAddress" matInput placeholder="Guardian Address*"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                <div class="row">
+                                    <div class="col-12 mb-5 text-center">
+                                        <div><img class="image img-fluid" src="{{guardianImageUrl}}"></div>
+                                        <div><i class="camera-icon fa fa-camera camera"></i></div>
+                                        <div><input class="cursor-pointer choose-image-input pb-5 mb-3 mb-lg-0" type="file" formControlName="guardianImage" (change)="onFileChangedGuardian($event)"></div>
+                                        <div class="upload-tag" color="primary">Upload Guardian's Image</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <mat-accordion>
+                    <mat-expansion-panel class="card-border-top p-0 mt-3 mb-3">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Add More Details
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div>
+                            <div>
+                                <mat-toolbar color="primary" class="form-toolbar mb-3">Student Address Details</mat-toolbar>
+                            </div>
+                            <div class="formStyle">
+                                <div class="row">
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-checkbox (change)="currentAddressCheck($event)">If Guardian Address is Current Address</mat-checkbox>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-checkbox (change)="permanentAddressCheck($event)">If Permanent Address is Current Address</mat-checkbox>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Current Address*</mat-label>
+                                            <textarea formControlName="currentAddress" matInput placeholder="Current Address*"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Permanent Address*</mat-label>
+                                            <textarea formControlName="permanentAddress" matInput placeholder="Permanent Address*"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div>
+                                <mat-toolbar color="primary" class="form-toolbar mb-3">Transport Details</mat-toolbar>
+                            </div>
+
+                            <div class="formStyle">
+                                <div class="row">
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Select Bus Route</mat-label>
+                                            <mat-select placeholder="Select Bus Route" (ngModelChange)="getBusesFormRoutes($event)" formControlName="busRoute">
+                                                <mat-option *ngFor="let busRoute of allBusRoutes" value="{{busRoute.busRoute}}">{{busRoute.busRoute}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Select Bus </mat-label>
+                                            <mat-select placeholder="Select Bus " formControlName="bus">
+                                                <mat-option *ngFor="let bus of allBuses" value="{{bus.bus}}">{{bus.bus}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div>
+                                <mat-toolbar color="primary" class="form-toolbar mb-3">Miscellaneous Details</mat-toolbar>
+                            </div>
+
+                            <div class="formStyle">
+                                <div class="row">
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Bank Name</mat-label>
+                                            <input formControlName="bankName" matInput placeholder="Bank Name">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Bank Account Number</mat-label>
+                                            <input formControlName="bankAccountNumber" matInput placeholder="Bank Account Number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>IFSC Code</mat-label>
+                                            <input formControlName="ifscCode" matInput placeholder="IfscCode">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>National Identification Number</mat-label>
+                                            <input formControlName="nationalIdentificationNumber" matInput placeholder="National Identification Number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Local Identification Number</mat-label>
+                                            <input formControlName="localIdentificationNumber" matInput placeholder="Local Identification Number">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="m-auto col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <label>RTE: </label>
+                                            </div>
+                                            <div class="col-9">
+                                                <mat-radio-group formControlName="rte">
+                                                    <div class="row">
+                                                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                                            <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                                        </div>
+                                                        <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                                            <mat-radio-button value="No">No</mat-radio-button>
+                                                        </div>
+                                                    </div>
+                                                </mat-radio-group>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Previous School Detail</mat-label>
+                                            <textarea formControlName="previousSchoolDetail" matInput placeholder="Previous School Detail"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <mat-form-field class="w-100" appearance="outline">
+                                            <mat-label>Note</mat-label>
+                                            <textarea formControlName="note" matInput placeholder="Note"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div>
+                                <mat-toolbar color="primary" class="form-toolbar mb-3">Upload Documents</mat-toolbar>
+                            </div>
+
+                            <div>
+                                <div formArrayName="documents" class="row">
+                                    <div>
+                                        <input type="button" value="Add Document" (click)="addDocument()">
+                                    </div>
+                                    <div *ngFor="let doc of registerStudentForm.get('documents').controls; let i = index">
+                                        <div [formGroupName]="i">
+                                            <input formControlName="name" type="text">
+                                            <input formControlName="doc" type="file">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+
+                </mat-accordion>
+
+
+                <div class="row">
+                    <div class="col-sm-10"></div>
+                    <div class="col-sm-2">
+                        <button class="w-100" type="submit" mat-raised-button color="primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-card>
+</div>

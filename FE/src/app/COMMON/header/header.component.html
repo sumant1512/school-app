@@ -1,0 +1,108 @@
+<div>
+
+    <mat-drawer-container class="fullContainer" autosize>
+
+        <mat-toolbar class="overflow-hidden-x" color="primary">
+            <button type="button" mat-button (click)="drawer.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+        </mat-toolbar>
+
+        <mat-drawer #drawer class="drawer" mode="side" autosize>
+            <h4>Webstrot Admin</h4>
+            <mat-accordion>
+                <mat-expansion-panel class="sideNavBtn">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            School Admin
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div><button mat-button routerLink='class'>Add-Class</button></div>
+                    <div><button mat-button routerLink='section'>Add-Section</button></div>
+                    <div><button mat-button routerLink='category'>Add-Category</button></div>
+                    <div><button mat-button routerLink='religion'>Add-Religion</button></div>
+                    <div><button mat-button routerLink='house'>Add-House</button></div>
+                    <div><button mat-button routerLink='bus'>Add-Bus</button></div>
+                    <div><button mat-button routerLink='subject'>Add-Subject</button></div>
+                    <div><button mat-button routerLink='assinged-subject'>Assinged-Subject</button></div>
+                    <div><button mat-button routerLink='exam'>Add-Exam</button></div>
+                    <div><button mat-button routerLink='exam-schedule'>Exam-Schedule</button></div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel class="sideNavBtn">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Student Information
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div><button mat-button routerLink="students-list">Students List</button></div>
+                    <div><button mat-button routerLink="student-admission">Student Admission</button></div>
+                    <div><button mat-button routerLink="guardianReport">Guardian Report</button></div>
+                    <div><button mat-button routerLink="studentHistory">Student History</button></div>
+                    <div><button mat-button routerLink="studentCredentials">Student Login Credential</button></div>
+                    <div><button mat-button routerLink="add-Class">Add Class-Section</button></div>
+                    <div><button mat-button routerLink="add-Category-Religion">Add Category-Religion</button></div>
+                    <div><button mat-button routerLink="add-House-BusRoute-Bus">Add House-Bus</button></div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel class="sideNavBtn">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Fees Collection
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div><button mat-button routerLink="feesMaster">Fees Master</button></div>
+                    <div><button mat-button routerLink="collectFees">Collect Fees</button></div>
+                    <div><button mat-button routerLink="dueFee">Due Fee Student</button></div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel class="sideNavBtn">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Examinations
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div><button mat-button routerLink="addExam">Add Examination</button></div>
+
+                </mat-expansion-panel>
+
+                <mat-expansion-panel class="sideNavBtn">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Academics
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div><button mat-button routerLink="addSubject">Add Subjects</button></div>
+                    <div><button mat-button routerLink="updateResult">Update Result</button></div>
+                    <div><button mat-button routerLink="">Promote Student</button></div>
+
+                </mat-expansion-panel>
+
+                <mat-expansion-panel class="sideNavBtn">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Attendence
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div><button mat-button routerLink="takeAttendence">Take Attendence</button></div>
+
+                </mat-expansion-panel>
+
+                <mat-expansion-panel class="sideNavBtn">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Settings
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div><button mat-button routerLink="settings">Home Page</button></div>
+
+                </mat-expansion-panel>
+
+            </mat-accordion>
+        </mat-drawer>
+
+        <router-outlet></router-outlet>
+
+    </mat-drawer-container>
+
+</div>

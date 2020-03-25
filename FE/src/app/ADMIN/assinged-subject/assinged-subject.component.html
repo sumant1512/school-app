@@ -1,0 +1,24 @@
+<mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
+    <div>
+        <mat-toolbar class="form-toolbar" color="primary">Assinged subjects to class</mat-toolbar>
+    </div>
+    <div class="row m-0 pt-3">
+        <div class="col-6"><b>Class</b></div>
+        <div class="col-6"><b>Subject</b></div>
+    </div>
+    <div class="row m-0" *ngFor="let class of classList">
+        <div class="col-6"> {{class.class_name}} </div>
+        <div class="col-6">
+            <div *ngFor="let subject of classWithSubject">
+                <div *ngIf="class.class_id === subject.class_id">
+                    <div class="row">
+                        <div class="col-3">
+                            <mat-icon matTooltip="Remove" matTooltipPosition="left" matTooltipClass="bg-warning" (click)="removeSubject(class.class_id,subject.subject_id)">remove_circle</mat-icon>
+                        </div>
+                        <div class="col-9">{{subject.subject_name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-card>
