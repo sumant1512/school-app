@@ -13,6 +13,10 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { MatDialog } from "@angular/material";
 import { AdminService } from "../../services/admin.service";
 import { ErrorMessageDialogComponent } from "src/app/COMMON/error-message-dialog/error-message-dialog.component";
+import { studentAdmissionForm, documentForm } from "./student-admission.utils";
+import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
+import { CONSTANTS } from "src/app/COMMON/constant";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: "app-student-admission",
@@ -21,89 +25,48 @@ import { ErrorMessageDialogComponent } from "src/app/COMMON/error-message-dialog
 })
 export class StudentAdmissionComponent implements OnInit {
   today = new Date();
-  registerStudentForm: FormGroup;
+  studentAdmissionForm: FormGroup;
   registrationFormSubmit = false;
-  studentImageUrl = "../assets/userImage.png";
-  studentFatherImageUrl = "../assets/userImage.png";
-  studentMotherImageUrl = "../assets/userImage.png";
-  guardianImageUrl = "../assets/userImage.png";
+  studentImageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+    CONSTANTS.USER_IMAGE
+  );
+  studentFatherImageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+    CONSTANTS.USER_IMAGE
+  );
+  studentMotherImageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+    CONSTANTS.USER_IMAGE
+  );
+  guardianImageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+    CONSTANTS.USER_IMAGE
+  );
   classList;
   sectionForSelectedClass;
   weekendBlock = (d: Date): boolean => {
     const day = d.getDay();
     return day !== 0 && day !== 6;
   };
-  allCategory: Object;
-  allReligion: Object;
-  allHouse: Object;
+  categoryList: Object;
+  religionList: Object;
+  houseList: Object;
   allBusRoutes: Object;
   allBuses: Object;
   constructor(
-    public asf: FormBuilder,
-    public dialog: MatDialog,
     private studentService: StudentService,
     private adminService: AdminService,
     private router: Router,
-    private activatedPath: ActivatedRoute
+    private activatedPath: ActivatedRoute,
+    private dialog: MatDialog,
+    private errorService: ErrorDialogFunctionsService,
+    private sanitizer: DomSanitizer
   ) {
-    this.registerStudentForm = new FormGroup({
-      admissionNumber: new FormControl("", Validators.required),
-      rollNumber: new FormControl("", Validators.required),
-      class: new FormControl("", Validators.required),
-      section: new FormControl("", Validators.required),
-      firstName: new FormControl("", Validators.required),
-      lastName: new FormControl(""),
-      gender: new FormControl(""),
-      dob: new FormControl("", Validators.required),
-      category: new FormControl(""),
-      religion: new FormControl(""),
-      caste: new FormControl(""),
-      mobileNumber: new FormControl(""),
-      email: new FormControl(""),
-      admissionDate: new FormControl(new Date()),
-      bloodGroup: new FormControl(""),
-      studentHouse: new FormControl(""),
-      height: new FormControl(""),
-      weight: new FormControl(""),
-      asOnDate: new FormControl(new Date()),
-      studentImage: new FormControl(""),
-      fatherName: new FormControl(""),
-      fatherPhone: new FormControl(""),
-      fatherOccupation: new FormControl(""),
-      studentFatherImage: new FormControl(""),
-      motherName: new FormControl(""),
-      motherPhone: new FormControl(""),
-      motherOccupation: new FormControl(""),
-      studentMotherImage: new FormControl(""),
-      guardianSelect: new FormControl(""),
-      guardianName: new FormControl(""),
-      guardianRelation: new FormControl(""),
-      guardianEmail: new FormControl(""),
-      guardianPhone: new FormControl(""),
-      guardianOccupation: new FormControl(""),
-      guardianAddress: new FormControl(""),
-      guardianImage: new FormControl(""),
-      currentAddress: new FormControl(""),
-      permanentAddress: new FormControl(""),
-      busRoute: new FormControl(""),
-      bus: new FormControl(""),
-      bankName: new FormControl(""),
-      bankAccountNumber: new FormControl(""),
-      ifscCode: new FormControl(""),
-      nationalIdentificationNumber: new FormControl(""),
-      localIdentificationNumber: new FormControl(""),
-      rte: new FormControl(""),
-      previousSchoolDetail: new FormControl(""),
-      note: new FormControl(""),
-      documents: new FormArray([])
-    });
+    this.studentAdmissionForm = studentAdmissionForm();
   }
 
   ngOnInit() {
     this.getClass();
-    // this.getCategories();
-    // this.getReligions();
-    // this.getHouses();
+    this.getCategory();
+    this.getReligion();
+    this.getHouse();
     // this.getBusRoutes(); // to get all bus route
   }
 
@@ -113,7 +76,7 @@ export class StudentAdmissionComponent implements OnInit {
       if (response["status"] === true) {
         this.classList = response["data"];
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -125,43 +88,29 @@ export class StudentAdmissionComponent implements OnInit {
     this.adminService.getSectionForClass(selectedClass).subscribe(response => {
       if (response["status"] === true) {
         if (response["data"] == "") {
-          this.openDialog(
+          this.errorService.openErrorDialog(
             "Sections for this class is not added.Please add Sections"
           );
-          this.router.navigate(["add-section"]);
+          this.router.navigate(["section"]);
         } else {
           this.sectionForSelectedClass = response["data"];
         }
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
     // this.checkFeeStructureByClass(selectedClass);
   }
 
   addDocument() {
-    const control = new FormGroup({
-      name: new FormControl(""),
-      doc: new FormControl("")
-    });
-    (<FormArray>this.registerStudentForm.get("documents")).push(control);
+    let control = documentForm();
+    (<FormArray>this.studentAdmissionForm.get("documents")).push(control);
   }
 
-  // Error message dialog
-  openDialog(errorMessage: string) {
-    const dialogRef = this.dialog.open(ErrorMessageDialogComponent, {
-      width: "750px",
-      data: { message: errorMessage }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log("Class Added");
-    });
-  }
   // checkFeeStructureByClass(selectedClass: object) {
   //   this.studentService.checkFeeStructure(selectedClass).subscribe(response => {
   //     if (response["data"] == "") {
-  //       this.openDialog(
+  //       this.errorService.openErrorDialog(
   //         "Fees structure for this class is not added.Please add Fees structure"
   //       );
   //       this.router.navigate(["../feesMaster"], {
@@ -172,42 +121,45 @@ export class StudentAdmissionComponent implements OnInit {
   //   });
   // }
 
-  // getCategories() {
-  //   this.studentService.getCategory().subscribe(response => {
-  //     if (response["status"] === true) {
-  //       this.allCategory = response["data"];
-  //     } else {
-  //       this.openDialog(response["message"]);
-  //     }
-  //   });
-  // }
+  // function to get category list
+  getCategory() {
+    this.adminService.getCategory().subscribe(response => {
+      if (response["status"] === true) {
+        this.categoryList = response["data"];
+      } else {
+        this.errorService.openErrorDialog(response["message"]);
+      }
+    });
+  }
 
-  // getReligions() {
-  //   this.studentService.getReligion().subscribe(response => {
-  //     if (response["status"] === true) {
-  //       this.allReligion = response["data"];
-  //     } else {
-  //       this.openDialog(response["message"]);
-  //     }
-  //   });
-  // }
+  // function to get religion list
+  getReligion() {
+    this.adminService.getReligion().subscribe(response => {
+      if (response["status"] === true) {
+        this.religionList = response["data"];
+      } else {
+        this.errorService.openErrorDialog(response["message"]);
+      }
+    });
+  }
 
-  // getHouses() {
-  //   this.studentService.getHouse().subscribe(response => {
-  //     if (response["status"] === true) {
-  //       this.allHouse = response["data"];
-  //     } else {
-  //       this.openDialog(response["message"]);
-  //     }
-  //   });
-  // }
+  // function to get house list
+  getHouse() {
+    this.adminService.getHouse().subscribe(response => {
+      if (response["status"] === true) {
+        this.houseList = response["data"];
+      } else {
+        this.errorService.openErrorDialog(response["message"]);
+      }
+    });
+  }
 
   // getBusRoutes() {
   //   this.studentService.getBusRoute().subscribe(response => {
   //     if (response["status"] === true) {
   //       this.allBusRoutes = response["data"];
   //     } else {
-  //       this.openDialog(response["message"]);
+  //       this.errorService.openErrorDialog(response["message"]);
   //     }
   //   });
   // }
@@ -218,7 +170,7 @@ export class StudentAdmissionComponent implements OnInit {
   //   };
   //   this.studentService.getBusesFromRoute(routeDetail).subscribe(response => {
   //     if (response["data"] == "") {
-  //       this.openDialog("Buses for this route is not available.Please add bus");
+  //       this.errorService.openErrorDialog("Buses for this route is not available.Please add bus");
   //       this.router.navigate(["../add-House-BusRoute-Bus"], {
   //         relativeTo: this.activatedPath
   //       });
@@ -228,183 +180,104 @@ export class StudentAdmissionComponent implements OnInit {
   //   });
   // }
 
-  // openDialog(errorMessage: string) {
-  //   const dialogRef = this.dialog.open(MessageDialogComponent, {
-  //     width: "750px",
-  //     data: { message: errorMessage }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     console.log("Class Added");
-  //   });
-  // }
-
-  get validation() {
-    return this.registerStudentForm.controls;
-  }
-
-  onFileChanged(event: any) {
-    console.log("student image");
+  onFileChange(event: any, name) {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
       reader.onload = (event: any) => {
-        this.studentImageUrl = event.target.result;
-        console.log("base 64 of image", this.studentImageUrl);
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  }
-
-  onFileChangedFather(event: any) {
-    console.log("family image");
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.studentFatherImageUrl = event.target.result;
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  }
-
-  onFileChangedMother(event: any) {
-    console.log("family image");
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.studentMotherImageUrl = event.target.result;
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  }
-
-  onFileChangedGuardian(event: any) {
-    console.log("guardian image");
-    if (event.target.files && event.target.files[0]) {
-      var reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.guardianImageUrl = event.target.result;
+        switch (name) {
+          case "student":
+            this.studentImageUrl = event.target.result;
+            break;
+          case "father":
+            this.studentFatherImageUrl = event.target.result;
+            break;
+          case "mother":
+            this.studentMotherImageUrl = event.target.result;
+            break;
+          case "guardian":
+            this.guardianImageUrl = event.target.result;
+            break;
+        }
       };
       reader.readAsDataURL(event.target.files[0]);
     }
   }
 
   guardianSelect(value) {
-    console.log(value.value);
     var guardianName = "";
     var guardianPhone = "";
     var guardianOccupation = "";
     if (value.value === "Father") {
-      guardianName = this.registerStudentForm.value.fatherName;
-      guardianPhone = this.registerStudentForm.value.fatherPhone;
-      guardianOccupation = this.registerStudentForm.value.fatherOccupation;
-      this.registerStudentForm.controls["guardianName"].setValue(guardianName);
-      this.registerStudentForm.controls["guardianRelation"].setValue(
+      guardianName = this.studentAdmissionForm.value.fatherName;
+      guardianPhone = this.studentAdmissionForm.value.fatherPhone;
+      guardianOccupation = this.studentAdmissionForm.value.fatherOccupation;
+      this.studentAdmissionForm.controls["guardianName"].patchValue(
+        guardianName
+      );
+      this.studentAdmissionForm.controls["guardianRelation"].patchValue(
         value.value
       );
-      this.registerStudentForm.controls["guardianPhone"].setValue(
+      this.studentAdmissionForm.controls["guardianPhone"].patchValue(
         guardianPhone
       );
-      this.registerStudentForm.controls["guardianOccupation"].setValue(
+      this.studentAdmissionForm.controls["guardianOccupation"].patchValue(
         guardianOccupation
       );
     } else if (value.value === "Mother") {
-      guardianName = this.registerStudentForm.value.motherName;
-      guardianPhone = this.registerStudentForm.value.motherPhone;
-      guardianOccupation = this.registerStudentForm.value.motherOccupation;
-      this.registerStudentForm.controls["guardianName"].setValue(guardianName);
-      this.registerStudentForm.controls["guardianRelation"].setValue(
+      guardianName = this.studentAdmissionForm.value.motherName;
+      guardianPhone = this.studentAdmissionForm.value.motherPhone;
+      guardianOccupation = this.studentAdmissionForm.value.motherOccupation;
+      this.studentAdmissionForm.controls["guardianName"].patchValue(
+        guardianName
+      );
+      this.studentAdmissionForm.controls["guardianRelation"].patchValue(
         value.value
       );
-      this.registerStudentForm.controls["guardianPhone"].setValue(
+      this.studentAdmissionForm.controls["guardianPhone"].patchValue(
         guardianPhone
       );
-      this.registerStudentForm.controls["guardianOccupation"].setValue(
+      this.studentAdmissionForm.controls["guardianOccupation"].patchValue(
         guardianOccupation
       );
     } else {
       guardianName = "";
       guardianPhone = "";
       guardianOccupation = "";
-      this.registerStudentForm.controls["guardianName"].setValue(guardianName);
-      this.registerStudentForm.controls["guardianRelation"].setValue("");
-      this.registerStudentForm.controls["guardianPhone"].setValue(
+      this.studentAdmissionForm.controls["guardianName"].patchValue(
+        guardianName
+      );
+      this.studentAdmissionForm.controls["guardianRelation"].patchValue("");
+      this.studentAdmissionForm.controls["guardianPhone"].patchValue(
         guardianPhone
       );
-      this.registerStudentForm.controls["guardianOccupation"].setValue(
+      this.studentAdmissionForm.controls["guardianOccupation"].patchValue(
         guardianOccupation
       );
     }
   }
 
-  currentAddressCheck(checked) {
-    var currentAddress = "";
+  sameAsGuardianAddress(checked, addressType) {
+    let address = "";
     if (checked.checked) {
-      currentAddress = this.registerStudentForm.value.guardianAddress;
-      this.registerStudentForm.controls["currentAddress"].setValue(
-        currentAddress
-      );
+      address = this.studentAdmissionForm.value.guardianAddress;
+      this.studentAdmissionForm.controls[addressType].setValue(address);
     } else {
-      this.registerStudentForm.controls["currentAddress"].setValue(
-        currentAddress
-      );
-    }
-  }
-
-  permanentAddressCheck(checked) {
-    var permanentAddress = "";
-    if (checked.checked) {
-      permanentAddress = this.registerStudentForm.value.currentAddress;
-      this.registerStudentForm.controls["permanentAddress"].setValue(
-        permanentAddress
-      );
-    } else {
-      this.registerStudentForm.controls["permanentAddress"].setValue(
-        permanentAddress
-      );
+      this.studentAdmissionForm.controls[addressType].setValue(address);
     }
   }
 
   studentAdmissionSubmit() {
-    console.log(this.registerStudentForm.value)
+    const studentDetail = this.studentAdmissionForm.value;
+    this.studentAdmissionForm.value.studentImage = this.studentImageUrl;
+    this.studentAdmissionForm.value.studentFatherImage = this.studentFatherImageUrl;
+    this.studentAdmissionForm.value.studentMotherImage = this.studentMotherImageUrl;
+    this.studentAdmissionForm.value.guardianImage = this.guardianImageUrl;
+    this.studentService.studentAdmission(studentDetail).subscribe(response => {
+      if (response["status"] === true) {
+        this.errorService.openErrorDialog(response["message"]);
+      } else {
+        this.errorService.openErrorDialog(response["message"]);
+      }
+    });
   }
-  //   this.registrationFormSubmit = true;
-  //   if (this.registerStudentForm.invalid) {
-  //     this.openDialog("Check mandatory fields");
-  //     return;
-  //   } else {
-  //     var dateOfBirth = this.registerStudentForm.value.dob;
-  //     this.registerStudentForm.value.dob =
-  //       dateOfBirth.getDate() +
-  //       "/" +
-  //       (dateOfBirth.getMonth() + 1) +
-  //       "/" +
-  //       dateOfBirth.getFullYear();
-  //     // var admissionDate =  this.registerStudentForm.value.admissionDate;
-  //     // this.registerStudentForm.value.admissionDate = admissionDate.getDate()+"/" + (admissionDate.getMonth() + 1) +"/"+admissionDate.getFullYear();
-  //     // var asOnDate =  this.registerStudentForm.value.asOnDate;
-  //     // this.registerStudentForm.value.asOnDate = asOnDate.getDate()+"/"+(asOnDate.getMonth() + 1) +"/"+asOnDate.getFullYear();
-  //     this.registerStudentForm.value.studentImage = this.studentImageUrl;
-  //     this.registerStudentForm.value.studentFatherImage = this.studentFatherImageUrl;
-  //     this.registerStudentForm.value.studentMotherImage = this.studentMotherImageUrl;
-  //     this.registerStudentForm.value.guardianImage = this.guardianImageUrl;
-  //     var studentDetail = this.registerStudentForm.value;
-  //     var formFields = Object.keys(studentDetail).length;
-  //     console.log("Form Field Count", formFields);
-  //     var yearStart = this.registerStudentForm.value.admissionDate.getFullYear();
-  //     var yearEnd = yearStart + 1;
-  //     var session = yearStart + "-" + yearEnd;
-  //     studentDetail["session"] = session;
-  //     // studentDetail.studentImage = this.studentImageUrl;
-  //     console.log(studentDetail);
-  //     this.studentService
-  //       .studentRegistration(studentDetail)
-  //       .subscribe(response => {
-  //         if (response["status"] === true) {
-  //           this.openDialog(response["message"]);
-  //         } else {
-  //           this.openDialog(response["message"]);
-  //         }
-  //       });
-  //   }
-  // }
 }

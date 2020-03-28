@@ -2,7 +2,7 @@
 
     <!-- body -->
     <mat-card class="card-border-top p-0 mt-3 mb-3">
-        <form [formGroup]="registerStudentForm" (ngSubmit)="studentAdmissionSubmit()">
+        <form [formGroup]="studentAdmissionForm">
             <div class="row">
                 <div class="col-12">
                     <mat-toolbar color="primary" class="form-toolbar mb-3">Student Registration Form</mat-toolbar>
@@ -17,43 +17,43 @@
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Admission Number*</mat-label>
                                     <input formControlName="admissionNumber" matInput placeholder="Admission Number*">
+                                    <mat-error *ngIf="studentAdmissionForm.get('admissionNumber').invalid && studentAdmissionForm.get('admissionNumber').touched">
+                                        <div> Admission Number is <strong>required*</strong></div>
+                                    </mat-error>
                                 </mat-form-field>
-                                <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.admissionNumber.errors) || (validation.admissionNumber.touched && validation.admissionNumber.errors)">
-                                    <div *ngIf="validation.admissionNumber.errors.required">Admission Number is required.*</div>
-                                </div>
                             </div>
                             <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Roll Number*</mat-label>
                                     <input formControlName="rollNumber" matInput placeholder="Roll Number*">
+                                    <mat-error *ngIf="studentAdmissionForm.get('rollNumber').invalid && studentAdmissionForm.get('rollNumber').touched">
+                                        <div> Roll Number is <strong>required*</strong></div>
+                                    </mat-error>
                                 </mat-form-field>
-                                <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.rollNumber.errors) || (validation.rollNumber.touched && validation.rollNumber.errors)">
-                                    <div *ngIf="validation.rollNumber.errors.required">Roll Number is required.*</div>
-                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Select Class*</mat-label>
-                                    <mat-select placeholder="Select Class*" (ngModelChange)="getSectionByClass($event)" formControlName="class">
-                                        <mat-option *ngFor="let i of allClass" value="{{i.class}}">{{i.class}}<sup>st</sup></mat-option>
+                                    <mat-select placeholder="Select Class*" (ngModelChange)="getSectionForClass($event)" formControlName="class">
+                                        <mat-option *ngFor="let class of classList" value="{{class.class_id}}">{{class.class_name}}<sup>st</sup></mat-option>
                                     </mat-select>
+                                    <mat-error *ngIf="studentAdmissionForm.get('class').invalid && studentAdmissionForm.get('class').touched">
+                                        <div> Class is <strong>required*</strong></div>
+                                    </mat-error>
                                 </mat-form-field>
-                                <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.class.errors) || (validation.class.touched && validation.class.errors)">
-                                    <div *ngIf="validation.class.errors.required">Class is required.*</div>
-                                </div>
                             </div>
                             <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Select Section*</mat-label>
                                     <mat-select placeholder="Select Section*" formControlName="section">
-                                        <mat-option *ngFor="let i of allSection" value="{{i.section}}">{{i.section}}</mat-option>
+                                        <mat-option *ngFor="let section of sectionForSelectedClass" value="{{section.section_id}}">{{section.section_name}}</mat-option>
                                     </mat-select>
+                                    <mat-error *ngIf="studentAdmissionForm.get('section').invalid && studentAdmissionForm.get('section').touched">
+                                        <div> Section is <strong>required*</strong></div>
+                                    </mat-error>
                                 </mat-form-field>
-                                <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.section.errors) || (validation.section.touched && validation.section.errors)">
-                                    <div *ngIf="validation.section.errors.required">Section is required.*</div>
-                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -61,15 +61,18 @@
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>First Name*</mat-label>
                                     <input formControlName="firstName" matInput placeholder="First Name*">
+                                    <mat-error *ngIf="studentAdmissionForm.get('firstName').invalid && studentAdmissionForm.get('firstName').touched">
+                                        <div> First Name is <strong>required*</strong></div>
+                                    </mat-error>
                                 </mat-form-field>
-                                <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.firstName.errors) || (validation.firstName.touched && validation.firstName.errors)">
-                                    <div *ngIf="validation.firstName.errors.required">First Name is required.*</div>
-                                </div>
                             </div>
                             <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Last Name*</mat-label>
                                     <input formControlName="lastName" matInput placeholder="Last Name*">
+                                    <mat-error *ngIf="studentAdmissionForm.get('lastName').invalid && studentAdmissionForm.get('lastName').touched">
+                                        <div> Last Name is <strong>required*</strong></div>
+                                    </mat-error>
                                 </mat-form-field>
                             </div>
                         </div>
@@ -90,19 +93,19 @@
                                     <input formControlName="dob" matInput [matDatepicker]="picker" placeholder="Date Of Birth*">
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error *ngIf="studentAdmissionForm.get('dob').invalid && studentAdmissionForm.get('dob').touched">
+                                        <div> DOB is <strong>required*</strong></div>
+                                    </mat-error>
                                 </mat-form-field>
-                                <div class="alert alert-danger" *ngIf="(registrationFormSubmit && validation.dob.errors) || (validation.dob.touched && validation.dob.errors)">
-                                    <div *ngIf="validation.dob.errors.required">Date of Birth is required.*</div>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
                         <div class="row my-4 my-lg-0">
                             <div class="col-12 text-center">
-                                <div><img class="image img-fluid mw-40" src="{{studentImageUrl}}"></div>
+                                <div><img class="image img-fluid" [src]="studentImageUrl"></div>
                                 <div><i class="camera-icon fa fa-camera camera"></i></div>
-                                <div><input class="cursor-pointer choose-image-input pb-5 mb-3 mb-lg-0" type="file" formControlName="studentImage" (change)="onFileChanged($event)"></div>
+                                <div><input class="cursor-pointer choose-image-input pb-5 mb-3 mb-lg-0" type="file" formControlName="studentImage" (change)="onFileChange($event,'student')"></div>
                                 <div class="upload-tag">Upload Student's Image</div>
                             </div>
                         </div>
@@ -116,7 +119,7 @@
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Category*</mat-label>
                                     <mat-select placeholder="Category*" formControlName="category">
-                                        <mat-option *ngFor="let i of allCategory" value="{{i.category}}">{{i.category}}</mat-option>
+                                        <mat-option *ngFor="let category of categoryList" value="{{category.category_id}}">{{category.category_name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -124,7 +127,7 @@
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Religion*</mat-label>
                                     <mat-select placeholder="Religion" formControlName="religion">
-                                        <mat-option *ngFor="let i of allReligion" value="{{i.religion}}">{{i.religion}}</mat-option>
+                                        <mat-option *ngFor="let religion of religionList" value="{{religion.religion_id}}">{{religion.religion_name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -181,7 +184,7 @@
                         <mat-form-field class="w-100" appearance="outline">
                             <mat-label>Student House*</mat-label>
                             <mat-select placeholder="Student House*" formControlName="studentHouse">
-                                <mat-option *ngFor="let i of allHouse" value="{{i.studentHouse}}">{{i.studentHouse}}</mat-option>
+                                <mat-option *ngFor="let house of houseList" value="{{house.house_id}}">{{house.house_name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -258,15 +261,15 @@
                                 </div>
                             </div>
                             <div class="text-center mb-4 mb-md-0 col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
-                                <div><img class="image img-fluid" src="{{studentFatherImageUrl}}"></div>
+                                <div><img class="image img-fluid" [src]="studentFatherImageUrl"></div>
                                 <div><i class="camera-icon fa fa-camera camera"></i></div>
-                                <div><input class="cursor-pointer choose-image-input pb-5 mb-3 mb-lg-0" type="file" formControlName="studentFatherImage" (change)="onFileChangedFather($event)"></div>
+                                <div><input class="cursor-pointer choose-image-input pb-5 mb-3 mb-lg-0" type="file" formControlName="studentFatherImage" (change)="onFileChange($event,'father')"></div>
                                 <div class="upload-tag">Upload Student's Father Image</div>
                             </div>
                             <div class="text-center mb-4 mb-md-0 col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
-                                <div><img class="image img-fluid" src="{{studentMotherImageUrl}}"></div>
+                                <div><img class="image img-fluid" [src]="studentMotherImageUrl"></div>
                                 <div><i class="camera-icon fa fa-camera camera"></i></div>
-                                <div><input class="cursor-pointer choose-image-input pb-5 mb-3 mb-lg-0" type="file" formControlName="studentMotherImage" (change)="onFileChangedMother($event)"></div>
+                                <div><input class="cursor-pointer choose-image-input pb-5 mb-3 mb-lg-0" type="file" formControlName="studentMotherImage" (change)="onFileChange($event,'mother')"></div>
                                 <div class="upload-tag" color="primary">Upload Student's Mother Image</div>
                             </div>
                         </div>
@@ -342,9 +345,9 @@
                             <div class="text-center col-12 col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                 <div class="row">
                                     <div class="col-12 mb-5 text-center">
-                                        <div><img class="image img-fluid" src="{{guardianImageUrl}}"></div>
+                                        <div><img class="image img-fluid" [src]="guardianImageUrl"></div>
                                         <div><i class="camera-icon fa fa-camera camera"></i></div>
-                                        <div><input class="cursor-pointer choose-image-input pb-5 mb-3 mb-lg-0" type="file" formControlName="guardianImage" (change)="onFileChangedGuardian($event)"></div>
+                                        <div><input class="cursor-pointer choose-image-input pb-5 mb-3 mb-lg-0" type="file" formControlName="guardianImage" (change)="onFileChange($event,'guardian')"></div>
                                         <div class="upload-tag" color="primary">Upload Guardian's Image</div>
                                     </div>
                                 </div>
@@ -352,7 +355,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <mat-accordion>
                     <mat-expansion-panel class="card-border-top p-0 mt-3 mb-3">
@@ -369,10 +371,10 @@
                             <div class="formStyle">
                                 <div class="row">
                                     <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                        <mat-checkbox (change)="currentAddressCheck($event)">If Guardian Address is Current Address</mat-checkbox>
+                                        <mat-checkbox color="primary" (change)="sameAsGuardianAddress($event,'currentAddress')">If Current Address is Guardian Address</mat-checkbox>
                                     </div>
                                     <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                        <mat-checkbox (change)="permanentAddressCheck($event)">If Permanent Address is Current Address</mat-checkbox>
+                                        <mat-checkbox color="primary" (change)="sameAsGuardianAddress($event,'permanentAddress')">If Permanent Address is Current Address</mat-checkbox>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -500,14 +502,23 @@
                             </div>
 
                             <div>
-                                <div formArrayName="documents" class="row">
-                                    <div>
-                                        <input type="button" value="Add Document" (click)="addDocument()">
+                                <div formArrayName="documents">
+                                    <div class="row mb-3">
+                                        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <button mat-raised-button color="primary" (click)="addDocument()">Add Document</button>
+                                        </div>
                                     </div>
-                                    <div *ngFor="let doc of registerStudentForm.get('documents').controls; let i = index">
-                                        <div [formGroupName]="i">
-                                            <input formControlName="name" type="text">
-                                            <input formControlName="doc" type="file">
+                                    <div *ngFor="let doc of studentAdmissionForm.get('documents').controls; let i = index">
+                                        <div class="row" [formGroupName]="i">
+                                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                                <mat-form-field class="w-100" appearance="outline">
+                                                    <mat-label>Document Name</mat-label>
+                                                    <input formControlName="documentName" matInput placeholder="Document Name">
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                                <input formControlName="document" type="file">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -519,9 +530,8 @@
 
 
                 <div class="row">
-                    <div class="col-sm-10"></div>
-                    <div class="col-sm-2">
-                        <button class="w-100" type="submit" mat-raised-button color="primary">Submit</button>
+                    <div class="col-sm-12 text-right">
+                        <button [disabled]="studentAdmissionForm.invalid" type="submit" (click)="studentAdmissionSubmit()" mat-raised-button color="primary">Submit</button>
                     </div>
                 </div>
             </div>
