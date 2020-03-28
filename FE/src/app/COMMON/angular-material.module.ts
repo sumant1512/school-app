@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { CdkTreeModule } from '@angular/cdk/tree';
 
 import {
   MatSidenavModule,
@@ -24,7 +25,7 @@ import {
   MatRadioModule,
   MatBadgeModule,
   MatTooltipModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
 } from "@angular/material";
 
 @NgModule({
@@ -53,7 +54,8 @@ import {
     MatBadgeModule,
     MatTooltipModule,
     MatTableModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    CdkTreeModule
   ],
   exports: [
     NgxMaterialTimepickerModule,
@@ -80,7 +82,8 @@ import {
     MatTooltipModule,
     MatTableModule,
     MatCheckboxModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    CdkTreeModule
   ]
 })
 export class AngularMaterialModule {}

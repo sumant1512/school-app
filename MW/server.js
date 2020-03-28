@@ -11,9 +11,9 @@ var fs = require('fs');
 var multer = require('multer');
 var path = require('path');
 var base64ToImage = require('base64-to-image');
-// app.use('./uploads', express.static(path.join(__dirname, './uploads')))
+app.use('../FE/src/assets/', express.static(path.join(__dirname, '../FE/src/assets/')))
 
-// const DIR = './assets/uploads/';
+const DIR = '../FE/src/assets/';
 
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -23,8 +23,7 @@ let storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + Date.now() + '.' + path.extname(file.originalname));
     }
 });
-// let upload = multer({storage: storage});
-var upload = multer({ storage: storage })
+let upload = multer({ storage: storage });
 
 app.use(cors());
 var port = 8080;
@@ -775,6 +774,171 @@ app.post('/deleteExamSchedule', function(request, response) {
             response.status(200).send({ status: false, message: err.sqlMessage });
         } else {
             response.status(200).send({ status: true, message: "Exam schedule deleted" });
+        }
+    });
+})
+
+// Api for student admission
+app.post('/studentAdmission', function(request, response) {
+    console.log("registering student")
+    let length = 6;
+    let studentPassword = parseInt(Math.random(length) * 1000000);
+    let studentDetail = request.body;
+    let documents = request.body.documents;
+
+    let folderName = request.body.firstName + "_" + request.body.admissionNumber + "_" + request.body.fatherName;
+    let dir = DIR + folderName;
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(DIR + folderName);
+    }
+
+    let studentImage = request.body.studentImage;
+    let studentFatherImage = request.body.studentFatherImage;
+    let studentMotherImage = request.body.studentMotherImage;
+    let guardianImage = request.body.guardianImage;
+    let path = DIR + folderName + '/';
+    let studentImageObj = { 'fileName': "studentImage" + request.body.admissionNumber, 'type': 'png' };
+    let studentFatherImageObj = { 'fileName': "studentFatherImage" + request.body.admissionNumber, 'type': 'png' };
+    let studentMotherImageObj = { 'fileName': "studentMotherImage" + request.body.admissionNumber, 'type': 'png' };
+    let guardianImageObj = { 'fileName': "guardianImage" + request.body.admissionNumber, 'type': 'png' };
+    let studentImageInfo = base64ToImage(studentImage, path, studentImageObj);
+    let studentFatherImageInfo = base64ToImage(studentFatherImage, path, studentFatherImageObj);
+    let studentMotherImageInfo = base64ToImage(studentMotherImage, path, studentMotherImageObj);
+    let guardianImageInfo = base64ToImage(guardianImage, path, guardianImageObj);
+    let studentImagePath = path + studentImageInfo.fileName;
+    let studentFatherImagePath = path + studentFatherImageInfo.fileName;
+    let studentMotherImagePath = path + studentMotherImageInfo.fileName;
+    let guardianImagePath = path + guardianImageInfo.fileName;
+
+    con.query("INSERT INTO student_admission_details\
+     (roll_number,\
+        class_id, \
+        section_id,\
+        first_name,  \
+        last_name,\
+        gender, \
+        date_of_birth,\
+        category_id,\
+        religion_id,\
+        caste,\
+        mobile_number,\
+        email,\
+        admission_date,\
+        blood_group,\
+        house_id,\
+        height,\
+        weight,\
+        as_on_date,\
+        student_image,\
+        father_name,\
+        father_phone,\
+        father_occupation,\
+        student_father_image,  \
+        mother_name,\
+        mother_phone,\
+        mother_occupation,\
+        student_mother_image,\
+        guardian_select,\
+        guardian_name,\
+        guardian_relation,\
+        guardian_email,\
+        guardian_phone,\
+        guardian_occupation,\
+        guardian_address,\
+        guardian_image,\
+        current_address,\
+        permanent_address,\
+        bank_name,\
+        bank_account_number,\
+        ifsc_code,\
+        national_identification_number,\
+        local_identification_number,\
+        rte,\
+        previous_school_detail,\
+        note,\
+        session_year,\
+        student_password)\
+     VALUES\
+     ('" + parseInt(request.body.rollNumber) + "',\
+     '" + request.body.class + "',\
+     '" + request.body.section + "',\
+     '" + request.body.firstName + "',\
+     '" + request.body.lastName + "',\
+     '" + request.body.gender + "',\
+     '" + request.body.dob + "',\
+     '" + request.body.category + "',\
+     '" + request.body.religion + "',\
+     '" + request.body.caste + "',\
+     '" + request.body.mobileNumber + "',\
+     '" + request.body.email + "',\
+     '" + request.body.admissionDate + "',\
+     '" + request.body.bloodGroup + "',\
+     '" + request.body.studentHouse + "',\
+     '" + request.body.height + "',\
+     '" + request.body.weight + "',\
+     '" + request.body.asOnDate + "',\
+     '" + studentImagePath + "',\
+     '" + request.body.fatherName + "',\
+     '" + request.body.fatherPhone + "',\
+     '" + request.body.fatherOccupation + "',\
+     '" + studentFatherImagePath + "',\
+     '" + request.body.motherName + "',\
+     '" + request.body.motherPhone + "',\
+     '" + request.body.motherOccupation + "',\
+     '" + studentMotherImagePath + "',\
+     '" + request.body.guardianSelect + "',\
+     '" + request.body.guardianName + "',\
+     '" + request.body.guardianRelation + "',\
+     '" + request.body.guardianEmail + "',\
+     '" + request.body.guardianPhone + "',\
+     '" + request.body.guardianOccupation + "',\
+     '" + request.body.guardianAddress + "',\
+     '" + guardianImagePath + "',\
+     '" + request.body.currentAddress + "',\
+     '" + request.body.permanentAddress + "',\
+     '" + request.body.bankName + "',\
+     '" + request.body.bankAccountNumber + "',\
+     '" + request.body.ifscCode + "',\
+     '" + request.body.nationalIdentificationNumber + "',\
+     '" + request.body.localIdentificationNumber + "',\
+     '" + request.body.rte + "',\
+     '" + request.body.previousSchoolDetail + "',\
+     '" + request.body.note + "',\
+     '" + request.body.session + "',\
+    '" + studentPassword + "'  )", (err, rows, fields) => {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            for (let doc of documents) {
+                con.query("INSERT INTO student_document\
+                         (student_id,\
+                            document_name,\
+                            document)\
+                         \
+                     VALUES\
+                     ('" + rows.insertId + "',\
+                     '" + doc.documentName + "',\
+                    '" + doc.document + "'  )", (err, rows, fields) => {
+                    if (err) {
+                        console.log(err);
+                        response.status(200).send({ status: false, message: err.sqlMessage });
+                    } else {}
+                });
+            }
+            response.status(200).send({ status: false, message: "Student admission successful" });
+        }
+    })
+})
+
+// Api to get student list
+app.get('/getStudentList', function(request, response) {
+    con.query("select * from student_admission_details", function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, data: result });
         }
     });
 })

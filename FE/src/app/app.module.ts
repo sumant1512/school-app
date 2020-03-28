@@ -22,6 +22,7 @@ import { AssingedSubjectComponent } from './ADMIN/assinged-subject/assinged-subj
 import { ExamScheduleComponent } from './ADMIN/+exam/exam-schedule/exam-schedule.component';
 import { SharedFunctions } from './COMMON/shared-functions.utils';
 import { AssignDialogCommonComponent } from './COMMON/assign-dialog-common/assign-dialog-common.component';
+import { ClassSectionSubjectExamChartComponent } from './ADMIN/class-section-subject-exam-chart/class-section-subject-exam-chart.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AssignDialogCommonComponent } from './COMMON/assign-dialog-common/assig
     ExamComponent,
     AssingedSubjectComponent,
     ExamScheduleComponent,
+    ClassSectionSubjectExamChartComponent,
   ],
   entryComponents: [ErrorMessageDialogComponent,AssignDialogCommonComponent],
   imports: [
@@ -51,6 +53,7 @@ import { AssignDialogCommonComponent } from './COMMON/assign-dialog-common/assig
     ReactiveFormsModule,
     AngularMaterialModule
   ],
+  exports:[],
   providers: [SharedFunctions],
   bootstrap: [AppComponent]
 })

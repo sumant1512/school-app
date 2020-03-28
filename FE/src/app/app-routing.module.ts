@@ -12,6 +12,7 @@ import { SubjectComponent } from './ADMIN/subject/subject.component';
 import { ExamComponent } from './ADMIN/+exam/exam/exam.component';
 import { AssingedSubjectComponent } from './ADMIN/assinged-subject/assinged-subject.component';
 import { ExamScheduleComponent } from './ADMIN/+exam/exam-schedule/exam-schedule.component';
+import { ClassSectionSubjectExamChartComponent } from './ADMIN/class-section-subject-exam-chart/class-section-subject-exam-chart.component';
 
 
 const routes: Routes = [
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'exam-schedule', component: ExamScheduleComponent},
   { path: 'student-admission', component: StudentAdmissionComponent},
   { path: 'students-list', component: StudentsListComponent},
+  { path: 'test', component: ClassSectionSubjectExamChartComponent},
   { path: '**', redirectTo: 'class',pathMatch: 'full'},
 ];
 

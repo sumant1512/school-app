@@ -45,9 +45,14 @@
     }
 }
 
-@media only screen and (min-width: 300px) and (max-width: 767px) {
+@media only screen and (min-width: 10px) and (max-width: 767px) {
     .upload-tag {
         margin-top: -95px;
         color: #3f51b5;
+    }
+    .image {
+        border-radius: 50%;
+        height: 130px;
+        width: 130px;
     }
 }
