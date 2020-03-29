@@ -55,7 +55,6 @@ export class StudentAdmissionComponent implements OnInit {
     private adminService: AdminService,
     private router: Router,
     private activatedPath: ActivatedRoute,
-    private dialog: MatDialog,
     private errorService: ErrorDialogFunctionsService,
     private sanitizer: DomSanitizer
   ) {

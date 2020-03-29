@@ -1,0 +1,33 @@
+.student-image {
+    padding: 10px;
+}
+
+.student-image img {
+    padding: 3px;
+    border: 3px solid #a2a216;
+    border-radius: 50px;
+    height: 90px;
+    width: 90px;
+}
+
+
+/* .row {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+} */
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: blue;
+}
+
+.resultAlign {
+    padding: 15px;
+}
+
+.percentageRow {
+    padding: 10px;
+    color: white;
+    background-color: blue;
+}
