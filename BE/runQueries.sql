@@ -82,3 +82,22 @@ from class,
 where
   class.class_id = class_with_section.class_id
   AND class_with_section.section_id = section.section_id;
+select
+  student_admission_details.*,
+  class.class_name,
+  section.section_name,
+  category.category_name,
+  religion.religion_name,
+  house.house_name
+from student_admission_details,
+  class,
+  section,
+  category,
+  religion,
+  house
+where
+  class.class_id = student_admission_details.class_id
+  AND section.section_id = student_admission_details.section_id
+  AND category.category_id = student_admission_details.category_id
+  AND religion.religion_id = student_admission_details.religion_id
+  AND house.house_id = student_admission_details.house_id;

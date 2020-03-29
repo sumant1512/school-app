@@ -16,4 +16,10 @@ export class StudentService {
   getStudentList() {
     return this.http.get("http://localhost:8080/getStudentList");
   }
+
+  // service for getting student profile
+  getStudentProfile(studentDetail) {
+    return this.http.post("http://localhost:8080/getStudentProfile", studentDetail);
+  }
+
 }

@@ -933,11 +933,67 @@ app.post('/studentAdmission', function(request, response) {
 
 // Api to get student list
 app.get('/getStudentList', function(request, response) {
-    con.query("select * from student_admission_details", function(err, result, fields) {
+    con.query("select\
+    student_admission_details.*,\
+    class.class_name,\
+    section.section_name, \
+    category.category_name, \
+    religion.religion_name, \
+    house.house_name \
+  from student_admission_details, \
+    class, \
+    section, \
+    category, \
+    religion, \
+    house \
+  where \
+    class.class_id = student_admission_details.class_id AND \
+    section.section_id = student_admission_details.section_id AND \
+    category.category_id = student_admission_details.category_id AND \
+    religion.religion_id = student_admission_details.religion_id AND \
+    house.house_id = student_admission_details.house_id;", function(err, result, fields) {
         if (err) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });
         } else {
+            result.forEach(element => {
+                element.student_image = fs.readFileSync(element.student_image, { encoding: 'base64' });
+            });
+            response.status(200).send({ status: true, data: result });
+        }
+    });
+})
+
+// Api to get student profile
+app.post('/getStudentProfile', function(request, response) {
+    con.query("select\
+    student_admission_details.*,\
+    class.class_name,\
+    section.section_name, \
+    category.category_name, \
+    religion.religion_name, \
+    house.house_name \
+  from student_admission_details, \
+    class, \
+    section, \
+    category, \
+    religion, \
+    house \
+  where \
+    class.class_id = student_admission_details.class_id AND \
+    section.section_id = student_admission_details.section_id AND \
+    category.category_id = student_admission_details.category_id AND \
+    religion.religion_id = student_admission_details.religion_id AND \
+    house.house_id = student_admission_details.house_id AND \
+    student_id = ? ;", [request.body.studentId], function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            result[0].student_image = fs.readFileSync(result[0].student_image, { encoding: 'base64' });
+            result[0].student_father_image = fs.readFileSync(result[0].student_father_image, { encoding: 'base64' });
+            result[0].student_mother_image = fs.readFileSync(result[0].student_mother_image, { encoding: 'base64' });
+            result[0].guardian_image = fs.readFileSync(result[0].guardian_image, { encoding: 'base64' });
             response.status(200).send({ status: true, data: result });
         }
     });

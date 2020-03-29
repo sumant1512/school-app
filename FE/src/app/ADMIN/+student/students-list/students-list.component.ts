@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { StudentService } from '../../services/student.service';
-import { ErrorDialogFunctionsService } from 'src/app/COMMON/error-message-dialog/error-dialog-functions.service';
+import { StudentService } from "../../services/student.service";
+import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
+import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-students-list",
@@ -10,20 +11,19 @@ import { ErrorDialogFunctionsService } from 'src/app/COMMON/error-message-dialog
 export class StudentsListComponent implements OnInit {
   isExpanded: boolean = true;
   spinner = false;
-  studentList = [
-    {name: "Sumant Mishra",father_name: "Narendra Mishra", class: 1, section: "B", roll_number: 5, admsn_number: 2, student_image: "../../../../assets/sumantMishra.jpg"},
-    {name: "Sumant Mishra",father_name: "Narendra Mishra", class: 1, section: "B", roll_number: 5, admsn_number: 2, student_image: "../../../../assets/sumantMishra.jpg"},
-    {name: "Sumant Mishra",father_name: "Narendra Mishra", class: 1, section: "B", roll_number: 5, admsn_number: 2, student_image: "../../../../assets/sumantMishra.jpg"},
-    {name: "Sumant Mishra",father_name: "Narendra Mishra", class: 1, section: "B", roll_number: 5, admsn_number: 2, student_image: "../../../../assets/sumantMishra.jpg"},
-    {name: "Sumant Mishra",father_name: "Narendra Mishra", class: 1, section: "B", roll_number: 5, admsn_number: 2, student_image: "../../../../assets/sumantMishra.jpg"},
-  ]
-  constructor(private studentService: StudentService, private errorService: ErrorDialogFunctionsService) {}
+  studentList: object[];
+  constructor(
+    private router: Router,
+    private studentService: StudentService,
+    private errorService: ErrorDialogFunctionsService,
+    private activatedPath: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.getStudentList();
   }
 
-  getStudentList(){
+  getStudentList() {
     this.studentService.getStudentList().subscribe(response => {
       if (response["status"] === true) {
         this.studentList = response["data"];
@@ -31,6 +31,17 @@ export class StudentsListComponent implements OnInit {
       } else {
         this.errorService.openErrorDialog(response["message"]);
       }
+    });
+  }
+
+  getStudentDetails(studentName, studentId) {
+    var studentDetailParams = {
+      studentId: studentId
+    };
+    console.log(studentDetailParams);
+    this.router.navigate(["profile"], {
+      queryParamsHandling: "merge",
+      queryParams: { studentName: studentName, studentId: studentId }
     });
   }
 
