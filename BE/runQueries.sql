@@ -43,6 +43,9 @@ from student_admission_details;
 select
   *
 from student_document;
+select
+  *
+from student_result;
 delete from class_with_section;
 delete from section;
 delete from category;

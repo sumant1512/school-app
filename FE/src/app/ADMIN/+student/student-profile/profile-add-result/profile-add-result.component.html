@@ -1,0 +1,50 @@
+<div class="p-3">
+    <form [formGroup]="addResultForm">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6">
+                <mat-form-field class="w-100" appearance="outline">
+                    <mat-label>Select Exam*</mat-label>
+                    <mat-select placeholder="Select Exam*" formControlName="examId">
+                        <mat-option *ngFor="let exam of examList" value="{{exam.exam_id}}">{{exam.exam_name}}<sup>st</sup></mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="addResultForm.get('examId').invalid && addResultForm.get('examId').touched">
+                        <div> Exam is <strong>required*</strong></div>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 text-md-center text-right text-lg-right">
+                <button (click)="openResultCreateForm()" [disabled]="addResultForm.get('examId').invalid" mat-raised-button color="primary">Open Result Form</button>
+            </div>
+        </div>
+
+        <div formArrayName="subjects">
+            <div *ngFor="let paper of addResultForm.get('subjects').controls; let i = index">
+                <div class="row" [formGroupName]="i">
+                    <div class="my-auto col-12 col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        {{paperList[i].subject_name}}
+                    </div>
+                    <div class="my-auto col-12 col-xs-12 col-sm-12 col-md-3 col-lg-1">
+                        {{paperList[i].total_marks}}
+                    </div>
+                    <div class="my-auto col-12 col-xs-12 col-sm-12 col-md-3 col-lg-1">
+                        {{paperList[i].passing_marks}}
+                    </div>
+                    <div class="col-12 col-xs-12 col-sm-12 col-md-3 col-lg-7">
+                        <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Obtained Marks*</mat-label>
+                            <input formControlName="marksObtained" matInput placeholder="Obtained Marks*">
+                            <mat-error *ngIf="paper.invalid && paper.touched">
+                                <div> Obtained Marks is <strong>required*</strong></div>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="resultBtn" class="row">
+                <div class="col-12 col-sm-12 col-md-12 text-md-center text-right text-lg-right">
+                    <button (click)="saveStudentResult()" [disabled]="addResultForm.invalid" mat-raised-button color="primary">Create Result</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

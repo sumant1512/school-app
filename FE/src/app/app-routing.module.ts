@@ -13,7 +13,7 @@ import { ExamComponent } from "./ADMIN/+exam/exam/exam.component";
 import { AssingedSubjectComponent } from "./ADMIN/assinged-subject/assinged-subject.component";
 import { ExamScheduleComponent } from "./ADMIN/+exam/exam-schedule/exam-schedule.component";
 import { ClassSectionSubjectExamChartComponent } from "./ADMIN/class-section-subject-exam-chart/class-section-subject-exam-chart.component";
-import { StudentProfileComponent } from "./COMMON/student-profile/student-profile.component";
+import { StudentProfileComponent } from "./ADMIN/+student/student-profile/student-profile.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "class", pathMatch: "full" },

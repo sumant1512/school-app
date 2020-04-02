@@ -149,3 +149,18 @@ create table bus (
   created_on varchar(255) NOT NULL,
   last_updated_on varchar(255)
 );
+create table student_result (
+  student_id INT NOT NULL,
+  FOREIGN KEY (student_id) REFERENCES student_admission_details(student_id),
+  class_id INT NOT NULL,
+  FOREIGN KEY (class_id) REFERENCES class(class_id),
+  exam_id INT NOT NULL,
+  FOREIGN KEY (exam_id) REFERENCES exam(exam_id),
+  paper_id INT NOT NULL,
+  FOREIGN KEY (paper_id) REFERENCES exam_schedule(paper_id),
+  subject_id INT NOT NULL,
+  FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),
+  marks_obtained INT NOT NULL,
+  created_on varchar(255),
+  last_updated_on varchar(255)
+);

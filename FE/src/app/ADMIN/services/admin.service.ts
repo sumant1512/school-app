@@ -211,18 +211,41 @@ export class AdminService {
   }
 
   // service to schedule exam
-  scheduleExam(examDetails){
+  scheduleExam(examDetails) {
     return this.http.post("http://localhost:8080/scheduleExam", examDetails);
   }
 
   // service to check and get time table
-  checkTimeTable(examDetails){
+  checkTimeTable(examDetails) {
     return this.http.post("http://localhost:8080/checkTimeTable", examDetails);
   }
 
   // service to delete exam schedule
-  deleteExamSchedule(examDetails){
-    return this.http.post("http://localhost:8080/deleteExamSchedule", examDetails);
+  deleteExamSchedule(examDetails) {
+    return this.http.post(
+      "http://localhost:8080/deleteExamSchedule",
+      examDetails
+    );
   }
 
+  // service to get subject list for result
+  getSubjectForSelectedExamResultCreate(examDetail) {
+    return this.http.post(
+      "http://localhost:8080/getSubjectForSelectedExamResultCreate",
+      examDetail
+    );
+  }
+
+  // service to get exam list
+  getExamsForClass(classDetail) {
+    return this.http.post(
+      "http://localhost:8080/getExamsForClass",
+      classDetail
+    );
+  }
+
+  // service to save student result
+  saveStudentResult(result) {
+    return this.http.post("http://localhost:8080/saveStudentResult", result);
+  }
 }
