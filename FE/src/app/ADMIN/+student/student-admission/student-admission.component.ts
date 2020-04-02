@@ -10,9 +10,7 @@ import {
 } from "@angular/forms";
 import { StudentService } from "../../services/student.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { MatDialog } from "@angular/material";
 import { AdminService } from "../../services/admin.service";
-import { ErrorMessageDialogComponent } from "src/app/COMMON/error-message-dialog/error-message-dialog.component";
 import { studentAdmissionForm, documentForm } from "./student-admission.utils";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { CONSTANTS } from "src/app/COMMON/constant";

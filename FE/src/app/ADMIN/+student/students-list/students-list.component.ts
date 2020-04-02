@@ -38,7 +38,6 @@ export class StudentsListComponent implements OnInit {
     var studentDetailParams = {
       studentId: studentId
     };
-    console.log(studentDetailParams);
     this.router.navigate(["profile"], {
       queryParamsHandling: "merge",
       queryParams: { studentName: studentName, studentId: studentId }

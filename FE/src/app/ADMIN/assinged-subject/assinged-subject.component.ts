@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AdminService } from "../services/admin.service";
-import { ErrorMessageDialogComponent } from "src/app/COMMON/error-message-dialog/error-message-dialog.component";
-import { MatDialog } from "@angular/material";
+import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 
 @Component({
   selector: "app-assinged-subject",
@@ -14,7 +13,10 @@ export class AssingedSubjectComponent implements OnInit {
   classWithSubject: object[];
   message: string;
   subjectList: object[];
-  constructor(private adminService: AdminService, public dialog: MatDialog) {}
+  constructor(
+    private adminService: AdminService,
+    private errorService: ErrorDialogFunctionsService
+  ) {}
 
   ngOnInit() {
     this.getClass();
@@ -28,7 +30,7 @@ export class AssingedSubjectComponent implements OnInit {
         this.classList = response["data"];
         this.spinner = true;
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -39,7 +41,7 @@ export class AssingedSubjectComponent implements OnInit {
       if (response["status"] === true) {
         this.subjectList = response["data"];
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -50,7 +52,7 @@ export class AssingedSubjectComponent implements OnInit {
       if (response["status"] === true) {
         this.classWithSubject = response["data"];
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -65,22 +67,10 @@ export class AssingedSubjectComponent implements OnInit {
       if (response["status"] === true) {
         this.getClass();
         this.getClassWithSubject();
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
-    });
-  }
-
-  // Error message dialog
-  openDialog(errorMessage: string) {
-    const dialogRef = this.dialog.open(ErrorMessageDialogComponent, {
-      width: "750px",
-      data: { message: errorMessage }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log("Class Added");
     });
   }
 }

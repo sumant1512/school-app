@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { StudentService } from "src/app/ADMIN/services/student.service";
 import { ActivatedRoute } from "@angular/router";
 import { ErrorDialogFunctionsService } from "../../../COMMON/error-message-dialog/error-dialog-functions.service";
-import { Location } from '@angular/common';
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-student-profile",
@@ -18,7 +18,6 @@ export class StudentProfileComponent implements OnInit {
   feeTypes: any;
   viewResultStatus: boolean;
   selectedStudentDetail: object;
-  selectedClass: string;
 
   constructor(
     private activatedPath: ActivatedRoute,
@@ -37,10 +36,8 @@ export class StudentProfileComponent implements OnInit {
 
   getDataFromQueryParams() {
     this.activatedPath.queryParams.subscribe(params => {
-      console.log(params.admissionNumber);
       this.studentDetailParams = params;
       this.getStudentProfile();
-      console.log("Ouery params from profile page", this.studentDetailParams);
     });
   }
 
@@ -49,11 +46,10 @@ export class StudentProfileComponent implements OnInit {
     this.studentService.getStudentProfile(studentDetail).subscribe(response => {
       if (response["status"] === true) {
         this.studentDetail = response["data"];
-        this.selectedClass = this.studentDetail[0].class_id;
         this.selectedStudentDetail = {
           classId: this.studentDetail[0].class_id,
           studentId: this.studentDetailParams.studentId
-        }
+        };
       } else {
         this.errorService.openErrorDialog(response["message"]);
       }
@@ -61,10 +57,10 @@ export class StudentProfileComponent implements OnInit {
   }
 
   // function to display / hide result and result form
-  viewResult(resultType: string){
-    if(resultType === 'add'){
+  viewResult(resultType: string) {
+    if (resultType === "add") {
       this.viewResultStatus = true;
-    }else {
+    } else {
       this.viewResultStatus = false;
     }
   }

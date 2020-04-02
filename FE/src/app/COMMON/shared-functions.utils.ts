@@ -13,7 +13,6 @@ export class SharedFunctions {
       if (response["status"] === true) {
         this.classList.class = response["data"];
         this.classList.spinner = true;
-        console.log(".classList",this.classList);
         return this.classList; 
       } else {
         return response["message"];

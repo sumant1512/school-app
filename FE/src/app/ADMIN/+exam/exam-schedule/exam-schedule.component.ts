@@ -1,10 +1,9 @@
 import { Component, OnInit, EventEmitter, Output } from "@angular/core";
-import { ErrorMessageDialogComponent } from "src/app/COMMON/error-message-dialog/error-message-dialog.component";
 import { AdminService } from "../../services/admin.service";
-import { MatDialog } from "@angular/material";
 import { FormGroup, FormArray, FormControl, Validators } from "@angular/forms";
 import { SubjectWithClassType } from "./exam-schedule.type";
 import { scheduleExamForm, paperDetailsForm } from "./exam-schedule.utils";
+import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 
 @Component({
   selector: "app-exam-schedule",
@@ -35,7 +34,10 @@ export class ExamScheduleComponent implements OnInit {
   classId: number;
   examName: string;
   examId: number;
-  constructor(private adminService: AdminService, public dialog: MatDialog) {}
+  constructor(
+    private adminService: AdminService,
+    public errorService: ErrorDialogFunctionsService
+  ) {}
 
   ngOnInit() {
     this.scheduleExamForm = scheduleExamForm();
@@ -50,18 +52,18 @@ export class ExamScheduleComponent implements OnInit {
         this.classList = response["data"];
         this.spinner = true;
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
 
   scheduleExamFormOpen(classId, examId) {
-    this.removeFormControl();  
-    this.getSubjectsForClass(classId,examId);
+    this.removeFormControl();
+    this.getSubjectsForClass(classId, examId);
   }
 
   // this function is to remove previous form control
-  removeFormControl(){
+  removeFormControl() {
     if (this.subjectWithClass) {
       this.subjectWithClass.forEach((element, index) => {
         (this.scheduleExamForm.get("paperName") as FormArray).removeAt(index);
@@ -69,7 +71,7 @@ export class ExamScheduleComponent implements OnInit {
     }
   }
 
-  getSubjectsForClass(classId,examId){
+  getSubjectsForClass(classId, examId) {
     const examDetails = { classId: classId };
     this.adminService.getSubjectForClass(examDetails).subscribe(response => {
       if (response["status"]) {
@@ -83,7 +85,7 @@ export class ExamScheduleComponent implements OnInit {
   }
 
   checkTimeTable(classId, examId, className, examName) {
-    this.removeFormControl(); 
+    this.removeFormControl();
     const examDetails = {
       classId: classId,
       examId: examId
@@ -93,7 +95,7 @@ export class ExamScheduleComponent implements OnInit {
         if (response["timeTableStatus"]) {
           this.examTimeTable = response["data"];
           this.className = className;
-          this.classId = classId
+          this.classId = classId;
           this.examName = examName;
           this.examId = examId;
           this.timeTable = true;
@@ -112,25 +114,24 @@ export class ExamScheduleComponent implements OnInit {
     const examDetails = this.scheduleExamForm.value;
     this.adminService.scheduleExam(examDetails).subscribe(response => {
       if (response["status"] === true) {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
 
   // function to delete time table
-  deleteExamSchedule(classId,examId) {
+  deleteExamSchedule(classId, examId) {
     const examDetails = {
       classId: classId,
       examId: examId
     };
-    console.log(examDetails);
     this.adminService.deleteExamSchedule(examDetails).subscribe(response => {
       if (response["status"] === true) {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -141,7 +142,7 @@ export class ExamScheduleComponent implements OnInit {
       if (response["status"] === true) {
         this.examList = response["data"];
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -152,7 +153,7 @@ export class ExamScheduleComponent implements OnInit {
       if (response["status"] === true) {
         this.classWithExam = response["data"];
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -167,22 +168,10 @@ export class ExamScheduleComponent implements OnInit {
       if (response["status"] === true) {
         this.getClass();
         this.getClassWithExam();
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
-    });
-  }
-
-  // Error message dialog
-  openDialog(errorMessage: string) {
-    const dialogRef = this.dialog.open(ErrorMessageDialogComponent, {
-      width: "750px",
-      data: { message: errorMessage }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log("Class Added");
     });
   }
 }

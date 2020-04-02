@@ -6,10 +6,9 @@ import {
   SectionType,
   ClassWithSectionType
 } from "./class-section.type";
-import { MatDialog } from "@angular/material";
 import { AdminService } from "../services/admin.service";
 import { classSectionTransform } from "./class-section-transform";
-import { ErrorMessageDialogComponent } from "src/app/COMMON/error-message-dialog/error-message-dialog.component";
+import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 
 /**
  * Food data with nested structure.
@@ -50,7 +49,10 @@ export class ClassSectionSubjectExamChartComponent implements OnInit {
   // treeControl;
   // dataSource;
   hasChild1;
-  constructor(public dialog: MatDialog, private adminService: AdminService) {}
+  constructor(
+    private adminService: AdminService,
+    private errorService: ErrorDialogFunctionsService
+  ) {}
 
   ngOnInit() {
     this.getClass();
@@ -63,7 +65,7 @@ export class ClassSectionSubjectExamChartComponent implements OnInit {
         this.classList = response["data"];
         this.getClassWithSection();
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -82,22 +84,10 @@ export class ClassSectionSubjectExamChartComponent implements OnInit {
         this.dataSource = new ArrayDataSource(this.classWithSectionTransformed);
         this.hasChild1 = (_: number, node: any) =>
           !!node.sections && node.sections.length > 0;
-          console.log("55555555555555555",this.dataSource);
+        console.log("55555555555555555", this.dataSource);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
-    });
-  }
-
-  // Error message dialog
-  openDialog(errorMessage: string) {
-    const dialogRef = this.dialog.open(ErrorMessageDialogComponent, {
-      width: "750px",
-      data: { message: errorMessage }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log("Class Added");
     });
   }
 }

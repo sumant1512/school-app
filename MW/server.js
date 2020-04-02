@@ -158,7 +158,6 @@ app.post('/updateExam', function(request, response) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });
         } else {
-            console.log("hi")
             con.query("select * from exam", function(err, result, fields) {
                 if (err) {
                     console.log(err);
@@ -361,7 +360,6 @@ app.post('/addSubject', function(request, response) {
     const createdOn = new Date();
     const subjectName = request.body.subjectName;
     const selectedClass = request.body.selectedClass;
-    console.log(selectedClass);
     con.query("INSERT INTO subjects (subject_name,created_on) VALUES\
                 ('" + subjectName + "','" + createdOn + "')", (err, rows, fields) => {
         if (err) {
@@ -369,7 +367,6 @@ app.post('/addSubject', function(request, response) {
             response.status(200).send({ status: false, message: err.sqlMessage });
         } else {
             for (var classId of selectedClass) {
-                console.log("hi");
                 con.query("INSERT INTO class_with_subjects\
                      (class_id,\
                         subject_id,\
@@ -749,7 +746,6 @@ app.post('/scheduleExam', function(request, response) {
 app.post('/checkTimeTable', function(request, response) {
     const classId = request.body.classId;
     const examId = request.body.examId;
-    console.log(classId, examId);
     con.query("SELECT exam_schedule.*, subjects.subject_name FROM exam_schedule, subjects WHERE class_id=? AND exam_id = ? AND exam_schedule.subject_id = subjects.subject_id", [classId, examId], function(err, rows, result) {
         if (err) {
             console.log(err);
@@ -780,7 +776,6 @@ app.post('/deleteExamSchedule', function(request, response) {
 
 // Api for student admission
 app.post('/studentAdmission', function(request, response) {
-    console.log("registering student")
     let length = 6;
     let studentPassword = parseInt(Math.random(length) * 1000000);
     let studentDetail = request.body;
@@ -1033,7 +1028,6 @@ app.post('/getExamsForClass', function(request, response) {
 
 // Api to save student exam result
 app.post('/saveStudentResult', function(request, response) {
-    console.log("****", request.body);
     const subjectList = request.body.subjects;
     const createdOn = new Date();
     for (let subject of subjectList) {
@@ -1061,4 +1055,25 @@ app.post('/saveStudentResult', function(request, response) {
         });
     }
     response.status(200).send({ status: false, message: "Result created" });
+})
+
+// Api to get student academic record
+app.post('/getAcademicRecord', function(request, response) {
+    console.log(request.body);
+    con.query("select student_result.*,class.class_name,exam.exam_name, \
+    subjects.subject_name,exam_schedule.total_marks,exam_schedule.passing_marks\
+    from student_result,class,exam,subjects,exam_schedule where \
+    student_result.class_id = class.class_id AND \
+    student_result.exam_id = exam.exam_id AND \
+    student_result.subject_id = subjects.subject_id AND \
+    student_result.paper_id = exam_schedule.paper_id AND \
+    student_result.student_id =? ", [request.body.studentId], function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            console.log(result)
+            response.status(200).send({ status: true, data: result });
+        }
+    });
 })

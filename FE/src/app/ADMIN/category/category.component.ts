@@ -1,8 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
-import { MatDialog } from "@angular/material";
+import { FormGroup, Validators, FormControl } from "@angular/forms";
 import { AdminService } from "../services/admin.service";
-import { ErrorMessageDialogComponent } from "src/app/COMMON/error-message-dialog/error-message-dialog.component";
+import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 
 @Component({
   selector: "app-category",
@@ -15,12 +14,11 @@ export class CategoryComponent implements OnInit {
   spinner: boolean = false;
 
   constructor(
-    private fb: FormBuilder,
     private adminService: AdminService,
-    private dialog: MatDialog
+    private errorService: ErrorDialogFunctionsService
   ) {
     this.addCategoryForm = new FormGroup({
-      categoryName: new FormControl('', Validators.required)
+      categoryName: new FormControl("", Validators.required)
     });
   }
 
@@ -41,9 +39,9 @@ export class CategoryComponent implements OnInit {
       if (response["status"] === true) {
         this.categoryList = response["data"];
         this.resetForm();
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -55,7 +53,7 @@ export class CategoryComponent implements OnInit {
         this.categoryList = response["data"];
         this.spinner = true;
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -68,22 +66,10 @@ export class CategoryComponent implements OnInit {
     this.adminService.deleteCategory(categoryDetail).subscribe(response => {
       if (response["status"] === true) {
         this.categoryList = response["data"];
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
-    });
-  }
-
-  // Error message
-  openDialog(errorMessage: string) {
-    const dialogRef = this.dialog.open(ErrorMessageDialogComponent, {
-      width: "750px",
-      data: { message: errorMessage }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log("Class Added");
     });
   }
 }

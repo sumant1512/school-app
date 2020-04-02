@@ -1,12 +1,9 @@
 import { Component, OnInit, VERSION } from "@angular/core";
-import { ErrorMessageDialogComponent } from "src/app/COMMON/error-message-dialog/error-message-dialog.component";
 import { FormGroup } from "@angular/forms";
-import { addClassForm } from './class.utils';
-import { MatDialog } from "@angular/material";
+import { addClassForm } from "./class.utils";
 import { AdminService } from "../services/admin.service";
-import { SharedFunctions } from "./../../COMMON/shared-functions.utils";
-import { classListReturnType } from 'src/app/COMMON/shared-function.type';
-import { from } from 'rxjs';
+import { classListReturnType } from "src/app/COMMON/shared-function.type";
+import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 
 @Component({
   selector: "app-class",
@@ -21,9 +18,8 @@ export class ClassComponent implements OnInit {
   message: string;
   allSections: object[];
   constructor(
-    public dialog: MatDialog,
     private adminService: AdminService,
-    private sharedFunction: SharedFunctions
+    private errorService: ErrorDialogFunctionsService
   ) {
     this.addClassForm = addClassForm();
   }
@@ -49,9 +45,9 @@ export class ClassComponent implements OnInit {
         this.getSection();
         this.getClassWithSection();
         this.resetForm();
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -63,7 +59,7 @@ export class ClassComponent implements OnInit {
         this.classList = response["data"];
         this.spinner = true;
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -78,9 +74,9 @@ export class ClassComponent implements OnInit {
         this.getClass();
         this.getSection();
         this.getClassWithSection();
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -91,7 +87,7 @@ export class ClassComponent implements OnInit {
       if (response["status"] === true) {
         this.allSections = response["data"];
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -102,7 +98,7 @@ export class ClassComponent implements OnInit {
       if (response["status"] === true) {
         this.classWithSection = response["data"];
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -118,22 +114,10 @@ export class ClassComponent implements OnInit {
         this.getClass();
         this.getSection();
         this.getClassWithSection();
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
-    });
-  }
-
-  // Error message dialog
-  openDialog(errorMessage: string) {
-    const dialogRef = this.dialog.open(ErrorMessageDialogComponent, {
-      width: "750px",
-      data: { message: errorMessage }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log("Class Added");
     });
   }
 }

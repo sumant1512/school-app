@@ -7,9 +7,9 @@ import {
 } from "@angular/forms";
 import { AdminService } from "../services/admin.service";
 import { MatDialog } from "@angular/material";
-import { ErrorMessageDialogComponent } from "src/app/COMMON/error-message-dialog/error-message-dialog.component";
-import { AssignToClassType } from 'src/app/COMMON/assign-dialog-common/assign-dialog.type';
-import { AssignDialogCommonComponent } from 'src/app/COMMON/assign-dialog-common/assign-dialog-common.component';
+import { AssignToClassType } from "src/app/COMMON/assign-dialog-common/assign-dialog.type";
+import { AssignDialogCommonComponent } from "src/app/COMMON/assign-dialog-common/assign-dialog-common.component";
+import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 
 @Component({
   selector: "app-subject",
@@ -26,11 +26,11 @@ export class SubjectComponent implements OnInit {
   assignData: AssignToClassType;
 
   constructor(
-    private fb: FormBuilder,
     private adminService: AdminService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private errorService: ErrorDialogFunctionsService
   ) {
-    this.addSubjectForm = this.fb.group({
+    this.addSubjectForm = new FormGroup({
       subjectName: new FormControl("", Validators.required),
       selectedClass: new FormControl("")
     });
@@ -59,7 +59,7 @@ export class SubjectComponent implements OnInit {
       if (response["status"] === true) {
         this.classList = response["data"];
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -80,9 +80,9 @@ export class SubjectComponent implements OnInit {
       if (response["status"] === true) {
         this.subjectList = response["data"];
         this.resetExamForm();
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -93,14 +93,13 @@ export class SubjectComponent implements OnInit {
       subjectId: this.updateSubjectId,
       subjectName: this.addSubjectForm.value.subjectName
     };
-    console.log(subjectDetail);
     this.adminService.updateSubject(subjectDetail).subscribe(response => {
       if (response["status"]) {
         this.subjectList = response["data"];
         this.resetExamForm();
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -112,7 +111,7 @@ export class SubjectComponent implements OnInit {
         this.subjectList = response["data"];
         this.spinner = true;
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -125,9 +124,9 @@ export class SubjectComponent implements OnInit {
     this.adminService.deleteSubject(subjectDetail).subscribe(response => {
       if (response["status"] === true) {
         this.subjectList = response["data"];
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -148,7 +147,7 @@ export class SubjectComponent implements OnInit {
   }
 
   // function to assign subject to class
-   assignSubject(subjectId, subjectName) {
+  assignSubject(subjectId, subjectName) {
     this.assignData = {
       id_to_be_assinged: subjectId,
       name_to_be_assinged: subjectName,
@@ -162,19 +161,7 @@ export class SubjectComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log("Assign section closed");
-    });
-  }
-
-  // Error message
-  openDialog(errorMessage: string) {
-    const dialogRef = this.dialog.open(ErrorMessageDialogComponent, {
-      width: "750px",
-      data: { message: errorMessage }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log("Class Added");
+      console.log("Assign dialog closed");
     });
   }
 }
