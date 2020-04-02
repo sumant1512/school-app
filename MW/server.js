@@ -998,3 +998,67 @@ app.post('/getStudentProfile', function(request, response) {
         }
     });
 })
+
+// Api to get subject on selecting class
+app.post('/getSubjectForSelectedExamResultCreate', function(request, response) {
+    con.query("select exam_schedule.paper_id,exam_schedule.subject_id,\
+    exam_schedule.total_marks,exam_schedule.passing_marks,subjects.subject_name \
+    from exam_schedule,subjects where \
+    exam_schedule.subject_id = subjects.subject_id AND \
+    exam_schedule.class_id =? AND exam_schedule.exam_id = ?", [request.body.classId, request.body.examId], function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, data: result });
+        }
+    });
+})
+
+// Api to get subject on selecting class
+app.post('/getExamsForClass', function(request, response) {
+    con.query("select exam.exam_name,class_with_exam.exam_id \
+    from class,class_with_exam,exam where \
+    class.class_id = class_with_exam.class_id AND \
+    class_with_exam.exam_id = exam.exam_id AND \
+    class_with_exam.class_id =? ", [request.body.classId], function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, data: result });
+        }
+    });
+})
+
+// Api to save student exam result
+app.post('/saveStudentResult', function(request, response) {
+    console.log("****", request.body);
+    const subjectList = request.body.subjects;
+    const createdOn = new Date();
+    for (let subject of subjectList) {
+        con.query("INSERT INTO student_result\
+                 (student_id,\
+                    class_id,\
+                    exam_id,\
+                    paper_id,\
+                    subject_id,\
+                    marks_obtained,\
+                    created_on)\
+                 \
+             VALUES\
+             ('" + request.body.studentId + "',\
+             '" + request.body.classId + "',\
+             '" + request.body.examId + "',\
+             '" + subject.paperId + "',\
+             '" + subject.subjectId + "',\
+             '" + subject.marksObtained + "',\
+             '" + createdOn + "'  )", (err, rows, fields) => {
+            if (err) {
+                console.log(err);
+                response.status(200).send({ status: false, message: err.sqlMessage });
+            } else {}
+        });
+    }
+    response.status(200).send({ status: false, message: "Result created" });
+})

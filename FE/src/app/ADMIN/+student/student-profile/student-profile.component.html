@@ -1,0 +1,329 @@
+<div class="container-fluid" *ngFor="let student of studentDetail">
+
+    <div class="row my-2">
+        <div class="col-sm-12">
+            <button (click)="backPage()" color="primary" mat-raised-button><i class="fa fa-arrow-left mr-3"></i>Back</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-3">
+            <mat-card class="mb-3 mb-lg-0 pt-1 pt-md-0 pt-lg-1 px-0 card-border">
+                <div>
+                    <div class="d-none d-md-block d-lg-none mt-md-2 row">
+                        <div class="col-12">
+                            <div class="text-center">
+                                <h4>{{student.first_name}} {{student.last_name}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mx-0 row">
+                        <div class="px-0 col-12 col-xs-12 col-sm-12 col-md-2 col-lg-12">
+                            <div class="student-image text-center"><img src="data:image/png;base64,{{student.student_image}}" alt="Student Image" height="52" width="52"></div>
+                        </div>
+                        <div class="px-0 col-12 col-xs-12 col-sm-12 col-md-5 col-lg-12">
+                            <div class="d-block d-md-none d-lg-block text-center text-xs-center text-sm-center text-md-left text-lg-center">
+                                <h4>{{student.first_name}} {{student.last_name}}</h4>
+                            </div>
+                            <div class="mx-0 row">
+                                <div class="col-7"><b>Student Id</b></div>
+                                <div class="col-5 text-primary text-center">{{student.student_id}}</div>
+                            </div>
+                            <hr class="border ml-3 mr-3">
+                            <div class="mx-0 row">
+                                <div class="col-7"><b>Roll No.</b></div>
+                                <div class="col-5 text-primary text-center">{{student.roll_number}}</div>
+                            </div>
+                            <hr class="border ml-3 mr-3">
+                            <div class="mx-0 row">
+                                <div class="col-7"><b>Class</b></div>
+                                <div class="col-5 text-primary text-center">{{student.class_name}}</div>
+                            </div>
+                            <hr class="d-block d-md-none d-lg-block border ml-3 mr-3">
+                        </div>
+                        <div class="px-0 col-12 col-xs-12 col-sm-12 col-md-5 col-lg-12">
+                            <div class="mx-0 row">
+                                <div class="col-7"><b>Section</b></div>
+                                <div class="col-5 text-primary text-center">{{student.section_name}}</div>
+                            </div>
+                            <hr class="border ml-3 mr-3">
+                            <div class="mx-0 row">
+                                <div class="col-7"><b>RTE</b></div>
+                                <div class="col-5 text-primary text-center">{{student.rte}}</div>
+                            </div>
+                            <hr class="border ml-3 mr-3">
+                            <div class="mx-0 row">
+                                <div class="col-7"><b>Gender</b></div>
+                                <div class="col-5 text-primary text-center">{{student.gender}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+
+        <div class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-9">
+            <mat-card class="px-0 pt-1 card-border">
+                <mat-tab-group>
+
+                    <!-- This is for student profile -->
+
+                    <mat-tab label="Profile">
+                        <div class="mat-elevation-z8 mx-2 mx-xs-2 mx-sm-2 mx-md-4 my-4">
+                            <div>
+                                <mat-toolbar color="primary" class="mat-elevation-z8 form-toolbar">Student Details</mat-toolbar>
+                            </div>
+
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row mx-0">Admission Date</th>
+                                        <td class="text-secondary">{{student.admission_date | date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Date Of Birth</th>
+                                        <td class="text-secondary">{{student.date_of_birth | date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Category</th>
+                                        <td class="text-secondary">{{student.category_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Mobile Number</th>
+                                        <td class="text-secondary">{{student.mobile_number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Caste</th>
+                                        <td class="text-secondary">{{student.caste}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Religion</th>
+                                        <td class="text-secondary">{{student.religion_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Email</th>
+                                        <td class="text-secondary">{{student.email}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Address Details -->
+
+                        <div class="mat-elevation-z8 mx-2 mx-xs-2 mx-sm-2 mx-md-4 my-4">
+                            <div>
+                                <mat-toolbar color="primary" class="mat-elevation-z8  form-toolbar">Address</mat-toolbar>
+                            </div>
+
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Currest Address</th>
+                                        <td class="text-secondary">{{student.current_address}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Permanent Address</th>
+                                        <td class="text-secondary">{{student.permanent_address}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Parents and Guardians details -->
+
+                        <div class="mat-elevation-z8 mx-2 mx-xs-2 mx-sm-2 mx-md-4 my-4">
+                            <div>
+                                <mat-toolbar color="primary" class="mat-elevation-z8  form-toolbar">Parents / Guardian Details</mat-toolbar>
+                            </div>
+                            <div class="row mx-0 mt-3">
+                                <div class="col-12 col-sm-4">
+                                    <div class="text-center"><b>Father</b></div>
+                                    <div class="student-image text-center"><img src="data:image/png;base64,{{student.student_father_image}}" alt="Student Image" height="52" width="52"></div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="text-center"><b>Mother</b></div>
+                                    <div class="student-image text-center"><img src="data:image/png;base64,{{student.student_mother_image}}" alt="Student Image" height="52" width="52"></div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="text-center"><b>Guardian</b></div>
+                                    <div class="student-image text-center"><img src="data:image/png;base64,{{student.guardian_image}}" alt="Student Image" height="52" width="52"></div>
+                                </div>
+                            </div>
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row mx-0">Father's Name</th>
+                                        <td class="text-secondary">{{student.father_name}} {{student.last_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Father's Phone</th>
+                                        <td class="text-secondary">{{student.father_phone}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Father's Occupation</th>
+                                        <td class="text-secondary">{{student.father_occupation}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Mother's Name</th>
+                                        <td class="text-secondary">{{student.mother_name}} {{student.last_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Mother's Phone</th>
+                                        <td class="text-secondary">{{student.mother_phone}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Mother's Occupation</th>
+                                        <td class="text-secondary">{{student.mother_occupation}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Guardian's Name</th>
+                                        <td class="text-secondary">{{student.guardian_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Guardian's Relation</th>
+                                        <td class="text-secondary">{{student.guardian_select}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Guardian's Phone</th>
+                                        <td class="text-secondary">{{student.guardian_phone}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Guardian's Occupation</th>
+                                        <td class="text-secondary">{{student.guardian_occupation}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Guardian's Email</th>
+                                        <td class="text-secondary">{{student.guardian_email}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row mx-0">Guardian's Address</th>
+                                        <td class="text-secondary">{{student.guardian_address}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Miscellaneous Details -->
+
+                        <div class="mat-elevation-z8 mx-2 mx-xs-2 mx-sm-2 mx-md-4 my-4">
+                            <div>
+                                <mat-toolbar color="primary" class="mat-elevation-z8  form-toolbar">Miscellaneous Details</mat-toolbar>
+                            </div>
+
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Blood Group</th>
+                                        <td class="text-secondary">{{student.blood_group}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Student House</th>
+                                        <td class="text-secondary">{{student.house_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Height</th>
+                                        <td class="text-secondary">{{student.height}} ft.</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">As on Date</th>
+                                        <td class="text-secondary">{{student.as_on_date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Previous School Details</th>
+                                        <td class="text-secondary">{{student.previous_school_detail}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">National Identification Number</th>
+                                        <td class="text-secondary">{{student.national_identification_number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Local Identification Number</th>
+                                        <td class="text-secondary">{{student.local_identification_number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Bank Account Number</th>
+                                        <td class="text-secondary">{{student.bank_account_number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Bank Name</th>
+                                        <td class="text-secondary">{{student.bank_name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">IFSC Code</th>
+                                        <td class="text-secondary">{{student.ifsc_code}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </mat-tab>
+
+                    <!-- 2Nd Tab For Fees Details And Fees Collection -->
+
+                    <mat-tab label="Fees Detail">
+                        <div class="mat-elevation-z8 mx-2 mx-xs-2 mx-sm-2 mx-md-4 my-4">
+                            <div>
+                                <mat-toolbar color="primary" class="mat-elevation-z8  form-toolbar">Fees Record </mat-toolbar>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-3"><b>Class</b></div>
+                                <div class="col-12 col-sm-3"><b>Fee Type</b></div>
+                                <div class="col-12 col-sm-3"><b>Amount</b></div>
+                                <div class="col-12 col-sm-3"><b>Status</b></div>
+                            </div>
+                            <div class="row" *ngFor="let fee of feeTypes">
+                                <div class="col-12 col-sm-3">{{fee.class}}</div>
+                                <div class="col-12 col-sm-3">{{fee.feeType}}</div>
+                                <div class="col-12 col-sm-3">{{fee.amount}}</div>
+                                <div class="col-12 col-sm-3" *ngIf="fee.status != null; else elseBlock">{{fee.status}}</div>
+                                <ng-template #elseBlock>
+                                    <div class="col-12 col-sm-2">Pending...</div>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Academics">
+                        <div class="p-4">
+                            <mat-card class="mat-elevation-z8">
+                                <div class="text-center text-md-right">
+                                    <button class="text-right mr-1" mat-raised-button color="primary" (click)="viewResult( 'add') "><i class="fa fa-plus mr-1 "></i>Add Result</button>
+                                    <button mat-raised-button color="primary" (click)="viewResult( 'view') "><i class="fa fa-eye mr-1 "></i> View Result</button>
+                                </div>
+
+                                <div *ngIf="viewResultStatus; else addResult ">
+                                    <app-profile-add-result [selectedStudentDetail]="selectedStudentDetail "></app-profile-add-result>
+                                </div>
+                                <ng-template #addResult>
+                                    <app-profile-view-result [selectedClass]="selectedClass "></app-profile-view-result>
+                                </ng-template>
+                            </mat-card>
+                        </div>
+
+                    </mat-tab>
+
+                    <mat-tab label="Attendence ">
+                        <div class="mat-elevation-z8 mx-2 mx-xs-2 mx-sm-2 mx-md-4 my-4 ">
+                            <mat-card>
+                                <table class="table ">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col ">Date</th>
+                                            <th scope="col ">Attendence</th>
+                                            <th scope="col ">Reason</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngFor="let attendence of attendenceRecord ">
+                                        <tr>
+                                            <td>{{attendence.attendenceDate}}</td>
+                                            <td>{{attendence.attendenceStatus}}</td>
+                                            <td>{{attendence.reason}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </mat-card>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </mat-card>
+        </div>
+    </div>
+</div>

@@ -23,7 +23,9 @@ import { ExamScheduleComponent } from './ADMIN/+exam/exam-schedule/exam-schedule
 import { SharedFunctions } from './COMMON/shared-functions.utils';
 import { AssignDialogCommonComponent } from './COMMON/assign-dialog-common/assign-dialog-common.component';
 import { ClassSectionSubjectExamChartComponent } from './ADMIN/class-section-subject-exam-chart/class-section-subject-exam-chart.component';
-import { StudentProfileComponent } from './COMMON/student-profile/student-profile.component';
+import { StudentProfileComponent } from './ADMIN/+student/student-profile/student-profile.component';
+import { ProfileViewResultComponent } from './ADMIN/+student/student-profile/profile-view-result/profile-view-result.component';
+import { ProfileAddResultComponent } from './ADMIN/+student/student-profile/profile-add-result/profile-add-result.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,8 @@ import { StudentProfileComponent } from './COMMON/student-profile/student-profil
     ExamScheduleComponent,
     ClassSectionSubjectExamChartComponent,
     StudentProfileComponent,
+    ProfileViewResultComponent,
+    ProfileAddResultComponent,
   ],
   entryComponents: [ErrorMessageDialogComponent,AssignDialogCommonComponent],
   imports: [

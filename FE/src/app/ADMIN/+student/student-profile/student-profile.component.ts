@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { StudentService } from "src/app/ADMIN/services/student.service";
 import { ActivatedRoute } from "@angular/router";
-import { ErrorDialogFunctionsService } from "../error-message-dialog/error-dialog-functions.service";
+import { ErrorDialogFunctionsService } from "../../../COMMON/error-message-dialog/error-dialog-functions.service";
 import { Location } from '@angular/common';
 
 @Component({
@@ -16,6 +16,9 @@ export class StudentProfileComponent implements OnInit {
   studentDetail: any;
   feeStatus: any;
   feeTypes: any;
+  viewResultStatus: boolean;
+  selectedStudentDetail: object;
+  selectedClass: string;
 
   constructor(
     private activatedPath: ActivatedRoute,
@@ -46,10 +49,24 @@ export class StudentProfileComponent implements OnInit {
     this.studentService.getStudentProfile(studentDetail).subscribe(response => {
       if (response["status"] === true) {
         this.studentDetail = response["data"];
+        this.selectedClass = this.studentDetail[0].class_id;
+        this.selectedStudentDetail = {
+          classId: this.studentDetail[0].class_id,
+          studentId: this.studentDetailParams.studentId
+        }
       } else {
         this.errorService.openErrorDialog(response["message"]);
       }
     });
+  }
+
+  // function to display / hide result and result form
+  viewResult(resultType: string){
+    if(resultType === 'add'){
+      this.viewResultStatus = true;
+    }else {
+      this.viewResultStatus = false;
+    }
   }
 
   // getInstallmentsByClass() {
