@@ -1,8 +1,12 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from "@angular/forms";
 import { AdminService } from "../services/admin.service";
-import { MatDialog } from "@angular/material";
-import { ErrorMessageDialogComponent } from "src/app/COMMON/error-message-dialog/error-message-dialog.component";
+import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 
 @Component({
   selector: "app-bus",
@@ -15,13 +19,12 @@ export class BusComponent implements OnInit {
   spinner: boolean = false;
 
   constructor(
-    private fb: FormBuilder,
     private adminService: AdminService,
-    private dialog: MatDialog
+    private errorService: ErrorDialogFunctionsService
   ) {
     this.addBusForm = new FormGroup({
-      busNumber: new FormControl('',Validators.required),
-      busRoute: new FormControl('',Validators.required)
+      busNumber: new FormControl("", Validators.required),
+      busRoute: new FormControl("", Validators.required)
     });
   }
 
@@ -42,9 +45,9 @@ export class BusComponent implements OnInit {
       if (response["status"] === true) {
         this.busList = response["data"];
         this.resetForm();
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -56,7 +59,7 @@ export class BusComponent implements OnInit {
         this.busList = response["data"];
         this.spinner = true;
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -69,22 +72,10 @@ export class BusComponent implements OnInit {
     this.adminService.deleteBus(busDetail).subscribe(response => {
       if (response["status"] === true) {
         this.busList = response["data"];
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
-    });
-  }
-
-  // Error message
-  openDialog(errorMessage: string) {
-    const dialogRef = this.dialog.open(ErrorMessageDialogComponent, {
-      width: "750px",
-      data: { message: errorMessage }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log("House Added");
     });
   }
 }

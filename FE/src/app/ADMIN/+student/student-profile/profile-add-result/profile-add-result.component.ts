@@ -34,9 +34,9 @@ export class ProfileAddResultComponent implements OnInit {
     const result = this.addResultForm.value;
     this.adminService.saveStudentResult(result).subscribe(response => {
       if (response["status"]) {
-        this.errorService.openErrorDialog(response['message']);
-      }else {
-        this.errorService.openErrorDialog(response['message']);
+        this.errorService.openErrorDialog(response["message"]);
+      } else {
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -68,7 +68,6 @@ export class ProfileAddResultComponent implements OnInit {
     this.adminService.getExamsForClass(classDetail).subscribe(response => {
       if (response["status"]) {
         this.examList = response["data"];
-        console.log(this.examList);
       }
     });
   }

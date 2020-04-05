@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { MatDialog } from '@angular/material';
-import { ErrorMessageDialogComponent } from './error-message-dialog.component';
+import { MatDialog } from "@angular/material";
+import { ErrorMessageDialogComponent } from "./error-message-dialog.component";
 
 @Injectable({
   providedIn: "root"
@@ -15,7 +15,7 @@ export class ErrorDialogFunctionsService {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log("Class Added");
+      console.log("Dialog closed");
     });
   }
 }

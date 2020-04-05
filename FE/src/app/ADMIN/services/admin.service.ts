@@ -248,4 +248,12 @@ export class AdminService {
   saveStudentResult(result) {
     return this.http.post("http://localhost:8080/saveStudentResult", result);
   }
+
+  // service to get student academic record
+  getAcademicRecord(studentDetail) {
+    return this.http.post(
+      "http://localhost:8080/getAcademicRecord",
+      studentDetail
+    );
+  }
 }

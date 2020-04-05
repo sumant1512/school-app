@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { ErrorMessageDialogComponent } from "src/app/COMMON/error-message-dialog/error-message-dialog.component";
 import {
   FormGroup,
   FormBuilder,
@@ -7,9 +6,10 @@ import {
   FormControl
 } from "@angular/forms";
 import { AdminService } from "../../services/admin.service";
+import { AssignDialogCommonComponent } from "src/app/COMMON/assign-dialog-common/assign-dialog-common.component";
+import { AssignToClassType } from "src/app/COMMON/assign-dialog-common/assign-dialog.type";
+import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { MatDialog } from "@angular/material";
-import { AssignDialogCommonComponent } from 'src/app/COMMON/assign-dialog-common/assign-dialog-common.component';
-import { AssignToClassType } from 'src/app/COMMON/assign-dialog-common/assign-dialog.type';
 
 @Component({
   selector: "app-exam",
@@ -28,7 +28,8 @@ export class ExamComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private errorService: ErrorDialogFunctionsService
   ) {
     this.addExamForm = this.fb.group({
       examName: new FormControl("", Validators.required),
@@ -53,7 +54,7 @@ export class ExamComponent implements OnInit {
       if (response["status"] === true) {
         this.classList = response["data"];
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -81,9 +82,9 @@ export class ExamComponent implements OnInit {
       if (response["status"] === true) {
         this.examList = response["data"];
         this.resetForm();
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -94,14 +95,13 @@ export class ExamComponent implements OnInit {
       examId: this.updateExamId,
       examName: this.addExamForm.value.examName
     };
-    console.log(examDetail);
     this.adminService.updateExam(examDetail).subscribe(response => {
       if (response["status"]) {
         this.examList = response["data"];
         this.resetForm();
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -113,7 +113,7 @@ export class ExamComponent implements OnInit {
         this.examList = response["data"];
         this.spinner = true;
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -126,9 +126,9 @@ export class ExamComponent implements OnInit {
     this.adminService.deleteExam(examDetail).subscribe(response => {
       if (response["status"] === true) {
         this.examList = response["data"];
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -164,18 +164,6 @@ export class ExamComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log("Assign section closed");
-    });
-  }
-
-  // Error message
-  openDialog(errorMessage: string) {
-    const dialogRef = this.dialog.open(ErrorMessageDialogComponent, {
-      width: "750px",
-      data: { message: errorMessage }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log("Class Added");
     });
   }
 }

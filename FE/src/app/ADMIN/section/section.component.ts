@@ -7,10 +7,10 @@ import {
 } from "@angular/forms";
 import { AdminService } from "../services/admin.service";
 import { MatDialog } from "@angular/material";
-import { ErrorMessageDialogComponent } from "src/app/COMMON/error-message-dialog/error-message-dialog.component";
 import { AssignToClassType } from "../../COMMON/assign-dialog-common/assign-dialog.type";
 import { AssignDialogCommonComponent } from "src/app/COMMON/assign-dialog-common/assign-dialog-common.component";
-import { addSectionForm } from './section.utils';
+import { addSectionForm } from "./section.utils";
+import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 export interface MessageDialog {
   message: string;
 }
@@ -27,9 +27,9 @@ export class SectionComponent implements OnInit {
   assignData: AssignToClassType;
 
   constructor(
-    private fb: FormBuilder,
     private adminService: AdminService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private errorService: ErrorDialogFunctionsService
   ) {
     this.addSectionForm = addSectionForm();
   }
@@ -44,9 +44,9 @@ export class SectionComponent implements OnInit {
     this.adminService.addSection(sectionDetail).subscribe(response => {
       if (response["status"] === true) {
         this.allSections = response["data"];
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -58,7 +58,7 @@ export class SectionComponent implements OnInit {
         this.allSections = response["data"];
         this.spinner = true;
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -71,9 +71,9 @@ export class SectionComponent implements OnInit {
     this.adminService.deleteSection(sectionDetail).subscribe(response => {
       if (response["status"] === true) {
         this.allSections = response["data"];
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       } else {
-        this.openDialog(response["message"]);
+        this.errorService.openErrorDialog(response["message"]);
       }
     });
   }
@@ -93,19 +93,7 @@ export class SectionComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log("Assign section closed");
-    });
-  }
-
-  // Error message
-  openDialog(errorMessage: string) {
-    const dialogRef = this.dialog.open(ErrorMessageDialogComponent, {
-      width: "750px",
-      data: { message: errorMessage }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log("Class Added");
+      console.log("Assign dialog closed");
     });
   }
 }
