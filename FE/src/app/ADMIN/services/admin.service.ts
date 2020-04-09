@@ -256,4 +256,42 @@ export class AdminService {
       studentDetail
     );
   }
+
+  // service for adding installment
+  addInstallment(examDetail) {
+    return this.http.post("http://localhost:8080/addInstallment", examDetail);
+  }
+
+  // service for adding installment
+  updateInstallment(installmentDetail) {
+    return this.http.post(
+      "http://localhost:8080/updateInstallment",
+      installmentDetail
+    );
+  }
+
+  // service for getting installment
+  getInstallment() {
+    return this.http.get("http://localhost:8080/getInstallment");
+  }
+
+  // // service for deleting exam
+  // deleteExam(examDetail) {
+  //   return this.http.post("http://localhost:8080/deleteExam", examDetail);
+  // }
+
+  // // service for getting class with exam
+  // getClassWithExam() {
+  //   return this.http.get("http://localhost:8080/getClassWithExam");
+  // }
+
+  // // service for assigning exam to class
+  // assignExam(examDetails) {
+  //   return this.http.post("http://localhost:8080/assignExam", examDetails);
+  // }
+
+  // // service for removing exam from class
+  // removeExam(examDetails) {
+  //   return this.http.post("http://localhost:8080/removeExam", examDetails);
+  // }
 }
