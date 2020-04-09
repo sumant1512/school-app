@@ -164,3 +164,16 @@ create table student_result (
   created_on varchar(255),
   last_updated_on varchar(255)
 );
+create table installment (
+  installment_id INT UNIQUE PRIMARY KEY AUTO_INCREMENT,
+  installment_name varchar(255) UNIQUE NOT NULL,
+  created_on varchar(255) NOT NULL,
+  last_updated_on varchar(255)
+);
+create table class_with_installment(
+  class_id INT NOT NULL,
+  installment_id INT NOT NULL,
+  assinged_on varchar(255),
+  FOREIGN KEY (class_id) REFERENCES class(class_id),
+  FOREIGN KEY (installment_id) REFERENCES installment(installment_id)
+);

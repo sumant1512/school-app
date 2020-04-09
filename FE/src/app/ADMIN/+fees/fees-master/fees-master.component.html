@@ -1,0 +1,91 @@
+<div class="p-1 p-md-3">
+
+    <!-- body -->
+    <div *ngIf="!spinner" class="mt-5 pt-5">
+        <mat-spinner class="m-auto"></mat-spinner>
+    </div>
+
+    <mat-card *ngIf="spinner" class="card-border p-0">
+        <div>
+            <mat-toolbar class="form-toolbar" color="primary">
+                <mat-icon>add</mat-icon>
+                <span>{{LABELS.HEADER}}</span>
+            </mat-toolbar>
+        </div>
+
+        <div class="mt-1 mr-2 mr-md-3 mr-lg-3 text-right">
+            <button [disabled]='!update' class="ml-1" (click)="addInstallmentFormOpenOrClose()" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
+        </div>
+
+        <div class="row m-0 justify-content-center">
+            <div class="p-0 col-md-6 col-lg-4">
+                <mat-card class="card-border-top p-0 mat-elevation-z8 mt-1 mb-3 mx-1 mx-md-3">
+                    <div>
+                        <mat-toolbar color="primary" class="form-toolbar">{{LABELS.FORM_HEADER}}</mat-toolbar>
+                    </div>
+                    <div class="p-2 p-md-3">
+                        <form [formGroup]="addInstallmentForm" (ngSubmit)="installment()">
+                            <div class="formStyle">
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>{{LABELS.PLACEHOLDER_INSTALLMENT_NAME}}</mat-label>
+                                    <input formControlName="installmentName" matInput placeholder="{{LABELS.PLACEHOLDER_INSTALLMENT_NAME}}">
+                                    <mat-error *ngIf="addInstallmentForm.get('installmentName').invalid && addInstallmentForm.get('installmentName').touched">
+                                        <div> {{LABELS.PLACEHOLDER_INSTALLMENT_NAME}} is <strong>required*</strong></div>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>{{LABELS.PLACEHOLDER_INSTALLMENT_AMOUNT}}</mat-label>
+                                    <input formControlName="installmentAmount" matInput placeholder="{{LABELS.PLACEHOLDER_INSTALLMENT_AMOUNT}}">
+                                    <mat-error *ngIf="addInstallmentForm.get('installmentAmount').invalid && addInstallmentForm.get('installmentAmount').touched">
+                                        <div> {{LABELS.PLACEHOLDER_INSTALLMENT_AMOUNT}} is <strong>required*</strong></div>
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="!update" class="w-100" appearance="outline">
+                                    <mat-label>{{LABELS.PLACEHOLDER_SELECT_CLASS}}</mat-label>
+                                    <mat-select placeholder="{{LABELS.PLACEHOLDER_SELECT_CLASS}}" formControlName="selectedClass" multiple>
+                                        <mat-option *ngFor="let class of classList" [value]="class.class_id">{{class.class_name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="row m-0">
+                                <div class="col-12 col-sm-12 text-md-center text-right text-lg-right">
+                                    <div *ngIf="update; else add">
+                                        <button [disabled]="addInstallmentForm.invalid" mat-raised-button color="primary"><mat-icon class="mr-1">update</mat-icon>Update</button>
+                                    </div>
+                                    <ng-template #add>
+                                        <button [disabled]="addInstallmentForm.invalid" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </mat-card>
+            </div>
+            <div class="p-0 col-12 col-lg-8">
+                <mat-card class="card-border-top p-0 mat-elevation-z8 mt-1 mb-3 mx-1 mx-md-3">
+                    <div>
+                        <mat-toolbar color="primary" class="form-toolbar">{{LABELS.DISPLAY_INSTALLMENT_HEADER}}</mat-toolbar>
+                    </div>
+                    <div class="row m-0 pt-3">
+                        <div class="col-4"><b> Installment </b></div>
+                        <div class="col-4"><b> Amount </b></div>
+                        <div class="col-4"><b> Action </b></div>
+                    </div>
+                    <div class="row m-0" *ngFor="let installment of installmentList">
+                        <div class="col-4">
+                            {{installment.installment_name}}
+                        </div>
+                        <div class="col-4">
+                            {{installment.installment_amount}}
+                        </div>
+                        <div class="col-4">
+                            <mat-icon matTooltip="Delete" matTooltipPosition="left" matTooltipClass="bg-danger" (click)="deleteInstallment(installment.installment_id)">delete</mat-icon>
+                            <mat-icon matTooltip="Assign" matTooltipPosition="right" matTooltipClass="bg-primary" (click)="assignInstallment(installment.installment_id,installment.installment_name)">assignment_return</mat-icon>
+                            <mat-icon matTooltip="Edit" matTooltipPosition="right" matTooltipClass="bg-primary" (click)="editInstallment(installment.installment_id,installment.installment_name,installment.installment_amount)">edit</mat-icon>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </mat-card>
+</div>

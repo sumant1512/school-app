@@ -1077,3 +1077,78 @@ app.post('/getAcademicRecord', function(request, response) {
         }
     });
 })
+
+// Api to add installment 
+app.post('/addInstallment', function(request, response) {
+    const createdOn = new Date();
+    const installmentName = request.body.installmentName;
+    const installmentAmount = request.body.installmentAmount;
+    const selectedClass = request.body.selectedClass;
+    con.query("INSERT INTO installment (installment_name,installment_amount, created_on) VALUES\
+                ('" + installmentName + "','" + parseInt(installmentAmount) + "','" + createdOn + "')", (err, rows, fields) => {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            for (var classId of selectedClass) {
+                con.query("INSERT INTO class_with_installment\
+                     (class_id,\
+                        installment_id,\
+                     assinged_on)\
+                     \
+                 VALUES\
+                 ('" + classId + "',\
+                 '" + rows.insertId + "',\
+                '" + createdOn + "'  )", (err, rows, fields) => {
+                    if (err) {
+                        console.log(err);
+                        response.status(200).send({ status: false, message: err.sqlMessage });
+                    } else {}
+                });
+            }
+            con.query("select * from installment", function(err, result, fields) {
+                if (err) {
+                    console.log(err);
+                    response.status(200).send({ status: false, message: err.sqlMessage });
+                } else {
+                    response.status(200).send({ status: true, message: "Installment Added", data: result });
+                }
+            });
+        }
+    })
+})
+
+// Api to get all installment
+app.get('/getInstallment', function(request, response) {
+    con.query("select * from installment", function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, data: result });
+        }
+    });
+})
+
+// Api to update installment name
+app.post('/updateInstallment', function(request, response) {
+    const installmentId = request.body.installmentId;
+    const installmentName = request.body.installmentName;
+    const installmentAmount = request.body.installmentAmount;
+    const updatedOn = new Date();
+    con.query("UPDATE installment SET installment_name = ?,installment_amount = ?, last_updated_on = ? WHERE installment_id = ?;", [installmentName, installmentAmount, updatedOn, installmentId], function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            con.query("select * from installment", function(err, result, fields) {
+                if (err) {
+                    console.log(err);
+                    response.status(200).send({ status: false, message: err.sqlMessage });
+                } else {
+                    response.status(200).send({ status: true, message: "Installment updated", data: result });
+                }
+            });
+        }
+    });
+})

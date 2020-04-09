@@ -33,6 +33,12 @@ select
 from class_with_exam;
 select
   *
+from installment;
+select
+  *
+from class_with_installment;
+select
+  *
 from class_with_subjects;
 select
   *
