@@ -5,7 +5,7 @@ import {
   Validators,
   FormControl
 } from "@angular/forms";
-import { AdminService } from "../../services/admin.service";
+import { AdminService } from "../../+services/admin.service";
 import { AssignDialogCommonComponent } from "src/app/COMMON/assign-dialog-common/assign-dialog-common.component";
 import { AssignToClassType } from "src/app/COMMON/assign-dialog-common/assign-dialog.type";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { AdminService } from "../services/admin.service";
+import { AdminService } from "../../+services/admin.service";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 
 @Component({

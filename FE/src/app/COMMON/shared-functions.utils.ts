@@ -1,4 +1,4 @@
-import { AdminService } from "../ADMIN/services/admin.service";
+import { AdminService } from "../ADMIN/+services/admin.service";
 import { classListReturnType } from "./shared-function.type";
 import { Inject, forwardRef } from '@angular/core';
 

@@ -256,28 +256,11 @@
                         </div>
                     </mat-tab>
 
-                    <!-- 2Nd Tab For Fees Details And Fees Collection -->
+                    <!-- 2Nd Tab For Fee Details And Fee Collection -->
 
-                    <mat-tab label="Fees Detail">
-                        <div class="mat-elevation-z8 mx-2 mx-xs-2 mx-sm-2 mx-md-4 my-4">
-                            <div>
-                                <mat-toolbar color="primary" class="mat-elevation-z8  form-toolbar">Fees Record </mat-toolbar>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-3"><b>Class</b></div>
-                                <div class="col-12 col-sm-3"><b>Fee Type</b></div>
-                                <div class="col-12 col-sm-3"><b>Amount</b></div>
-                                <div class="col-12 col-sm-3"><b>Status</b></div>
-                            </div>
-                            <div class="row" *ngFor="let fee of feeTypes">
-                                <div class="col-12 col-sm-3">{{fee.class}}</div>
-                                <div class="col-12 col-sm-3">{{fee.feeType}}</div>
-                                <div class="col-12 col-sm-3">{{fee.amount}}</div>
-                                <div class="col-12 col-sm-3" *ngIf="fee.status != null; else elseBlock">{{fee.status}}</div>
-                                <ng-template #elseBlock>
-                                    <div class="col-12 col-sm-2">Pending...</div>
-                                </ng-template>
-                            </div>
+                    <mat-tab label="Fee Detail">
+                        <div>
+                            <app-fee-details></app-fee-details>
                         </div>
                     </mat-tab>
 
@@ -285,8 +268,8 @@
                         <div class="p-4">
                             <mat-card class="mat-elevation-z8">
                                 <div class="text-center text-md-right">
-                                    <button class="text-right mr-1" mat-raised-button color="primary" (click)="viewResult( 'add') "><i class="fa fa-plus mr-1 "></i>Add Result</button>
-                                    <button mat-raised-button color="primary" (click)="viewResult( 'view') "><i class="fa fa-eye mr-1 "></i> View Result</button>
+                                    <button [disabled]='viewResultStatus' class="text-right mr-1" mat-raised-button color="primary" (click)="viewResultStatus = !viewResultStatus"><i class="fa fa-plus mr-1 "></i>Add Result</button>
+                                    <button [disabled]='!viewResultStatus' mat-raised-button color="primary" (click)="viewResultStatus = !viewResultStatus"><i class="fa fa-eye mr-1 "></i> View Result</button>
                                 </div>
 
                                 <div *ngIf="viewResultStatus; else addResult ">

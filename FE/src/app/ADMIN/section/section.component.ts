@@ -5,7 +5,7 @@ import {
   FormBuilder,
   FormControl
 } from "@angular/forms";
-import { AdminService } from "../services/admin.service";
+import { AdminService } from "../+services/admin.service";
 import { MatDialog } from "@angular/material";
 import { AssignToClassType } from "../../COMMON/assign-dialog-common/assign-dialog.type";
 import { AssignDialogCommonComponent } from "src/app/COMMON/assign-dialog-common/assign-dialog-common.component";

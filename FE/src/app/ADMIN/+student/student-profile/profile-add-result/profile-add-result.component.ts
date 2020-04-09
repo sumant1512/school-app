@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { AdminService } from "src/app/ADMIN/services/admin.service";
+import { AdminService } from "src/app/ADMIN/+services/admin.service";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { resultForm, addResultForm } from "./profile-add-result.utils";
 import { FormArray, FormGroup } from "@angular/forms";
