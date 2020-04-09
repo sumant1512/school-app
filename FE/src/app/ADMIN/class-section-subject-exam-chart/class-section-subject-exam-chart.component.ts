@@ -6,7 +6,7 @@ import {
   SectionType,
   ClassWithSectionType
 } from "./class-section.type";
-import { AdminService } from "../services/admin.service";
+import { AdminService } from "../+services/admin.service";
 import { classSectionTransform } from "./class-section-transform";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 

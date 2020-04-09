@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { AdminService } from "src/app/ADMIN/services/admin.service";
+import { AdminService } from "src/app/ADMIN/+services/admin.service";
 import { studentAcademicTransform } from "./profile-view-result.transform";
 
 @Component({

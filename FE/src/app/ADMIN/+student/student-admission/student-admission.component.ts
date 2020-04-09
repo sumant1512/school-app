@@ -8,9 +8,9 @@ import {
   NgForm,
   FormArray
 } from "@angular/forms";
-import { StudentService } from "../../services/student.service";
+import { StudentService } from "../../+services/student.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { AdminService } from "../../services/admin.service";
+import { AdminService } from "../../+services/admin.service";
 import { studentAdmissionForm, documentForm } from "./student-admission.utils";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { CONSTANTS } from "src/app/COMMON/constant";

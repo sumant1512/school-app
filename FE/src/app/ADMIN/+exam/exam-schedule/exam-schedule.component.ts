@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from "@angular/core";
-import { AdminService } from "../../services/admin.service";
+import { AdminService } from "../../+services/admin.service";
 import { FormGroup, FormArray, FormControl, Validators } from "@angular/forms";
 import { SubjectWithClassType } from "./exam-schedule.type";
 import { scheduleExamForm, paperDetailsForm } from "./exam-schedule.utils";

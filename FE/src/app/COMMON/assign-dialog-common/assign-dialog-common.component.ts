@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { AdminService } from "src/app/ADMIN/services/admin.service";
+import { AdminService } from "src/app/ADMIN/+services/admin.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { AssignToClassType } from "./assign-dialog.type";
 import { ErrorDialogFunctionsService } from "../error-message-dialog/error-dialog-functions.service";

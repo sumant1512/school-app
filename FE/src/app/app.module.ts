@@ -16,9 +16,9 @@ import { HouseComponent } from "./ADMIN/house/house.component";
 import { BusComponent } from "./ADMIN/bus/bus.component";
 import { StudentAdmissionComponent } from './ADMIN/+student/student-admission/student-admission.component';
 import { StudentsListComponent } from './ADMIN/+student/students-list/students-list.component';
-import { SubjectComponent } from './ADMIN/subject/subject.component';
+import { SubjectComponent } from './ADMIN/+subject/subject/subject.component';
 import { ExamComponent } from './ADMIN/+exam/exam/exam.component';
-import { AssingedSubjectComponent } from './ADMIN/assinged-subject/assinged-subject.component';
+import { AssingedSubjectComponent } from './ADMIN/+subject/assinged-subject/assinged-subject.component';
 import { ExamScheduleComponent } from './ADMIN/+exam/exam-schedule/exam-schedule.component';
 import { SharedFunctions } from './COMMON/shared-functions.utils';
 import { AssignDialogCommonComponent } from './COMMON/assign-dialog-common/assign-dialog-common.component';
@@ -28,6 +28,7 @@ import { ProfileViewResultComponent } from './ADMIN/+student/student-profile/pro
 import { ProfileAddResultComponent } from './ADMIN/+student/student-profile/profile-add-result/profile-add-result.component';
 import { FeesMasterComponent } from './ADMIN/+fees/fees-master/fees-master.component';
 import { FeesChartComponent } from './ADMIN/+fees/fees-chart/fees-chart.component';
+import { FeeDetailsComponent } from './ADMIN/+student/student-profile/fee-details/fee-details.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { FeesChartComponent } from './ADMIN/+fees/fees-chart/fees-chart.componen
     ProfileAddResultComponent,
     FeesMasterComponent,
     FeesChartComponent,
+    FeeDetailsComponent,
   ],
   entryComponents: [ErrorMessageDialogComponent,AssignDialogCommonComponent],
   imports: [

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { StudentService } from "../../services/student.service";
+import { StudentService } from "../../+services/student.service";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { Router, ActivatedRoute } from "@angular/router";
 

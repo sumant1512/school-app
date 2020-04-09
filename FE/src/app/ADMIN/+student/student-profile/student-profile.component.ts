@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { StudentService } from "src/app/ADMIN/services/student.service";
+import { StudentService } from "src/app/ADMIN/+services/student.service";
 import { ActivatedRoute } from "@angular/router";
 import { ErrorDialogFunctionsService } from "../../../COMMON/error-message-dialog/error-dialog-functions.service";
 import { Location } from "@angular/common";
@@ -16,7 +16,7 @@ export class StudentProfileComponent implements OnInit {
   studentDetail: any;
   feeStatus: any;
   feeTypes: any;
-  viewResultStatus: boolean;
+  viewResultStatus = false;
   selectedStudentDetail: object;
 
   constructor(
@@ -54,15 +54,6 @@ export class StudentProfileComponent implements OnInit {
         this.errorService.openErrorDialog(response["message"]);
       }
     });
-  }
-
-  // function to display / hide result and result form
-  viewResult(resultType: string) {
-    if (resultType === "add") {
-      this.viewResultStatus = true;
-    } else {
-      this.viewResultStatus = false;
-    }
   }
 
   // getInstallmentsByClass() {

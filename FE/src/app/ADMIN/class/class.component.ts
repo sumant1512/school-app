@@ -1,7 +1,7 @@
 import { Component, OnInit, VERSION } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { addClassForm } from "./class.utils";
-import { AdminService } from "../services/admin.service";
+import { AdminService } from "../+services/admin.service";
 import { classListReturnType } from "src/app/COMMON/shared-function.type";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 
