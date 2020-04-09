@@ -1152,3 +1152,55 @@ app.post('/updateInstallment', function(request, response) {
         }
     });
 })
+
+// Api to delete installment
+app.post('/deleteInstallment', function(request, response) {
+    const installmentId = request.body.installmentId;
+    con.query("DELETE FROM installment WHERE installment_id = ?", [installmentId], function(err, rows, result) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            con.query("select * from installment", function(err, result, fields) {
+                if (err) {
+                    console.log(err);
+                    response.status(200).send({ status: false, message: err.sqlMessage });
+                } else {
+                    response.status(200).send({ status: true, data: result, message: "Installment deleted" });
+                }
+            });
+        }
+    });
+})
+
+
+// Api to get class with installment
+app.get('/getClassWithInstallment', function(request, response) {
+    con.query("select class.class_id,\
+    installment.installment_name,installment.installment_amount,\
+    class_with_installment.* \
+    from class,class_with_installment,installment where \
+    class.class_id = class_with_installment.class_id AND \
+    class_with_installment.installment_id = installment.installment_id", function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, data: result });
+        }
+    });
+})
+
+// Api to remove installment from class
+app.post('/removeInstallment', function(request, response) {
+    const classId = request.body.classId;
+    const installmentId = request.body.installmentId;
+    con.query("DELETE FROM class_with_installment where class_id=? AND installment_id = ?", [classId, installmentId], (err, rows, fields) => {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, message: "Installment removed" });
+        }
+    })
+});

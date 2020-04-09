@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class AdminService {
   constructor(private http: HttpClient) {}
@@ -275,10 +275,26 @@ export class AdminService {
     return this.http.get("http://localhost:8080/getInstallment");
   }
 
-  // // service for deleting exam
-  // deleteExam(examDetail) {
-  //   return this.http.post("http://localhost:8080/deleteExam", examDetail);
-  // }
+  // service for deleting installment
+  deleteInstallment(installmentDetail) {
+    return this.http.post(
+      "http://localhost:8080/deleteInstallment",
+      installmentDetail
+    );
+  }
+
+  // service for getting class with installment
+  getClassWithInstallment() {
+    return this.http.get("http://localhost:8080/getClassWithInstallment");
+  }
+
+  // service for removing installment to class
+  removeInstallment(installmentDetails) {
+    return this.http.post(
+      "http://localhost:8080/removeInstallment",
+      installmentDetails
+    );
+  }
 
   // // service for getting class with exam
   // getClassWithExam() {
