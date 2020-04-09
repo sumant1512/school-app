@@ -14,7 +14,7 @@
         </div>
 
         <div class="mt-1 mr-2 mr-md-3 mr-lg-3 text-right">
-            <button [disabled]='!update' class="ml-1" (click)="addInstallmentFormOpenOrClose()" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
+            <button [disabled]='!update' class="ml-1" (click)="addInstallmentFormOpenOrClose()" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>{{LABELS.ADD_BUTTON_LABEL}}</button>
         </div>
 
         <div class="row m-0 justify-content-center">
@@ -50,10 +50,10 @@
                             <div class="row m-0">
                                 <div class="col-12 col-sm-12 text-md-center text-right text-lg-right">
                                     <div *ngIf="update; else add">
-                                        <button [disabled]="addInstallmentForm.invalid" mat-raised-button color="primary"><mat-icon class="mr-1">update</mat-icon>Update</button>
+                                        <button [disabled]="addInstallmentForm.invalid" mat-raised-button color="primary"><mat-icon class="mr-1">update</mat-icon>{{LABELS.UPDATE_BUTTON_LABEL}}</button>
                                     </div>
                                     <ng-template #add>
-                                        <button [disabled]="addInstallmentForm.invalid" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
+                                        <button [disabled]="addInstallmentForm.invalid" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>{{LABELS.ADD_BUTTON_LABEL}}</button>
                                     </ng-template>
                                 </div>
                             </div>
@@ -67,9 +67,9 @@
                         <mat-toolbar color="primary" class="form-toolbar">{{LABELS.DISPLAY_INSTALLMENT_HEADER}}</mat-toolbar>
                     </div>
                     <div class="row m-0 pt-3">
-                        <div class="col-4"><b> Installment </b></div>
-                        <div class="col-4"><b> Amount </b></div>
-                        <div class="col-4"><b> Action </b></div>
+                        <div class="col-4"><b> {{LABELS.INSTALLMENT_NAME_ROW_HEADER}} </b></div>
+                        <div class="col-4"><b> {{LABELS.INSTALLMENT_AMOUNT_ROW_HEADER}} </b></div>
+                        <div class="col-4"><b> {{LABELS.INSTALLMENT_ACTION_ROW_HEADER}} </b></div>
                     </div>
                     <div class="row m-0" *ngFor="let installment of installmentList">
                         <div class="col-4">

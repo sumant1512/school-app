@@ -115,12 +115,12 @@ export class FeesMasterComponent implements OnInit {
     });
   }
 
-  // function to delete exam
-  deleteExam(examId) {
-    var examDetail = {
-      examId: examId
+  // function to delete installment
+  deleteInstallment(installmentId) {
+    var installmentDetail = {
+      installmentId: installmentId
     };
-    this.adminService.deleteExam(examDetail).subscribe(response => {
+    this.adminService.deleteInstallment(installmentDetail).subscribe(response => {
       if (response["status"] === true) {
         this.installmentList = response["data"];
         this.errorService.openErrorDialog(response["message"]);
