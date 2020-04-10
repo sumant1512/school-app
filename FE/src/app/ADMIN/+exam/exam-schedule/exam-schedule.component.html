@@ -50,56 +50,54 @@
             <button class="mt-3 mr-3" mat-raised-button color="primary"><mat-icon class="mr-1">update</mat-icon>Update</button>
             <button class="mt-3 mr-3" (click)="deleteExamSchedule(classId,examId)" mat-raised-button color="primary"><mat-icon class="mr-1">delete</mat-icon>Delete</button>
         </div>
-        <div class="p-3">
-            <div class="time-table">
-                <table mat-table [dataSource]="examTimeTable" class="w-100 table-width mat-elevation-z8">
+        <div class="p-3 time-table">
+            <table mat-table [dataSource]="examTimeTable" class="w-100 table-width mat-elevation-z8">
 
-                    <!-- subjectName Column -->
-                    <ng-container matColumnDef="subjectName">
-                        <th mat-header-cell *matHeaderCellDef> Subject Name </th>
-                        <td mat-cell *matCellDef="let element"> {{element.subject_name}} </td>
-                    </ng-container>
+                <!-- subjectName Column -->
+                <ng-container matColumnDef="subjectName">
+                    <th mat-header-cell *matHeaderCellDef> Subject Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.subject_name}} </td>
+                </ng-container>
 
-                    <!-- examDate Column -->
-                    <ng-container matColumnDef="examDate">
-                        <th mat-header-cell *matHeaderCellDef> Exam Date </th>
-                        <td mat-cell *matCellDef="let element"> {{element.paper_date | date}} </td>
-                    </ng-container>
+                <!-- examDate Column -->
+                <ng-container matColumnDef="examDate">
+                    <th mat-header-cell *matHeaderCellDef> Exam Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.paper_date | date}} </td>
+                </ng-container>
 
-                    <!-- startTime Column -->
-                    <ng-container matColumnDef="startTime">
-                        <th mat-header-cell *matHeaderCellDef> Start Time </th>
-                        <td mat-cell *matCellDef="let element"> {{element.paper_start_time}} </td>
-                    </ng-container>
+                <!-- startTime Column -->
+                <ng-container matColumnDef="startTime">
+                    <th mat-header-cell *matHeaderCellDef> Start Time </th>
+                    <td mat-cell *matCellDef="let element"> {{element.paper_start_time}} </td>
+                </ng-container>
 
-                    <!-- endTime Column -->
-                    <ng-container matColumnDef="endTime">
-                        <th mat-header-cell *matHeaderCellDef> End Time </th>
-                        <td mat-cell *matCellDef="let element"> {{element.paper_end_time}} </td>
-                    </ng-container>
+                <!-- endTime Column -->
+                <ng-container matColumnDef="endTime">
+                    <th mat-header-cell *matHeaderCellDef> End Time </th>
+                    <td mat-cell *matCellDef="let element"> {{element.paper_end_time}} </td>
+                </ng-container>
 
-                    <!-- maxMarks Column -->
-                    <ng-container matColumnDef="maxMarks">
-                        <th mat-header-cell *matHeaderCellDef> Max Marks </th>
-                        <td mat-cell *matCellDef="let element"> {{element.total_marks}} </td>
-                    </ng-container>
+                <!-- maxMarks Column -->
+                <ng-container matColumnDef="maxMarks">
+                    <th mat-header-cell *matHeaderCellDef> Max Marks </th>
+                    <td mat-cell *matCellDef="let element"> {{element.total_marks}} </td>
+                </ng-container>
 
-                    <!-- minMarks Column -->
-                    <ng-container matColumnDef="minMarks">
-                        <th mat-header-cell *matHeaderCellDef> Min Marks </th>
-                        <td mat-cell *matCellDef="let element"> {{element.passing_marks}} </td>
-                    </ng-container>
+                <!-- minMarks Column -->
+                <ng-container matColumnDef="minMarks">
+                    <th mat-header-cell *matHeaderCellDef> Min Marks </th>
+                    <td mat-cell *matCellDef="let element"> {{element.passing_marks}} </td>
+                </ng-container>
 
-                    <!-- roomNo Column -->
-                    <ng-container matColumnDef="roomNo">
-                        <th mat-header-cell *matHeaderCellDef> Room No. </th>
-                        <td mat-cell *matCellDef="let element"> {{element.room_number}} </td>
-                    </ng-container>
+                <!-- roomNo Column -->
+                <ng-container matColumnDef="roomNo">
+                    <th mat-header-cell *matHeaderCellDef> Room No. </th>
+                    <td mat-cell *matCellDef="let element"> {{element.room_number}} </td>
+                </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="timeTableColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: timeTableColumns;"></tr>
-                </table>
-            </div>
+                <tr mat-header-row *matHeaderRowDef="timeTableColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: timeTableColumns;"></tr>
+            </table>
         </div>
 
     </mat-card>

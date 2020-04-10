@@ -1083,9 +1083,10 @@ app.post('/addInstallment', function(request, response) {
     const createdOn = new Date();
     const installmentName = request.body.installmentName;
     const installmentAmount = request.body.installmentAmount;
+    const feeDueDate = request.body.feeDueDate;
     const selectedClass = request.body.selectedClass;
-    con.query("INSERT INTO installment (installment_name,installment_amount, created_on) VALUES\
-                ('" + installmentName + "','" + parseInt(installmentAmount) + "','" + createdOn + "')", (err, rows, fields) => {
+    con.query("INSERT INTO installment (installment_name,installment_amount,fee_due_date, created_on) VALUES\
+                ('" + installmentName + "','" + parseInt(installmentAmount) + "','" + feeDueDate + "','" + createdOn + "')", (err, rows, fields) => {
         if (err) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });
@@ -1204,3 +1205,21 @@ app.post('/removeInstallment', function(request, response) {
         }
     })
 });
+
+// Api to get installment on selecting class
+app.post('/getInstallmentForClass', function(request, response) {
+    con.query("select installment.installment_name,installment.installment_amount,\
+    installment.fee_due_date,class_with_installment.installment_id \
+    from class,class_with_installment,installment where \
+    class.class_id = class_with_installment.class_id AND \
+    class_with_installment.installment_id = installment.installment_id AND \
+    class_with_installment.class_id =? ", [request.body.classId], function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            console.log(result)
+            response.status(200).send({ status: true, data: result });
+        }
+    });
+})

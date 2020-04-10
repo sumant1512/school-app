@@ -296,6 +296,14 @@ export class AdminService {
     );
   }
 
+   // service to get installment list
+   getInstallmentForClass(classDetail) {
+    return this.http.post(
+      "http://localhost:8080/getInstallmentForClass",
+      classDetail
+    );
+  }
+
   // // service for getting class with exam
   // getClassWithExam() {
   //   return this.http.get("http://localhost:8080/getClassWithExam");

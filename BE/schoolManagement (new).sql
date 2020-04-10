@@ -168,6 +168,7 @@ create table installment (
   installment_id INT UNIQUE PRIMARY KEY AUTO_INCREMENT,
   installment_name varchar(255) UNIQUE NOT NULL,
   created_on varchar(255) NOT NULL,
+  fee_due_date varchar(255) NOT NULL,
   last_updated_on varchar(255)
 );
 create table class_with_installment(
