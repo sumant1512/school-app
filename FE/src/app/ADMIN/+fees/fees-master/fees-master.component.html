@@ -40,6 +40,15 @@
                                         <div> {{LABELS.PLACEHOLDER_INSTALLMENT_AMOUNT}} is <strong>required*</strong></div>
                                     </mat-error>
                                 </mat-form-field>
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>{{LABELS.PLACEHOLDER_DUE_DATE}}</mat-label>
+                                    <input formControlName="feeDueDate" matInput [matDatepicker]="picker" placeholder="{{LABELS.PLACEHOLDER_DUE_DATE}}">
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error *ngIf="addInstallmentForm.get('feeDueDate').invalid && addInstallmentForm.get('feeDueDate').touched">
+                                        <div> {{LABELS.PLACEHOLDER_DUE_DATE}} is <strong>required*</strong></div>
+                                    </mat-error>
+                                </mat-form-field>
                                 <mat-form-field *ngIf="!update" class="w-100" appearance="outline">
                                     <mat-label>{{LABELS.PLACEHOLDER_SELECT_CLASS}}</mat-label>
                                     <mat-select placeholder="{{LABELS.PLACEHOLDER_SELECT_CLASS}}" formControlName="selectedClass" multiple>
@@ -67,21 +76,25 @@
                         <mat-toolbar color="primary" class="form-toolbar">{{LABELS.DISPLAY_INSTALLMENT_HEADER}}</mat-toolbar>
                     </div>
                     <div class="row m-0 pt-3">
-                        <div class="col-4"><b> {{LABELS.INSTALLMENT_NAME_ROW_HEADER}} </b></div>
-                        <div class="col-4"><b> {{LABELS.INSTALLMENT_AMOUNT_ROW_HEADER}} </b></div>
-                        <div class="col-4"><b> {{LABELS.INSTALLMENT_ACTION_ROW_HEADER}} </b></div>
+                        <div class="col-3"><b> {{LABELS.INSTALLMENT_NAME_ROW_HEADER}} </b></div>
+                        <div class="col-3"><b> {{LABELS.INSTALLMENT_AMOUNT_ROW_HEADER}} </b></div>
+                        <div class="col-3"><b> {{LABELS.INSTALLMENT_DUE_DATE_ROW_HEADER}} </b></div>
+                        <div class="col-3"><b> {{LABELS.INSTALLMENT_ACTION_ROW_HEADER}} </b></div>
                     </div>
                     <div class="row m-0" *ngFor="let installment of installmentList">
-                        <div class="col-4">
+                        <div class="col-3">
                             {{installment.installment_name}}
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
                             {{installment.installment_amount}}
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
+                            {{installment.fee_due_date | date:'mediumDate'}}
+                        </div>
+                        <div class="col-3">
                             <mat-icon matTooltip="Delete" matTooltipPosition="left" matTooltipClass="bg-danger" (click)="deleteInstallment(installment.installment_id)">delete</mat-icon>
                             <mat-icon matTooltip="Assign" matTooltipPosition="right" matTooltipClass="bg-primary" (click)="assignInstallment(installment.installment_id,installment.installment_name)">assignment_return</mat-icon>
-                            <mat-icon matTooltip="Edit" matTooltipPosition="right" matTooltipClass="bg-primary" (click)="editInstallment(installment.installment_id,installment.installment_name,installment.installment_amount)">edit</mat-icon>
+                            <mat-icon matTooltip="Edit" matTooltipPosition="right" matTooltipClass="bg-primary" (click)="editInstallment(installment.installment_id,installment.installment_name,installment.installment_amount,installment.fee_due_date)">edit</mat-icon>
                         </div>
                     </div>
                 </mat-card>
