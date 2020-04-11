@@ -60,7 +60,7 @@
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef> Action </th>
                 <td mat-cell *matCellDef="let element">
-                    <mat-icon class="font-weight-bold">add</mat-icon>
+                    <mat-icon (click)="openFeeCollectFialog(element.installment_id)" class="font-weight-bold">add</mat-icon>
                     <mat-icon class="font-weight-bold">print</mat-icon>
                 </td>
             </ng-container>

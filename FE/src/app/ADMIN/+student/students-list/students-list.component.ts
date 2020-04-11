@@ -10,7 +10,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 })
 export class StudentsListComponent implements OnInit {
   isExpanded: boolean = true;
-  spinner = false;
+  spinner: boolean = false;
   studentList: object[];
   constructor(
     private router: Router,
@@ -35,12 +35,10 @@ export class StudentsListComponent implements OnInit {
   }
 
   getStudentDetails(studentName, studentId) {
-    var studentDetailParams = {
-      studentId: studentId
-    };
+    var studentDetailParams = { studentName: studentName, studentId: studentId }
     this.router.navigate(["profile"], {
       queryParamsHandling: "merge",
-      queryParams: { studentName: studentName, studentId: studentId }
+      queryParams: studentDetailParams
     });
   }
 
