@@ -29,6 +29,9 @@ import { ProfileAddResultComponent } from './ADMIN/+student/student-profile/prof
 import { FeesMasterComponent } from './ADMIN/+fees/fees-master/fees-master.component';
 import { FeesChartComponent } from './ADMIN/+fees/fees-chart/fees-chart.component';
 import { FeeDetailsComponent } from './ADMIN/+student/student-profile/fee-details/fee-details.component';
+import { FeeCollectDialogComponent } from './ADMIN/+student/student-profile/fee-collect-dialog/fee-collect-dialog.component';
+import { StudentCredentialsComponent } from './ADMIN/+student/student-credentials/student-credentials.component';
+import { SearchBarComponent } from './COMMON/search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -55,8 +58,11 @@ import { FeeDetailsComponent } from './ADMIN/+student/student-profile/fee-detail
     FeesMasterComponent,
     FeesChartComponent,
     FeeDetailsComponent,
+    FeeCollectDialogComponent,
+    StudentCredentialsComponent,
+    SearchBarComponent,
   ],
-  entryComponents: [ErrorMessageDialogComponent,AssignDialogCommonComponent],
+  entryComponents: [ErrorMessageDialogComponent,AssignDialogCommonComponent,FeeCollectDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

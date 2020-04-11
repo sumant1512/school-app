@@ -1,0 +1,48 @@
+<div class="card-border mb-3">
+    <div>
+        <mat-toolbar color="primary" class="form-toolbar mb-3">{{LABELS.HEADER}}</mat-toolbar>
+    </div>
+    <div class="p-3">
+        <form [formGroup]="searchForm" (ngSubmit)="search()">
+            <div class="row">
+                <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>{{LABELS.PLACEHOLDER_ADISSION_NUMBER}}</mat-label>
+                        <input matInput placeholder="{{LABELS.PLACEHOLDER_ADISSION_NUMBER}}">
+                    </mat-form-field>
+                </div>
+                <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>{{LABELS.PLACEHOLDER_STUDENT_NAME}}</mat-label>
+                        <input matInput placeholder="{{LABELS.PLACEHOLDER_STUDENT_NAME}}">
+                    </mat-form-field>
+                </div>
+                <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>{{LABELS.PLACEHOLDER_CLASS}}</mat-label>
+                        <mat-select placeholder="{{LABELS.PLACEHOLDER_CLASS}}" (ngModelChange)="getSectionForClass($event)" formControlName="classId">
+                            <mat-option *ngFor="let class of classList" value="{{class.class_id}}">{{class.class_name}}<sup>st</sup></mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="searchForm.get('classId').invalid && searchForm.get('classId').touched">
+                            <div> Class is <strong>required*</strong></div>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>{{LABELS.PLACEHOLDER_SECTION}}</mat-label>
+                        <mat-select placeholder="{{LABELS.PLACEHOLDER_SECTION}}" formControlName="sectionId">
+                            <mat-option *ngFor="let section of sectionListForSelectedClass" value="{{section.section_id}}">{{section.section_name}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="searchForm.get('sectionId').invalid && searchForm.get('sectionId').touched">
+                            <div> Section is <strong>required*</strong></div>
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="text-right">
+                        <button [disabled]='searchForm.invalid' type="submit" mat-raised-button color="primary">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
