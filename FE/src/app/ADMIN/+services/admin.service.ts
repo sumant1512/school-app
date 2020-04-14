@@ -303,4 +303,17 @@ export class AdminService {
   collectFee(feeDetail) {
     return this.http.post("http://localhost:8080/collectFee", feeDetail);
   }
+
+  // service to get student fee details
+  getStudentFeeDetails(studentDetail) {
+    return this.http.post(
+      "http://localhost:8080/getStudentFeeDetails",
+      studentDetail
+    );
+  }
+
+  // service to return fee if colected by mistake
+  returnFee(feeDetail) {
+    return this.http.post("http://localhost:8080/returnFee", feeDetail);
+  }
 }

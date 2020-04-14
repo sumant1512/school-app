@@ -27,9 +27,9 @@ export class FeeCollectDialogComponent implements OnInit {
     const feeDetail = this.feeCollectData;
     this.adminService.collectFee(feeDetail).subscribe((response) => {
       if (response["status"]) {
-        this.dialogRef.close();
+        this.dialogRef.close(response);
       } else {
-        this.errorService.openErrorDialog(response["message"]);
+        this.dialogRef.close(response);
       }
     });
   }

@@ -1058,7 +1058,6 @@ app.post('/saveStudentResult', function(request, response) {
 
 // Api to get student academic record
 app.post('/getAcademicRecord', function(request, response) {
-    console.log(request.body);
     con.query("select student_result.*,class.class_name,exam.exam_name, \
     subjects.subject_name,exam_schedule.total_marks,exam_schedule.passing_marks\
     from student_result,class,exam,subjects,exam_schedule where \
@@ -1071,7 +1070,6 @@ app.post('/getAcademicRecord', function(request, response) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });
         } else {
-            console.log(result)
             response.status(200).send({ status: true, data: result });
         }
     });
@@ -1217,7 +1215,23 @@ app.post('/getInstallmentForClass', function(request, response) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });
         } else {
-            console.log(result)
+            response.status(200).send({ status: true, data: result });
+        }
+    });
+})
+
+// Api to student fee details
+app.post('/getStudentFeeDetails', function(request, response) {
+    con.query("select collected_fee.*,class.class_name,\
+    installment.installment_name from \
+    class, installment, collected_fee where \
+    class.class_id = collected_fee.class_id AND \
+    installment.installment_id = collected_fee.installment_id AND \
+    collected_fee.student_id =? ", [parseInt(request.body.studentId)], function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
             response.status(200).send({ status: true, data: result });
         }
     });
@@ -1256,6 +1270,22 @@ app.post('/collectFee', function(request, response) {
             response.status(200).send({ status: false, message: err.sqlMessage });
         } else {
             response.status(200).send({ status: true, message: "Fee collected." });
+        }
+    })
+})
+
+// Api to return fee if colected by mistake
+app.post('/returnFee', function(request, response) {
+    const studentId = request.body.studentId;
+    const classId = request.body.classId;
+    const installmentId = request.body.installmentId;
+    con.query("delete from collected_fee where \
+    collected_fee.student_id =? AND collected_fee.class_id =? AND collected_fee.installment_id =?", [parseInt(studentId), classId, installmentId], (err, rows, fields) => {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, message: "Fee reverted." });
         }
     })
 })

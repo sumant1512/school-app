@@ -3,6 +3,7 @@ import { AdminService } from "src/app/ADMIN/+services/admin.service";
 import { FEES_CHART_COLUMN_NAME } from "./fee-details.constants";
 import { MatDialog } from "@angular/material";
 import { FeeCollectDialogComponent } from "../fee-collect-dialog/fee-collect-dialog.component";
+import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 
 @Component({
   selector: "app-fee-details",
@@ -13,13 +14,19 @@ export class FeeDetailsComponent implements OnInit {
   feeChartColumns = FEES_CHART_COLUMN_NAME;
   @Input() selectedStudentDetail: string;
   installmentList: object[];
-  feeDetails: object;
-  constructor(private adminService: AdminService, private dialog: MatDialog) {}
+  feeDetails: object[];
+  constructor(
+    private adminService: AdminService,
+    private dialog: MatDialog,
+    private errorService: ErrorDialogFunctionsService
+  ) {}
 
   ngOnInit() {
     this.getInstallmentForClass();
+    this.getStudentFeeDetails();
   }
 
+  // function to get installment by class
   getInstallmentForClass() {
     const classDetail = { classId: this.selectedStudentDetail["classId"] };
     this.adminService
@@ -31,13 +38,28 @@ export class FeeDetailsComponent implements OnInit {
       });
   }
 
+  // function to get student fee details
+  getStudentFeeDetails() {
+    const studentDetail = {
+      studentId: this.selectedStudentDetail["studentId"],
+    };
+    this.adminService
+      .getStudentFeeDetails(studentDetail)
+      .subscribe((response) => {
+        if (response["status"]) {
+          this.feeDetails = response["data"];
+          console.log(this.feeDetails);
+        }
+      });
+  }
+
   // function to open dialog to collect fee
   openFeeCollectFialog(
     installmentId: number,
     installmentAmount: number,
     installmentName: string
   ) {
-    this.feeDetails = {
+    let feeDetails = {
       studentId: this.selectedStudentDetail["studentId"],
       classId: this.selectedStudentDetail["classId"],
       installmentId: installmentId,
@@ -46,11 +68,34 @@ export class FeeDetailsComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(FeeCollectDialogComponent, {
       width: "500px",
-      data: this.feeDetails,
+      data: feeDetails,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log("Fee collected");
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response["status"]) {
+        this.getStudentFeeDetails();
+        this.errorService.openErrorDialog(response["message"]);
+      } else {
+        if (response["message"] != "cancelled") {
+          this.errorService.openErrorDialog(response["message"]);
+        }
+      }
+    });
+  }
+
+  returnFee(installmentId: number) {
+    let feeDetails = {
+      studentId: this.selectedStudentDetail["studentId"],
+      classId: this.selectedStudentDetail["classId"],
+      installmentId: installmentId,
+    };
+    this.adminService.returnFee(feeDetails).subscribe((response) => {
+      if (response["status"]) {
+        this.getStudentFeeDetails();
+        this.errorService.openErrorDialog(response["message"]);
+      } else {
+        this.errorService.openErrorDialog(response["message"]);
+      }
     });
   }
 }
