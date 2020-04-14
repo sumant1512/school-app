@@ -304,10 +304,10 @@ export class AdminService {
     );
   }
 
-  // // service for getting class with exam
-  // getClassWithExam() {
-  //   return this.http.get("http://localhost:8080/getClassWithExam");
-  // }
+  // service for getting student credentials
+  getStudentCredentialList() {
+    return this.http.get("http://localhost:8080/getStudentCredentialList");
+  }
 
   // // service for assigning exam to class
   // assignExam(examDetails) {

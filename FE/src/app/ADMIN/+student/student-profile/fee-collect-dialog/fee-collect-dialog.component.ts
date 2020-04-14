@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { FeeCollectData } from "./fee-collect-dialog.type";
+import { FEE_COLLECT_DIALOG } from './fee-collect-dialog.constants';
 
 @Component({
   selector: "app-fee-collect-dialog",
@@ -8,6 +9,7 @@ import { FeeCollectData } from "./fee-collect-dialog.type";
   styleUrls: ["./fee-collect-dialog.component.css"],
 })
 export class FeeCollectDialogComponent implements OnInit {
+  LABELS = FEE_COLLECT_DIALOG;
   constructor(
     public dialogRef: MatDialogRef<FeeCollectDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public feeCollectData: FeeCollectData
