@@ -2,7 +2,18 @@
     <div>
         <mat-toolbar color="primary" class="form-toolbar justify-content-center">{{LABELS.HEADER}}</mat-toolbar>
     </div>
-    <div>
-
+    <div class="p-1 p-md-2 p-lg-3 text-center">
+        <div>
+            <span>{{feeCollectData.installmentName}} : </span>
+            <span>{{feeCollectData.installmentAmount}} </span>
+        </div>
+        <div class="row">
+            <div class="col-6 text-left">
+                <button (click)="dialogRef.close()" mat-raised-button color="warn">Cancel</button>
+            </div>
+            <div class="col-6 text-right">
+                <button (click)="collectFee()" mat-raised-button color="primary">Collect</button>
+            </div>
+        </div>
     </div>
 </div>

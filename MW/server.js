@@ -73,7 +73,6 @@ app.post('/addClass', function(request, response) {
             response.status(200).send({ status: true, message: "Class added." });
         }
     })
-
 })
 
 // Api to get all class
@@ -1241,4 +1240,22 @@ app.get('/getStudentCredentialList', function(request, response) {
             response.status(200).send({ status: true, data: result });
         }
     });
+})
+
+// Api to collect fee
+app.post('/collectFee', function(request, response) {
+    const paidOn = new Date();
+    const studentId = request.body.studentId;
+    const classId = request.body.classId;
+    const installmentId = request.body.installmentId;
+    const installmentAmount = request.body.installmentAmount;
+    con.query("INSERT INTO collected_fee (student_id, class_id,installment_id,fee_paid_amount,paid_on) VALUES\
+                ('" + parseInt(studentId) + "','" + classId + "','" + installmentId + "','" + installmentAmount + "','" + paidOn + "')", (err, rows, fields) => {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, message: "Fee collected." });
+        }
+    })
 })

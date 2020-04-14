@@ -36,6 +36,9 @@ select
 from installment;
 select
   *
+from collected_fee;
+select
+  *
 from class_with_installment;
 select
   *

@@ -32,12 +32,17 @@ export class FeeDetailsComponent implements OnInit {
   }
 
   // function to open dialog to collect fee
-  openFeeCollectFialog(installmentId, installmentAount) {
+  openFeeCollectFialog(
+    installmentId: number,
+    installmentAmount: number,
+    installmentName: string
+  ) {
     this.feeDetails = {
       studentId: this.selectedStudentDetail["studentId"],
       classId: this.selectedStudentDetail["classId"],
       installmentId: installmentId,
-      installmentAmount: installmentAount,
+      installmentName: installmentName,
+      installmentAmount: installmentAmount,
     };
     const dialogRef = this.dialog.open(FeeCollectDialogComponent, {
       width: "500px",
