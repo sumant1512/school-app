@@ -1223,3 +1223,22 @@ app.post('/getInstallmentForClass', function(request, response) {
         }
     });
 })
+
+// Api to get all class
+app.get('/getStudentCredentialList', function(request, response) {
+    con.query("select student_admission_details.student_id,\
+    student_admission_details.first_name,student_admission_details.last_name,\
+    student_admission_details.student_password,\
+    student_admission_details.class_id,student_admission_details.section_id,\
+    class.class_name,section.section_name\
+    from class,student_admission_details,section where \
+    class.class_id = student_admission_details.class_id AND \
+    section.section_id = student_admission_details.section_id", function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, data: result });
+        }
+    });
+})

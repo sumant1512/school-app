@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { AdminService } from "src/app/ADMIN/+services/admin.service";
 import { FEES_CHART_COLUMN_NAME } from "./fee-details.constants";
-import { MatDialog } from '@angular/material';
-import { FeeCollectDialogComponent } from '../fee-collect-dialog/fee-collect-dialog.component';
+import { MatDialog } from "@angular/material";
+import { FeeCollectDialogComponent } from "../fee-collect-dialog/fee-collect-dialog.component";
 
 @Component({
   selector: "app-fee-details",
@@ -13,7 +13,7 @@ export class FeeDetailsComponent implements OnInit {
   feeChartColumns = FEES_CHART_COLUMN_NAME;
   @Input() selectedStudentDetail: string;
   installmentList: object[];
-  feeDetails: object
+  feeDetails: object;
   constructor(private adminService: AdminService, private dialog: MatDialog) {}
 
   ngOnInit() {
@@ -27,17 +27,17 @@ export class FeeDetailsComponent implements OnInit {
       .subscribe((response) => {
         if (response["status"]) {
           this.installmentList = response["data"];
-          console.log(this.installmentList);
         }
       });
   }
 
   // function to open dialog to collect fee
-  openFeeCollectFialog(installmentId) {
+  openFeeCollectFialog(installmentId, installmentAount) {
     this.feeDetails = {
       studentId: this.selectedStudentDetail["studentId"],
       classId: this.selectedStudentDetail["classId"],
-      installmentId: installmentId
+      installmentId: installmentId,
+      installmentAmount: installmentAount,
     };
     const dialogRef = this.dialog.open(FeeCollectDialogComponent, {
       width: "500px",
