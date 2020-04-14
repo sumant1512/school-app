@@ -9,7 +9,7 @@
         </div>
         <div class="row">
             <div class="col-6 text-left">
-                <button (click)="dialogRef.close()" mat-raised-button color="warn">Cancel</button>
+                <button (click)="dialogRef.close({status:false, message: 'cancelled'})" mat-raised-button color="warn">Cancel</button>
             </div>
             <div class="col-6 text-right">
                 <button (click)="collectFee()" mat-raised-button color="primary">Collect</button>
