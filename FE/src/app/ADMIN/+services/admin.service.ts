@@ -47,11 +47,6 @@ export class AdminService {
     return this.http.get("http://localhost:8080/getClassWithExam");
   }
 
-  // service for assigning exam to class
-  assignExam(examDetails) {
-    return this.http.post("http://localhost:8080/assignExam", examDetails);
-  }
-
   // service for removing exam from class
   removeExam(examDetails) {
     return this.http.post("http://localhost:8080/removeExam", examDetails);
@@ -121,11 +116,6 @@ export class AdminService {
   // service for getting class with subject
   getClassWithSubject() {
     return this.http.get("http://localhost:8080/getClassWithSubject");
-  }
-
-  // service for assigning subject to class
-  assignSubject(classDetails) {
-    return this.http.post("http://localhost:8080/assignSubject", classDetails);
   }
 
   // service for removing subject to class
@@ -296,8 +286,8 @@ export class AdminService {
     );
   }
 
-   // service to get installment list
-   getInstallmentForClass(classDetail) {
+  // service to get installment list
+  getInstallmentForClass(classDetail) {
     return this.http.post(
       "http://localhost:8080/getInstallmentForClass",
       classDetail
@@ -309,13 +299,8 @@ export class AdminService {
     return this.http.get("http://localhost:8080/getStudentCredentialList");
   }
 
-  // // service for assigning exam to class
-  // assignExam(examDetails) {
-  //   return this.http.post("http://localhost:8080/assignExam", examDetails);
-  // }
-
-  // // service for removing exam from class
-  // removeExam(examDetails) {
-  //   return this.http.post("http://localhost:8080/removeExam", examDetails);
-  // }
+  // service to collect fee
+  collectFee(feeDetail) {
+    return this.http.post("http://localhost:8080/collectFee", feeDetail);
+  }
 }

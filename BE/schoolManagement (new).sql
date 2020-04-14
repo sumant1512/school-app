@@ -178,3 +178,14 @@ create table class_with_installment(
   FOREIGN KEY (class_id) REFERENCES class(class_id),
   FOREIGN KEY (installment_id) REFERENCES installment(installment_id)
 );
+create table collected_fee (
+  receipt_id INT UNIQUE PRIMARY KEY AUTO_INCREMENT,
+  student_id INT NOT NULL,
+  FOREIGN KEY (student_id) REFERENCES student_admission_details(student_id),
+  class_id INT NOT NULL,
+  FOREIGN KEY (class_id) REFERENCES class(class_id),
+  installment_id INT NOT NULL,
+  FOREIGN KEY (installment_id) REFERENCES installment(installment_id),
+  fee_paid_amount INT NOT NULL,
+  paid_on varchar(255) NOT NULL
+);
