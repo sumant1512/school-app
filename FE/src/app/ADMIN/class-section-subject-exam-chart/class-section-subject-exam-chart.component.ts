@@ -4,11 +4,12 @@ import { NestedTreeControl } from "@angular/cdk/tree";
 import {
   ClassType,
   SectionType,
-  ClassWithSectionType
+  ClassWithSectionType,
 } from "./class-section.type";
 import { AdminService } from "../+services/admin.service";
 import { classSectionTransform } from "./class-section-transform";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
+import { ClassService } from "src/app/STORE/class/api/class.service";
 
 /**
  * Food data with nested structure.
@@ -22,20 +23,20 @@ interface FoodNode {
 const TREE_DATA: any[] = [
   {
     name: "Fruit",
-    children: [{ name: "Apple" }, { name: "Banana" }, { name: "Fruit loops" }]
+    children: [{ name: "Apple" }, { name: "Banana" }, { name: "Fruit loops" }],
   },
   {
     name: "Vegetables",
-    children: [{ name: "Broccoli" }, { name: "Brussels sprouts" }]
-  }
+    children: [{ name: "Broccoli" }, { name: "Brussels sprouts" }],
+  },
 ];
 @Component({
   selector: "app-class-section-subject-exam-chart",
   templateUrl: "./class-section-subject-exam-chart.component.html",
-  styleUrls: ["./class-section-subject-exam-chart.component.css"]
+  styleUrls: ["./class-section-subject-exam-chart.component.css"],
 })
 export class ClassSectionSubjectExamChartComponent implements OnInit {
-  treeControl = new NestedTreeControl<any>(node => node.children);
+  treeControl = new NestedTreeControl<any>((node) => node.children);
   dataSource = new ArrayDataSource(TREE_DATA);
 
   hasChild = (_: number, node: FoodNode) =>
@@ -51,6 +52,7 @@ export class ClassSectionSubjectExamChartComponent implements OnInit {
   hasChild1;
   constructor(
     private adminService: AdminService,
+    private classService: ClassService,
     private errorService: ErrorDialogFunctionsService
   ) {}
 
@@ -60,7 +62,7 @@ export class ClassSectionSubjectExamChartComponent implements OnInit {
 
   // function to get class list
   getClass() {
-    this.adminService.getClass().subscribe(response => {
+    this.adminService.getClass().subscribe((response) => {
       if (response["status"] === true) {
         this.classList = response["data"];
         this.getClassWithSection();
@@ -72,7 +74,7 @@ export class ClassSectionSubjectExamChartComponent implements OnInit {
 
   // function to get class with section
   getClassWithSection() {
-    this.adminService.getClassWithSection().subscribe(response => {
+    this.classService.getClassWithSection().subscribe((response) => {
       if (response["status"] === true) {
         this.classWithSection = response["data"];
         this.classWithSectionTransformed = classSectionTransform(
@@ -80,7 +82,7 @@ export class ClassSectionSubjectExamChartComponent implements OnInit {
           this.classWithSection
         );
         this.spinner = true;
-        this.treeControl = new NestedTreeControl<any>(node => node);
+        this.treeControl = new NestedTreeControl<any>((node) => node);
         this.dataSource = new ArrayDataSource(this.classWithSectionTransformed);
         this.hasChild1 = (_: number, node: any) =>
           !!node.sections && node.sections.length > 0;

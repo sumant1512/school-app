@@ -67,11 +67,6 @@ export class AdminService {
     return this.http.post("http://localhost:8080/deleteSection", sectionDetail);
   }
 
-  // service for getting class with section
-  getClassWithSection() {
-    return this.http.get("http://localhost:8080/getClassWithSection");
-  }
-
   // common service for assigning to class
   assignToClass(assignDetails) {
     return this.http.post("http://localhost:8080/assignToClass", assignDetails);
