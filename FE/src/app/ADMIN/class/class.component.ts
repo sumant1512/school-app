@@ -8,7 +8,7 @@ import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog
 @Component({
   selector: "app-class",
   templateUrl: "./class.component.html",
-  styleUrls: ["./class.component.css"]
+  styleUrls: ["./class.component.css"],
 })
 export class ClassComponent implements OnInit {
   addClassForm: FormGroup;
@@ -25,7 +25,6 @@ export class ClassComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getClass();
     this.getSection();
     this.getClassWithSection();
   }
@@ -39,10 +38,8 @@ export class ClassComponent implements OnInit {
   // function to add class
   addClass() {
     const classDetail = this.addClassForm.value;
-    this.adminService.addClass(classDetail).subscribe(response => {
+    this.adminService.addClass(classDetail).subscribe((response) => {
       if (response["status"] == true) {
-        this.getClass();
-        this.getSection();
         this.getClassWithSection();
         this.resetForm();
         this.errorService.openErrorDialog(response["message"]);
@@ -52,27 +49,13 @@ export class ClassComponent implements OnInit {
     });
   }
 
-  // function to get class list
-  getClass() {
-    this.adminService.getClass().subscribe(response => {
-      if (response["status"] === true) {
-        this.classList = response["data"];
-        this.spinner = true;
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
-  }
-
   // function to delete class
   deleteClass(classId) {
     var classDetail = {
-      classId: classId
+      classId: classId,
     };
-    this.adminService.deleteClass(classDetail).subscribe(response => {
+    this.adminService.deleteClass(classDetail).subscribe((response) => {
       if (response["status"] == true) {
-        this.getClass();
-        this.getSection();
         this.getClassWithSection();
         this.errorService.openErrorDialog(response["message"]);
       } else {
@@ -83,7 +66,7 @@ export class ClassComponent implements OnInit {
 
   // function to get all sections
   getSection() {
-    this.adminService.getSection().subscribe(response => {
+    this.adminService.getSection().subscribe((response) => {
       if (response["status"] === true) {
         this.allSections = response["data"];
       } else {
@@ -94,9 +77,10 @@ export class ClassComponent implements OnInit {
 
   // function to get class with section
   getClassWithSection() {
-    this.adminService.getClassWithSection().subscribe(response => {
+    this.adminService.getClassWithSection().subscribe((response) => {
       if (response["status"] === true) {
-        this.classWithSection = response["data"];
+        this.classList = response["data"][0];
+        this.classWithSection = response["data"][1];
       } else {
         this.errorService.openErrorDialog(response["message"]);
       }
@@ -107,12 +91,10 @@ export class ClassComponent implements OnInit {
   removeSection(classId, sectionId) {
     let sectionDetail = {
       classId: classId,
-      sectionId: sectionId
+      sectionId: sectionId,
     };
-    this.adminService.removeSection(sectionDetail).subscribe(response => {
+    this.adminService.removeSection(sectionDetail).subscribe((response) => {
       if (response["status"] === true) {
-        this.getClass();
-        this.getSection();
         this.getClassWithSection();
         this.errorService.openErrorDialog(response["message"]);
       } else {

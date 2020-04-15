@@ -38,7 +38,8 @@ var con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: 'admin',
-    database: "schoolManagement"
+    database: "schoolManagement",
+    multipleStatements: true
 });
 
 app.listen(port, () => console.log("server is running at port - " + port));
@@ -233,11 +234,12 @@ app.post('/removeExam', function(request, response) {
 
 // Api to get class with section
 app.get('/getClassWithSection', function(request, response) {
-    con.query("select class.class_id,\
+    const sqlQuery = "select * from class;select class.class_id,\
     section.section_name,class_with_section.* \
     from class,class_with_section,section where \
     class.class_id = class_with_section.class_id AND \
-    class_with_section.section_id = section.section_id", function(err, result, fields) {
+    class_with_section.section_id = section.section_id";
+    con.query(sqlQuery, function(err, result, fields) {
         if (err) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });
