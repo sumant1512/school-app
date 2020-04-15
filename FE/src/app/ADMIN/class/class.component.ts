@@ -4,6 +4,7 @@ import { addClassForm } from "./class.utils";
 import { AdminService } from "../+services/admin.service";
 import { classListReturnType } from "src/app/COMMON/shared-function.type";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
+import { ClassService } from "src/app/STORE/class/api/class.service";
 
 @Component({
   selector: "app-class",
@@ -19,6 +20,7 @@ export class ClassComponent implements OnInit {
   allSections: object[];
   constructor(
     private adminService: AdminService,
+    private classService: ClassService,
     private errorService: ErrorDialogFunctionsService
   ) {
     this.addClassForm = addClassForm();
@@ -77,7 +79,7 @@ export class ClassComponent implements OnInit {
 
   // function to get class with section
   getClassWithSection() {
-    this.adminService.getClassWithSection().subscribe((response) => {
+    this.classService.getClassWithSection().subscribe((response) => {
       if (response["status"] === true) {
         this.classList = response["data"][0];
         this.classWithSection = response["data"][1];
