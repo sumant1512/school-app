@@ -2,18 +2,16 @@ import { Component, OnInit, VERSION } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { addClassForm } from "./class.utils";
 import { AdminService } from "../+services/admin.service";
-import { classListReturnType } from "src/app/COMMON/shared-function.type";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
-import { ClassService } from "src/app/STORE/class/api/class.service";
-import { ClassWithSectionService } from "src/app/STORE/class-with-section/api/class-with-section.service";
 import { Store } from "@ngrx/store";
 import { ClassType } from "../class-section-subject-exam-chart/class-section.type";
 import * as ClassActions from "../../STORE/class/class.actions";
 import * as SectionActions from "../../STORE/section/section.actions";
+import * as ClassWithSectionActions from "../../STORE/class-with-section/class-with-section.actions";
 import { AppState } from "src/app/STORE/app.state";
-import { ClassListType } from "src/app/STORE/class/types/class.type";
-import { SectionService } from "src/app/STORE/section/api/section.service";
-import { SectionListType, SectionType } from "src/app/STORE/section/types/section.type";
+import { SectionType } from "src/app/STORE/section/types/section.type";
+import { ClassWithSectionService } from "src/app/STORE/class-with-section/api/class-with-section.service";
+import { ClassWithSectionType } from "src/app/STORE/class-with-section/types/class-with-section.type";
 
 @Component({
   selector: "app-class",
@@ -24,7 +22,7 @@ export class ClassComponent implements OnInit {
   addClassForm: FormGroup;
   classList: ClassType[];
   spinner: boolean = false;
-  classWithSection: object[];
+  classWithSection: ClassWithSectionType[];
   message: string;
   sectionList: SectionType[];
   constructor(
@@ -79,7 +77,7 @@ export class ClassComponent implements OnInit {
     });
   }
 
-  // function to get all sections
+  // function to get section list from store
   getSection() {
     this.store.dispatch(new SectionActions.FetchSection());
     this.store.select("sectionList").subscribe((response) => {
@@ -89,12 +87,9 @@ export class ClassComponent implements OnInit {
 
   // function to get class with section
   getClassWithSection() {
-    this.classWithSectionService.getClassWithSection().subscribe((response) => {
-      if (response["status"] === true) {
-        this.classWithSection = response["data"]["class"];
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+    this.store.dispatch(new ClassWithSectionActions.FetchClassWithSection());
+    this.store.select("classWithSectionList").subscribe((response) => {
+      this.classWithSection = response.classWithSectionList;
     });
   }
 
@@ -104,13 +99,18 @@ export class ClassComponent implements OnInit {
       classId: classId,
       sectionId: sectionId,
     };
-    this.adminService.removeSection(sectionDetail).subscribe((response) => {
-      if (response["status"] === true) {
-        this.getClassWithSection();
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.store.dispatch(
+      new ClassWithSectionActions.RemoveSection(sectionDetail)
+    );
+    // this.classWithSectionService
+    //   .removeSection(sectionDetail)
+    //   .subscribe((response) => {
+    //     if (response["status"] === true) {
+    //       this.getClassWithSection();
+    //       this.errorService.openErrorDialog(response["message"]);
+    //     } else {
+    //       this.errorService.openErrorDialog(response["message"]);
+    //     }
+    //   });
   }
 }

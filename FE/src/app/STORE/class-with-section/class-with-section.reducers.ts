@@ -1,19 +1,23 @@
-// import { ClassInitialState } from "./class.state";
-// import { ClassInitialStateType } from "./class.state";
-// import {
-//   ClassWithSectionActionsUnion,
-//   ClassWithSectionActions,
-// } from "./class.actions";
+import {
+  ClassWithSectionActionsUnion,
+  ClassWithSectionActions,
+} from "./class-with-section.actions";
+import { ClassWithSectionListType } from "./types/class-with-section.type";
 
-// export const ClassWithSectionReducer = (
-//   state = ClassInitialState,
-//   action: ClassWithSectionActionsUnion
-// ): ClassInitialStateType => {
-//   switch (action.type) {
-//     case ClassWithSectionActions.FETCHED_CLASS_WITH_SECTIONS: {
-//       return action.payload;
-//     }
-//     default:
-//       return state;
-//   }
-// };
+const classWithSectionInitialState: ClassWithSectionListType = {
+  classWithSectionList: [],
+};
+
+export function classWithSectionReducer(
+  state = classWithSectionInitialState,
+  action: ClassWithSectionActionsUnion
+): ClassWithSectionListType {
+  switch (action.type) {
+    case ClassWithSectionActions.FETCHED_CLASS_WITH_SECTION:
+      return {
+        classWithSectionList: action.payload,
+      };
+    default:
+      return state;
+  }
+}
