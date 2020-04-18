@@ -8,7 +8,15 @@ export class ClassWithSectionService {
   constructor(private http: HttpClient) {}
 
   // service for getting class with section
-  getClassWithSection() {
-    return this.http.get("http://localhost:8080/getClassWithSection");
+  fetchClassWithSection() {
+    return this.http.get("http://localhost:8080/fetchClassWithSection");
+  }
+
+  // service for removing section from class
+  removeSection(sectionDetails) {
+    return this.http.post(
+      "http://localhost:8080/removeSection",
+      sectionDetails
+    );
   }
 }

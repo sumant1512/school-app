@@ -52,14 +52,6 @@ export class AdminService {
     return this.http.post("http://localhost:8080/assignToClass", assignDetails);
   }
 
-  // service for removing section to class
-  removeSection(sectionDetails) {
-    return this.http.post(
-      "http://localhost:8080/removeSection",
-      sectionDetails
-    );
-  }
-
   // service to get section on the basis of selected class
   getSectionForClass(classDetail) {
     return this.http.post(

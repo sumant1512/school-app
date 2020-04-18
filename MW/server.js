@@ -232,8 +232,8 @@ app.post('/removeExam', function(request, response) {
     })
 });
 
-// Api to get class with section
-app.get('/getClassWithSection', function(request, response) {
+// Api to fetch class with section
+app.get('/fetchClassWithSection', function(request, response) {
     const sqlQuery = "select class.class_id,\
     section.section_name,class_with_section.* \
     from class,class_with_section,section where \
@@ -244,7 +244,7 @@ app.get('/getClassWithSection', function(request, response) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });
         } else {
-            response.status(200).send({ status: true, data: { class: result } });
+            response.status(200).send({ status: true, data: result });
         }
     });
 })
