@@ -33,7 +33,7 @@
                                     <mat-form-field class="w-100" appearance="outline">
                                         <mat-label>Sections</mat-label>
                                         <mat-select placeholder="Sections" formControlName="selectedSections" multiple>
-                                            <mat-option *ngFor="let section of allSections" [value]="section.section_id">{{section.section_name}}</mat-option>
+                                            <mat-option *ngFor="let section of sectionList" [value]="section.section_id">{{section.section_name}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>

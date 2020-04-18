@@ -15,6 +15,7 @@ import { studentAdmissionForm, documentForm } from "./student-admission.utils";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { CONSTANTS } from "src/app/COMMON/constant";
 import { DomSanitizer } from "@angular/platform-browser";
+import { ClassService } from 'src/app/STORE/class/api/class.service';
 
 @Component({
   selector: "app-student-admission",
@@ -51,6 +52,7 @@ export class StudentAdmissionComponent implements OnInit {
   constructor(
     private studentService: StudentService,
     private adminService: AdminService,
+    private classService: ClassService,
     private router: Router,
     private activatedPath: ActivatedRoute,
     private errorService: ErrorDialogFunctionsService,
@@ -60,7 +62,7 @@ export class StudentAdmissionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getClass();
+    this.fetchClass();
     this.getCategory();
     this.getReligion();
     this.getHouse();
@@ -68,8 +70,8 @@ export class StudentAdmissionComponent implements OnInit {
   }
 
   // function to get class list
-  getClass() {
-    this.adminService.getClass().subscribe(response => {
+  fetchClass() {
+    this.classService.fetchClass().subscribe(response => {
       if (response["status"] === true) {
         this.classList = response["data"];
       } else {

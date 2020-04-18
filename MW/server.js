@@ -76,8 +76,8 @@ app.post('/addClass', function(request, response) {
     })
 })
 
-// Api to get all class
-app.get('/getClass', function(request, response) {
+// Api to fetch all class
+app.get('/fetchClass', function(request, response) {
     con.query("select * from class", function(err, result, fields) {
         if (err) {
             console.log(err);
@@ -234,7 +234,7 @@ app.post('/removeExam', function(request, response) {
 
 // Api to get class with section
 app.get('/getClassWithSection', function(request, response) {
-    const sqlQuery = "select * from class;select class.class_id,\
+    const sqlQuery = "select class.class_id,\
     section.section_name,class_with_section.* \
     from class,class_with_section,section where \
     class.class_id = class_with_section.class_id AND \
@@ -244,7 +244,7 @@ app.get('/getClassWithSection', function(request, response) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });
         } else {
-            response.status(200).send({ status: true, data: result });
+            response.status(200).send({ status: true, data: { class: result } });
         }
     });
 })
@@ -326,7 +326,7 @@ app.post('/addSection', function(request, response) {
 })
 
 // Api for getting all sections
-app.get('/getSection', function(request, response) {
+app.get('/fetchSection', function(request, response) {
     con.query("SELECT * FROM section", function(err, rows, result) {
         if (err) {
             console.log(err);

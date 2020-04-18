@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { AdminService } from "../../+services/admin.service";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { FEES_CHART } from './fees-chart.constants';
+import { ClassService } from 'src/app/STORE/class/api/class.service';
 
 @Component({
   selector: "app-fees-chart",
@@ -16,17 +17,18 @@ export class FeesChartComponent implements OnInit {
   message: string;
   constructor(
     private adminService: AdminService,
+    private classService: ClassService,
     private errorService: ErrorDialogFunctionsService
   ) {}
 
   ngOnInit() {
-    this.getClass();
+    this.fetchClass();
     this.getClassWithInstallment();
   }
 
   // function to get class list
-  getClass() {
-    this.adminService.getClass().subscribe((response) => {
+  fetchClass() {
+    this.classService.fetchClass().subscribe((response) => {
       if (response["status"] === true) {
         this.classList = response["data"];
         this.spinner = true;
@@ -55,7 +57,7 @@ export class FeesChartComponent implements OnInit {
     };
     this.adminService.removeInstallment(installmentDetail).subscribe((response) => {
       if (response["status"] === true) {
-        this.getClass();
+        this.fetchClass();
         this.getClassWithInstallment();
         this.errorService.openErrorDialog(response["message"]);
       } else {

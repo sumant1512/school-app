@@ -10,6 +10,7 @@ import { MatDialog } from "@angular/material";
 import { AssignToClassType } from "src/app/COMMON/assign-dialog-common/assign-dialog.type";
 import { AssignDialogCommonComponent } from "src/app/COMMON/assign-dialog-common/assign-dialog-common.component";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
+import { ClassService } from 'src/app/STORE/class/api/class.service';
 
 @Component({
   selector: "app-subject",
@@ -27,6 +28,7 @@ export class SubjectComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
+    private classService: ClassService,
     private dialog: MatDialog,
     private errorService: ErrorDialogFunctionsService
   ) {
@@ -39,7 +41,7 @@ export class SubjectComponent implements OnInit {
   ngOnInit() {
     this.updateSubjectId = 0;
     this.getSubject(); // to get subject list on page load
-    this.getClass(); // to get class list on page load
+    this.fetchClass(); // to get class list on page load
   }
 
   // this is for form validation
@@ -54,8 +56,8 @@ export class SubjectComponent implements OnInit {
   }
 
   // function to get class list for dropdown
-  getClass() {
-    this.adminService.getClass().subscribe(response => {
+  fetchClass() {
+    this.classService.fetchClass().subscribe(response => {
       if (response["status"] === true) {
         this.classList = response["data"];
       } else {

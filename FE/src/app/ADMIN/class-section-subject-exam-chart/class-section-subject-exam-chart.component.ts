@@ -57,39 +57,39 @@ export class ClassSectionSubjectExamChartComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getClass();
+    // this.fetchClass();
   }
 
-  // function to get class list
-  getClass() {
-    this.adminService.getClass().subscribe((response) => {
-      if (response["status"] === true) {
-        this.classList = response["data"];
-        this.getClassWithSection();
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
-  }
+  // // function to get class list
+  // fetchClass() {
+  //   this.adminService.fetchClass().subscribe((response) => {
+  //     if (response["status"] === true) {
+  //       this.classList = response["data"];
+  //       this.getClassWithSection();
+  //     } else {
+  //       this.errorService.openErrorDialog(response["message"]);
+  //     }
+  //   });
+  // }
 
   // function to get class with section
-  getClassWithSection() {
-    this.classService.getClassWithSection().subscribe((response) => {
-      if (response["status"] === true) {
-        this.classWithSection = response["data"];
-        this.classWithSectionTransformed = classSectionTransform(
-          this.classList,
-          this.classWithSection
-        );
-        this.spinner = true;
-        this.treeControl = new NestedTreeControl<any>((node) => node);
-        this.dataSource = new ArrayDataSource(this.classWithSectionTransformed);
-        this.hasChild1 = (_: number, node: any) =>
-          !!node.sections && node.sections.length > 0;
-        console.log("55555555555555555", this.dataSource);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
-  }
+  // getClassWithSection() {
+  //   this.classService.getClassWithSection().subscribe((response) => {
+  //     if (response["status"] === true) {
+  //       this.classWithSection = response["data"];
+  //       this.classWithSectionTransformed = classSectionTransform(
+  //         this.classList,
+  //         this.classWithSection
+  //       );
+  //       this.spinner = true;
+  //       this.treeControl = new NestedTreeControl<any>((node) => node);
+  //       this.dataSource = new ArrayDataSource(this.classWithSectionTransformed);
+  //       this.hasChild1 = (_: number, node: any) =>
+  //         !!node.sections && node.sections.length > 0;
+  //       console.log("55555555555555555", this.dataSource);
+  //     } else {
+  //       this.errorService.openErrorDialog(response["message"]);
+  //     }
+  //   });
+  // }
 }

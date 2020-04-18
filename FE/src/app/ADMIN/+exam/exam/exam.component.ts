@@ -3,18 +3,19 @@ import {
   FormGroup,
   FormBuilder,
   Validators,
-  FormControl
+  FormControl,
 } from "@angular/forms";
 import { AdminService } from "../../+services/admin.service";
 import { AssignDialogCommonComponent } from "src/app/COMMON/assign-dialog-common/assign-dialog-common.component";
 import { AssignToClassType } from "src/app/COMMON/assign-dialog-common/assign-dialog.type";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { MatDialog } from "@angular/material";
+import { ClassService } from "src/app/STORE/class/api/class.service";
 
 @Component({
   selector: "app-exam",
   templateUrl: "./exam.component.html",
-  styleUrls: ["./exam.component.css"]
+  styleUrls: ["./exam.component.css"],
 })
 export class ExamComponent implements OnInit {
   addExamForm: FormGroup;
@@ -28,18 +29,19 @@ export class ExamComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService,
+    private classService: ClassService,
     private dialog: MatDialog,
     private errorService: ErrorDialogFunctionsService
   ) {
     this.addExamForm = this.fb.group({
       examName: new FormControl("", Validators.required),
-      selectedClass: new FormControl("")
+      selectedClass: new FormControl(""),
     });
   }
 
   ngOnInit() {
     this.updateExamId = 0;
-    this.getClass(); // to get class list on page load
+    this.fetchClass(); // to get class list on page load
     this.getExam(); // to get exam list on page load
   }
 
@@ -49,8 +51,8 @@ export class ExamComponent implements OnInit {
   }
 
   // function to get class list for dropdown
-  getClass() {
-    this.adminService.getClass().subscribe(response => {
+  fetchClass() {
+    this.classService.fetchClass().subscribe((response) => {
       if (response["status"] === true) {
         this.classList = response["data"];
       } else {
@@ -78,7 +80,7 @@ export class ExamComponent implements OnInit {
   addExam() {
     this.updateExamId = 0;
     var examDetail = this.addExamForm.value;
-    this.adminService.addExam(examDetail).subscribe(response => {
+    this.adminService.addExam(examDetail).subscribe((response) => {
       if (response["status"] === true) {
         this.examList = response["data"];
         this.resetForm();
@@ -93,9 +95,9 @@ export class ExamComponent implements OnInit {
   updateExam() {
     const examDetail = {
       examId: this.updateExamId,
-      examName: this.addExamForm.value.examName
+      examName: this.addExamForm.value.examName,
     };
-    this.adminService.updateExam(examDetail).subscribe(response => {
+    this.adminService.updateExam(examDetail).subscribe((response) => {
       if (response["status"]) {
         this.examList = response["data"];
         this.resetForm();
@@ -108,7 +110,7 @@ export class ExamComponent implements OnInit {
 
   // function to get exam list
   getExam() {
-    this.adminService.getExam().subscribe(response => {
+    this.adminService.getExam().subscribe((response) => {
       if (response["status"] === true) {
         this.examList = response["data"];
         this.spinner = true;
@@ -121,9 +123,9 @@ export class ExamComponent implements OnInit {
   // function to delete exam
   deleteExam(examId) {
     var examDetail = {
-      examId: examId
+      examId: examId,
     };
-    this.adminService.deleteExam(examDetail).subscribe(response => {
+    this.adminService.deleteExam(examDetail).subscribe((response) => {
       if (response["status"] === true) {
         this.examList = response["data"];
         this.errorService.openErrorDialog(response["message"]);
@@ -155,14 +157,14 @@ export class ExamComponent implements OnInit {
       name_to_be_assinged: examName,
       property_to_be_assinged: "exam",
       table_name: "class_with_exam",
-      row_name: "exam_id"
+      row_name: "exam_id",
     };
     const dialogRef = this.dialog.open(AssignDialogCommonComponent, {
       width: "500px",
-      data: this.assignData
+      data: this.assignData,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log("Assign section closed");
     });
   }
