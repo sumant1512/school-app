@@ -7,16 +7,6 @@ import { HttpClient } from "@angular/common/http";
 export class AdminService {
   constructor(private http: HttpClient) {}
 
-  // service for adding class
-  addClass(classDetail) {
-    return this.http.post("http://localhost:8080/addClass", classDetail);
-  }
-
-  // service for getting class
-  getClass() {
-    return this.http.get("http://localhost:8080/getClass");
-  }
-
   // service for deleting class
   deleteClass(classDetail) {
     return this.http.post("http://localhost:8080/deleteClass", classDetail);
@@ -50,16 +40,6 @@ export class AdminService {
   // service for removing exam from class
   removeExam(examDetails) {
     return this.http.post("http://localhost:8080/removeExam", examDetails);
-  }
-
-  // service for adding section
-  addSection(sectionDetail) {
-    return this.http.post("http://localhost:8080/addSection", sectionDetail);
-  }
-
-  // service for getting section list
-  getSection() {
-    return this.http.get("http://localhost:8080/getSection");
   }
 
   // service for deleting section

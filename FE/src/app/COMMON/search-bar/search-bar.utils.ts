@@ -10,9 +10,9 @@ export function searchForm(): FormGroup {
 
 // export class CommonFuntion {
 //   constructor(public adminService: AdminService) {}
-//   getClass(): object[] {
+//   fetchClass(): object[] {
 //       let classList: object[]
-//     this.adminService.getClass().subscribe((response) => {
+//     this.adminService.fetchClass().subscribe((response) => {
 //       if ((response["status"] = true)) {
 //         classList = response["data"];
 //       }

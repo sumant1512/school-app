@@ -5,6 +5,15 @@ import { AdminService } from "../+services/admin.service";
 import { classListReturnType } from "src/app/COMMON/shared-function.type";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { ClassService } from "src/app/STORE/class/api/class.service";
+import { ClassWithSectionService } from "src/app/STORE/class-with-section/api/class-with-section.service";
+import { Store } from "@ngrx/store";
+import { ClassType } from "../class-section-subject-exam-chart/class-section.type";
+import * as ClassActions from "../../STORE/class/class.actions";
+import * as SectionActions from "../../STORE/section/section.actions";
+import { AppState } from "src/app/STORE/app.state";
+import { ClassListType } from "src/app/STORE/class/types/class.type";
+import { SectionService } from "src/app/STORE/section/api/section.service";
+import { SectionListType, SectionType } from "src/app/STORE/section/types/section.type";
 
 @Component({
   selector: "app-class",
@@ -13,20 +22,22 @@ import { ClassService } from "src/app/STORE/class/api/class.service";
 })
 export class ClassComponent implements OnInit {
   addClassForm: FormGroup;
-  classList: classListReturnType;
+  classList: ClassType[];
   spinner: boolean = false;
   classWithSection: object[];
   message: string;
-  allSections: object[];
+  sectionList: SectionType[];
   constructor(
     private adminService: AdminService,
-    private classService: ClassService,
-    private errorService: ErrorDialogFunctionsService
+    private classWithSectionService: ClassWithSectionService,
+    private errorService: ErrorDialogFunctionsService,
+    private store: Store<AppState>
   ) {
     this.addClassForm = addClassForm();
   }
 
   ngOnInit() {
+    this.fetchClass();
     this.getSection();
     this.getClassWithSection();
   }
@@ -37,18 +48,19 @@ export class ClassComponent implements OnInit {
     this.addClassForm.markAsUntouched();
   }
 
+  // function to get class list
+  fetchClass() {
+    this.store.dispatch(new ClassActions.FetchClass());
+    this.store.select("classList").subscribe((response) => {
+      this.classList = response.classList;
+    });
+  }
+
   // function to add class
   addClass() {
     const classDetail = this.addClassForm.value;
-    this.adminService.addClass(classDetail).subscribe((response) => {
-      if (response["status"] == true) {
-        this.getClassWithSection();
-        this.resetForm();
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.store.dispatch(new ClassActions.AddClass(classDetail));
+    this.resetForm();
   }
 
   // function to delete class
@@ -58,6 +70,7 @@ export class ClassComponent implements OnInit {
     };
     this.adminService.deleteClass(classDetail).subscribe((response) => {
       if (response["status"] == true) {
+        this.fetchClass();
         this.getClassWithSection();
         this.errorService.openErrorDialog(response["message"]);
       } else {
@@ -68,21 +81,17 @@ export class ClassComponent implements OnInit {
 
   // function to get all sections
   getSection() {
-    this.adminService.getSection().subscribe((response) => {
-      if (response["status"] === true) {
-        this.allSections = response["data"];
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+    this.store.dispatch(new SectionActions.FetchSection());
+    this.store.select("sectionList").subscribe((response) => {
+      this.sectionList = response.sectionList;
     });
   }
 
   // function to get class with section
   getClassWithSection() {
-    this.classService.getClassWithSection().subscribe((response) => {
+    this.classWithSectionService.getClassWithSection().subscribe((response) => {
       if (response["status"] === true) {
-        this.classList = response["data"][0];
-        this.classWithSection = response["data"][1];
+        this.classWithSection = response["data"]["class"];
       } else {
         this.errorService.openErrorDialog(response["message"]);
       }

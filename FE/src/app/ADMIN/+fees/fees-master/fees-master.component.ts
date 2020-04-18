@@ -12,6 +12,7 @@ import { AdminService } from "../../+services/admin.service";
 import { MatDialog } from "@angular/material";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { addInstallmentForm } from "./fees-master.utils";
+import { ClassService } from "src/app/STORE/class/api/class.service";
 
 @Component({
   selector: "app-fees-master",
@@ -30,6 +31,7 @@ export class FeesMasterComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
+    private classService: ClassService,
     private dialog: MatDialog,
     private errorService: ErrorDialogFunctionsService
   ) {
@@ -38,13 +40,13 @@ export class FeesMasterComponent implements OnInit {
 
   ngOnInit() {
     this.updateInstallmentId = 0;
-    this.getClass(); // to get class list on page load
+    this.fetchClass(); // to get class list on page load
     this.getInstallment(); // to get installment list on page load
   }
 
   // function to get class list for dropdown
-  getClass() {
-    this.adminService.getClass().subscribe((response) => {
+  fetchClass() {
+    this.classService.fetchClass().subscribe((response) => {
       if (response["status"] === true) {
         this.classList = response["data"];
       } else {

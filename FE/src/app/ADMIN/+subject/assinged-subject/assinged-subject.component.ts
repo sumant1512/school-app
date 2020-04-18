@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AdminService } from "../../+services/admin.service";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
+import { ClassService } from 'src/app/STORE/class/api/class.service';
 
 @Component({
   selector: "app-assinged-subject",
@@ -15,17 +16,18 @@ export class AssingedSubjectComponent implements OnInit {
   subjectList: object[];
   constructor(
     private adminService: AdminService,
+    private classService: ClassService,
     private errorService: ErrorDialogFunctionsService
   ) {}
 
   ngOnInit() {
-    this.getClass();
+    this.fetchClass();
     this.getClassWithSubject();
   }
 
   // function to get class list
-  getClass() {
-    this.adminService.getClass().subscribe(response => {
+  fetchClass() {
+    this.classService.fetchClass().subscribe(response => {
       if (response["status"] === true) {
         this.classList = response["data"];
         this.spinner = true;
@@ -65,7 +67,7 @@ export class AssingedSubjectComponent implements OnInit {
     };
     this.adminService.removeSubject(subjectDetail).subscribe(response => {
       if (response["status"] === true) {
-        this.getClass();
+        this.fetchClass();
         this.getClassWithSubject();
         this.errorService.openErrorDialog(response["message"]);
       } else {

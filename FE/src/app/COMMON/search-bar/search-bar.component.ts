@@ -5,6 +5,7 @@ import { searchForm } from "./search-bar.utils";
 import { AdminService } from "src/app/ADMIN/+services/admin.service";
 import { Router } from "@angular/router";
 import { ErrorDialogFunctionsService } from "../error-message-dialog/error-dialog-functions.service";
+import { ClassService } from "src/app/STORE/class/api/class.service";
 
 @Component({
   selector: "app-search-bar",
@@ -19,18 +20,19 @@ export class SearchBarComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
+    private classService: ClassService,
     private router: Router,
     private errorService: ErrorDialogFunctionsService
   ) {}
 
   ngOnInit() {
     this.searchForm = searchForm();
-    this.getClass();
+    this.fetchClass();
   }
 
   // function to get class list
-  getClass() {
-    this.adminService.getClass().subscribe((response) => {
+  fetchClass() {
+    this.classService.fetchClass().subscribe((response) => {
       if (response["status"] === true) {
         this.classList = response["data"];
       } else {

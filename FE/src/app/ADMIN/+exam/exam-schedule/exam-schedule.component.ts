@@ -4,11 +4,12 @@ import { FormGroup, FormArray, FormControl, Validators } from "@angular/forms";
 import { SubjectWithClassType } from "./exam-schedule.type";
 import { scheduleExamForm, paperDetailsForm } from "./exam-schedule.utils";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
+import { ClassService } from "src/app/STORE/class/api/class.service";
 
 @Component({
   selector: "app-exam-schedule",
   templateUrl: "./exam-schedule.component.html",
-  styleUrls: ["./exam-schedule.component.css"]
+  styleUrls: ["./exam-schedule.component.css"],
 })
 export class ExamScheduleComponent implements OnInit {
   timeTableColumns: string[] = [
@@ -18,7 +19,7 @@ export class ExamScheduleComponent implements OnInit {
     "endTime",
     "maxMarks",
     "minMarks",
-    "roomNo"
+    "roomNo",
   ];
   scheduleExamForm: FormGroup;
   classList: object[];
@@ -36,18 +37,19 @@ export class ExamScheduleComponent implements OnInit {
   examId: number;
   constructor(
     private adminService: AdminService,
+    private classService: ClassService,
     public errorService: ErrorDialogFunctionsService
   ) {}
 
   ngOnInit() {
     this.scheduleExamForm = scheduleExamForm();
-    this.getClass();
+    this.fetchClass();
     this.getClassWithExam();
   }
 
   // function to get class list
-  getClass() {
-    this.adminService.getClass().subscribe(response => {
+  fetchClass() {
+    this.classService.fetchClass().subscribe((response) => {
       if (response["status"] === true) {
         this.classList = response["data"];
         this.spinner = true;
@@ -73,10 +75,10 @@ export class ExamScheduleComponent implements OnInit {
 
   getSubjectsForClass(classId, examId) {
     const examDetails = { classId: classId };
-    this.adminService.getSubjectForClass(examDetails).subscribe(response => {
+    this.adminService.getSubjectForClass(examDetails).subscribe((response) => {
       if (response["status"]) {
         this.subjectWithClass = response["data"];
-        response["data"].forEach(paper => {
+        response["data"].forEach((paper) => {
           const control = paperDetailsForm(classId, examId, paper);
           (<FormArray>this.scheduleExamForm.get("paperName")).push(control);
         });
@@ -88,9 +90,9 @@ export class ExamScheduleComponent implements OnInit {
     this.removeFormControl();
     const examDetails = {
       classId: classId,
-      examId: examId
+      examId: examId,
     };
-    this.adminService.checkTimeTable(examDetails).subscribe(response => {
+    this.adminService.checkTimeTable(examDetails).subscribe((response) => {
       if (response["status"]) {
         if (response["timeTableStatus"]) {
           this.examTimeTable = response["data"];
@@ -112,7 +114,7 @@ export class ExamScheduleComponent implements OnInit {
   // function to schedule exam
   scheduleExam() {
     const examDetails = this.scheduleExamForm.value;
-    this.adminService.scheduleExam(examDetails).subscribe(response => {
+    this.adminService.scheduleExam(examDetails).subscribe((response) => {
       if (response["status"] === true) {
         this.errorService.openErrorDialog(response["message"]);
       } else {
@@ -125,9 +127,9 @@ export class ExamScheduleComponent implements OnInit {
   deleteExamSchedule(classId, examId) {
     const examDetails = {
       classId: classId,
-      examId: examId
+      examId: examId,
     };
-    this.adminService.deleteExamSchedule(examDetails).subscribe(response => {
+    this.adminService.deleteExamSchedule(examDetails).subscribe((response) => {
       if (response["status"] === true) {
         this.errorService.openErrorDialog(response["message"]);
       } else {
@@ -138,7 +140,7 @@ export class ExamScheduleComponent implements OnInit {
 
   // function to get all exam
   getExam() {
-    this.adminService.getExam().subscribe(response => {
+    this.adminService.getExam().subscribe((response) => {
       if (response["status"] === true) {
         this.examList = response["data"];
       } else {
@@ -149,7 +151,7 @@ export class ExamScheduleComponent implements OnInit {
 
   // function to get class with exam
   getClassWithExam() {
-    this.adminService.getClassWithExam().subscribe(response => {
+    this.adminService.getClassWithExam().subscribe((response) => {
       if (response["status"] === true) {
         this.classWithExam = response["data"];
       } else {
@@ -162,11 +164,11 @@ export class ExamScheduleComponent implements OnInit {
   removeExam(classId, examId) {
     let examDetail = {
       classId: classId,
-      examId: examId
+      examId: examId,
     };
-    this.adminService.removeExam(examDetail).subscribe(response => {
+    this.adminService.removeExam(examDetail).subscribe((response) => {
       if (response["status"] === true) {
-        this.getClass();
+        this.fetchClass();
         this.getClassWithExam();
         this.errorService.openErrorDialog(response["message"]);
       } else {
