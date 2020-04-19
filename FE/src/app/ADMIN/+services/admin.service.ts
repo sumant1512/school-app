@@ -50,26 +50,6 @@ export class AdminService {
     );
   }
 
-  // service for adding subject
-  addSubject(subjectDetail) {
-    return this.http.post("http://localhost:8080/addSubject", subjectDetail);
-  }
-
-  // service for getting subject list
-  getSubject() {
-    return this.http.get("http://localhost:8080/getSubject");
-  }
-
-  // service for deleting subject
-  deleteSubject(subjectDetail) {
-    return this.http.post("http://localhost:8080/deleteSubject", subjectDetail);
-  }
-
-  // service for adding exam
-  updateSubject(subjectDetail) {
-    return this.http.post("http://localhost:8080/updateSubject", subjectDetail);
-  }
-
   // service for getting class with subject
   getClassWithSubject() {
     return this.http.get("http://localhost:8080/getClassWithSubject");
