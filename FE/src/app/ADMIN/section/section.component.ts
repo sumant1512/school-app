@@ -1,10 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  FormGroup,
-  Validators,
-  FormBuilder,
-  FormControl,
-} from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 import { AdminService } from "../+services/admin.service";
 import { MatDialog } from "@angular/material";
 import { AssignToClassType } from "../../COMMON/assign-dialog-common/assign-dialog.type";
@@ -12,6 +7,10 @@ import { AssignDialogCommonComponent } from "src/app/COMMON/assign-dialog-common
 import { addSectionForm } from "./section.utils";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { SectionService } from "src/app/STORE/section/api/section.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/STORE/app.state";
+import * as SectionActions from "../../STORE/section/section.actions";
+
 export interface MessageDialog {
   message: string;
 }
@@ -23,7 +22,7 @@ export interface MessageDialog {
 })
 export class SectionComponent implements OnInit {
   addSectionForm: FormGroup;
-  allSections: object[];
+  sectionList: object[];
   spinner: boolean = false;
   assignData: AssignToClassType;
 
@@ -31,37 +30,35 @@ export class SectionComponent implements OnInit {
     private adminService: AdminService,
     private sectionService: SectionService,
     private dialog: MatDialog,
-    private errorService: ErrorDialogFunctionsService
+    private errorService: ErrorDialogFunctionsService,
+    private store: Store<AppState>
   ) {
     this.addSectionForm = addSectionForm();
   }
 
   ngOnInit() {
-    this.getSections(); // to get section list on page load
+    this.fetchSections(); // to fetch section list on page load
+  }
+
+  // function to reset class form
+  resetForm() {
+    this.addSectionForm.reset();
+    this.addSectionForm.markAsUntouched();
   }
 
   // function to add section
   addSection() {
     var sectionDetail = this.addSectionForm.value;
-    this.sectionService.addSection(sectionDetail).subscribe((response) => {
-      if (response["status"] === true) {
-        this.allSections = response["data"];
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.store.dispatch(new SectionActions.AddSection(sectionDetail));
+    this.resetForm();
   }
 
-  // function to get section list
-  getSections() {
-    this.sectionService.fetchSection().subscribe((response) => {
-      if (response["status"] === true) {
-        this.allSections = response["data"];
-        this.spinner = true;
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+  // function to fetch section list
+  fetchSections() {
+    this.store.dispatch(new SectionActions.FetchSection());
+    this.store.select("sectionList").subscribe((response) => {
+      this.sectionList = response.sectionList;
+      this.spinner = true;
     });
   }
 
@@ -70,14 +67,15 @@ export class SectionComponent implements OnInit {
     var sectionDetail = {
       sectionId: sectionId,
     };
-    this.adminService.deleteSection(sectionDetail).subscribe((response) => {
-      if (response["status"] === true) {
-        this.allSections = response["data"];
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.store.dispatch(new SectionActions.DeleteSection(sectionDetail));
+    // this.adminService.deleteSection(sectionDetail).subscribe((response) => {
+    //   if (response["status"] === true) {
+    //     this.sectionList = response["data"];
+    //     this.errorService.openErrorDialog(response["message"]);
+    //   } else {
+    //     this.errorService.openErrorDialog(response["message"]);
+    //   }
+    // });
   }
 
   // function to assign section to class

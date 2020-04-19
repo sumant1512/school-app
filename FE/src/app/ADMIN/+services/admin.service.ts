@@ -37,11 +37,6 @@ export class AdminService {
     return this.http.post("http://localhost:8080/removeExam", examDetails);
   }
 
-  // service for deleting section
-  deleteSection(sectionDetail) {
-    return this.http.post("http://localhost:8080/deleteSection", sectionDetail);
-  }
-
   // common service for assigning to class
   assignToClass(assignDetails) {
     return this.http.post("http://localhost:8080/assignToClass", assignDetails);

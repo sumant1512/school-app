@@ -36,13 +36,28 @@ export class SectionEffects {
   @Effect()
   fetchSection$ = this.action$.pipe(
     ofType(SectionActions.FETCH_SECTION),
-    map((action) => {
+    map(() => {
       return this.sectionService.fetchSection();
     }),
     mergeMap((response) => {
       return response.pipe(
         map((res) => {
           return new FetchedSection(res["data"]);
+        })
+      );
+    })
+  );
+
+  @Effect()
+  deleteSection$ = this.action$.pipe(
+    ofType(SectionActions.DELETE_SECTION),
+    map((action) => {
+      return this.sectionService.deleteSection(action.payload);
+    }),
+    mergeMap((response) => {
+      return response.pipe(
+        map((res) => {
+          return new FetchSection();
         })
       );
     })

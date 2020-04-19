@@ -5,6 +5,7 @@ export enum SectionActions {
   ADD_SECTION = "[Section] Add Section",
   FETCH_SECTION = "[Section] Fetch Section",
   FETCHED_SECTION = "[Section] Fetched Section",
+  DELETE_SECTION = "[Section] Delete Section",
 }
 
 export class AddSection implements Action {
@@ -21,4 +22,13 @@ export class FetchedSection implements Action {
   constructor(public payload: SectionType[]) {}
 }
 
-export type SectionActionsUnion = AddSection | FetchSection | FetchedSection;
+export class DeleteSection implements Action {
+  readonly type = SectionActions.DELETE_SECTION;
+  constructor(public payload: object) {}
+}
+
+export type SectionActionsUnion =
+  | AddSection
+  | FetchSection
+  | FetchedSection
+  | DeleteSection;

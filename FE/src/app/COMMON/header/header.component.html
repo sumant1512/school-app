@@ -3,7 +3,7 @@
     <mat-drawer-container class="fullContainer" autosize>
 
         <mat-toolbar class="overflow-hidden-x" color="primary">
-            <button type="button" mat-button (click)="drawer.toggle()">
+            <button [ngClass]="menuOpen ? 'menu-btn' : ''" type="button" mat-button (click)="drawer.toggle(); menuOpen= !menuOpen;">
                 <mat-icon>menu</mat-icon>
             </button>
         </mat-toolbar>
