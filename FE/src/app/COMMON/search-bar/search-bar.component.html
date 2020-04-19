@@ -1,8 +1,9 @@
 <div class="card-border mb-3">
     <div>
-        <mat-toolbar color="primary" class="form-toolbar mb-3">{{LABELS.HEADER}}</mat-toolbar>
+        <mat-toolbar color="primary" class="form-toolbar">
+            <mat-icon class="mr-1">search</mat-icon>{{LABELS.HEADER}}</mat-toolbar>
     </div>
-    <div class="p-3">
+    <div class="p-2 p-md-3">
         <form [formGroup]="searchForm" (ngSubmit)="search()">
             <div class="row">
                 <div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-3">
@@ -39,7 +40,7 @@
                         </mat-error>
                     </mat-form-field>
                     <div class="text-right">
-                        <button [disabled]='searchForm.invalid' type="submit" mat-raised-button color="primary">Search</button>
+                        <button [disabled]='searchForm.invalid' type="submit" mat-raised-button color="primary"><mat-icon class="mr-1">search</mat-icon>Search</button>
                     </div>
                 </div>
             </div>

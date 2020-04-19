@@ -1,23 +1,25 @@
-<div class="container-fluid pt-3">
+<div class="p-1 p-md-2 p-lg-3">
 
     <!-- body -->
-    <!-- <div *ngIf="!spinner" class="mt-5 pt-5">
+    <div *ngIf="!spinner" class="mt-5 pt-5">
         <mat-spinner class="m-auto"></mat-spinner>
-    </div> -->
+    </div>
 
-    <mat-card class="card-border p-0">
+    <mat-card *ngIf="spinner" class="card-border p-0">
         <div>
             <mat-toolbar class="form-toolbar" color="primary">
-                <mat-icon>add</mat-icon>
+                <mat-icon class="mr-1">add</mat-icon>
                 <span>Add Class</span>
             </mat-toolbar>
         </div>
 
         <div class="row m-0 justify-content-center">
             <div class="p-0 col-md-6 col-lg-4">
-                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
+                <mat-card class="card-border-top p-0 mat-elevation-z8 m-1 m-md-2 m-lg-3">
                     <div>
-                        <mat-toolbar color="primary" class="form-toolbar">Add Class</mat-toolbar>
+                        <mat-toolbar color="primary" class="form-toolbar">
+                            <mat-icon class="mr-1">add</mat-icon>
+                            <span> Add Class </span></mat-toolbar>
                     </div>
                     <div class="p-3">
                         <form [formGroup]="addClassForm" (ngSubmit)="addClass()">
@@ -48,7 +50,7 @@
                 </mat-card>
             </div>
             <div class="p-0 col-12 col-lg-8">
-                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
+                <mat-card class="card-border-top p-0 mat-elevation-z8 m-1 m-md-2 mt-lg-3 mr-lg-3 mb-lg-3 ml-lg-0">
                     <div>
                         <mat-toolbar class="form-toolbar" color="primary">All Classes</mat-toolbar>
                     </div>
