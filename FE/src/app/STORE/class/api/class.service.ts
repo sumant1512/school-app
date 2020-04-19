@@ -16,4 +16,9 @@ export class ClassService {
   fetchClass() {
     return this.http.get("http://localhost:8080/fetchClass");
   }
+
+  // service for deleting class
+  deleteClass(classDetail) {
+    return this.http.post("http://localhost:8080/deleteClass", classDetail);
+  }
 }

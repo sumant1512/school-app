@@ -5,6 +5,7 @@ export enum ClassActions {
   ADD_CLASS = "[Class] Add Class",
   FETCH_CLASS = "[Class] Fetch Class",
   FETCHED_CLASS = "[Class] Fetched Class",
+  DELETE_CLASS = "[Delete Class] Delete Class",
 }
 
 export class AddClass implements Action {
@@ -21,4 +22,13 @@ export class FetchedClass implements Action {
   constructor(public payload: ClassType[]) {}
 }
 
-export type ClassActionsUnion = AddClass | FetchClass | FetchedClass;
+export class DeleteClass implements Action {
+  readonly type = ClassActions.DELETE_CLASS;
+  constructor(public payload: object) {}
+}
+
+export type ClassActionsUnion =
+  | AddClass
+  | FetchClass
+  | FetchedClass
+  | DeleteClass;

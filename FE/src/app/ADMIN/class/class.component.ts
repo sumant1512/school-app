@@ -12,6 +12,7 @@ import { AppState } from "src/app/STORE/app.state";
 import { SectionType } from "src/app/STORE/section/types/section.type";
 import { ClassWithSectionService } from "src/app/STORE/class-with-section/api/class-with-section.service";
 import { ClassWithSectionType } from "src/app/STORE/class-with-section/types/class-with-section.type";
+import { ClassService } from "src/app/STORE/class/api/class.service";
 
 @Component({
   selector: "app-class",
@@ -27,7 +28,7 @@ export class ClassComponent implements OnInit {
   sectionList: SectionType[];
   constructor(
     private adminService: AdminService,
-    private classWithSectionService: ClassWithSectionService,
+    private classService: ClassService,
     private errorService: ErrorDialogFunctionsService,
     private store: Store<AppState>
   ) {
@@ -56,8 +57,10 @@ export class ClassComponent implements OnInit {
 
   // function to add class
   addClass() {
+    console.log("add class");
     const classDetail = this.addClassForm.value;
     this.store.dispatch(new ClassActions.AddClass(classDetail));
+    // this.getClassWithSection();
     this.resetForm();
   }
 
@@ -66,15 +69,7 @@ export class ClassComponent implements OnInit {
     var classDetail = {
       classId: classId,
     };
-    this.adminService.deleteClass(classDetail).subscribe((response) => {
-      if (response["status"] == true) {
-        this.fetchClass();
-        this.getClassWithSection();
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.store.dispatch(new ClassActions.DeleteClass(classDetail));
   }
 
   // function to get section list from store
@@ -87,6 +82,7 @@ export class ClassComponent implements OnInit {
 
   // function to get class with section
   getClassWithSection() {
+    console.log("cls with section")
     this.store.dispatch(new ClassWithSectionActions.FetchClassWithSection());
     this.store.select("classWithSectionList").subscribe((response) => {
       this.classWithSection = response.classWithSectionList;
@@ -102,15 +98,5 @@ export class ClassComponent implements OnInit {
     this.store.dispatch(
       new ClassWithSectionActions.RemoveSection(sectionDetail)
     );
-    // this.classWithSectionService
-    //   .removeSection(sectionDetail)
-    //   .subscribe((response) => {
-    //     if (response["status"] === true) {
-    //       this.getClassWithSection();
-    //       this.errorService.openErrorDialog(response["message"]);
-    //     } else {
-    //       this.errorService.openErrorDialog(response["message"]);
-    //     }
-    //   });
   }
 }
