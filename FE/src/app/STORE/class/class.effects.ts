@@ -4,28 +4,22 @@ import { Injectable } from "@angular/core";
 import {
   ClassActionsUnion,
   ClassActions,
-  AddClass,
   FetchClass,
   FetchedClass,
 } from "./class.actions";
+import { mergeMap, map } from "rxjs/operators";
 import {
-  mergeMap,
-  share,
-  filter,
-  map,
-  withLatestFrom,
-  switchMap,
-  mapTo,
-} from "rxjs/operators";
-import { Store, select } from "@ngrx/store";
-import { ClassType } from "./types/class.type";
-import { of } from "rxjs";
+  FetchedClassWithSection,
+  ClassWithSectionActions,
+} from "../class-with-section/class-with-section.actions";
+import { ClassWithSectionService } from "../class-with-section/api/class-with-section.service";
 
 @Injectable()
 export class ClassEffects {
   constructor(
     private action$: Actions<ClassActionsUnion>,
-    private classService: ClassService
+    private classService: ClassService,
+    private classWithSectionService: ClassWithSectionService
   ) {}
 
   @Effect()
@@ -52,7 +46,37 @@ export class ClassEffects {
     mergeMap((response) => {
       return response.pipe(
         map((res) => {
-          return new FetchedClass(res["data"]);
+          return new FetchedClass(res['data']);
+        })
+      );
+    })
+  );
+
+  @Effect()
+  fetchClassWithSection$ = this.action$.pipe(
+    ofType(ClassActions.FETCHED_CLASS),
+    map((action) => {
+      return this.classWithSectionService.fetchClassWithSection();
+    }),
+    mergeMap((response) => {
+      return response.pipe(
+        map((res) => {
+          return new FetchedClassWithSection(res["data"]);
+        })
+      );
+    })
+  );
+
+  @Effect()
+  deleteClass$ = this.action$.pipe(
+    ofType(ClassActions.DELETE_CLASS),
+    map((action) => {
+      return this.classService.deleteClass(action.payload);
+    }),
+    mergeMap((response) => {
+      return response.pipe(
+        map((res) => {
+          return new FetchClass();
         })
       );
     })

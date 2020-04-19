@@ -21,6 +21,7 @@ export class RemoveSection implements Action {
   constructor(public payload: object) {}
 }
 
+
 export type ClassWithSectionActionsUnion =
   | FetchClassWithSection
   | FetchedClassWithSection

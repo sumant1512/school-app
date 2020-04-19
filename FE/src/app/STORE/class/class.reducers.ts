@@ -1,5 +1,5 @@
-import { ClassType, ClassListType } from "./types/class.type";
 import { ClassActions, ClassActionsUnion } from "./class.actions";
+import { ClassListType } from "./types/class.type";
 
 const classInitialState: ClassListType = {
   classList: [],

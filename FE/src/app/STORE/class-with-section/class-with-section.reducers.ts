@@ -3,6 +3,7 @@ import {
   ClassWithSectionActions,
 } from "./class-with-section.actions";
 import { ClassWithSectionListType } from "./types/class-with-section.type";
+import { ClassWithSectionTransform } from './api/class-with-section.transform';
 
 const classWithSectionInitialState: ClassWithSectionListType = {
   classWithSectionList: [],
@@ -15,7 +16,7 @@ export function classWithSectionReducer(
   switch (action.type) {
     case ClassWithSectionActions.FETCHED_CLASS_WITH_SECTION:
       return {
-        classWithSectionList: action.payload,
+        classWithSectionList: ClassWithSectionTransform(action.payload),
       };
     default:
       return state;

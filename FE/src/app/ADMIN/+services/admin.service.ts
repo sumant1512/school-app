@@ -7,11 +7,6 @@ import { HttpClient } from "@angular/common/http";
 export class AdminService {
   constructor(private http: HttpClient) {}
 
-  // service for deleting class
-  deleteClass(classDetail) {
-    return this.http.post("http://localhost:8080/deleteClass", classDetail);
-  }
-
   // service for adding exam
   addExam(examDetail) {
     return this.http.post("http://localhost:8080/addExam", examDetail);
