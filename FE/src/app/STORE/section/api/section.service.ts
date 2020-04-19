@@ -16,4 +16,9 @@ export class SectionService {
   fetchSection() {
     return this.http.get("http://localhost:8080/fetchSection");
   }
+
+  // service for deleting section
+  deleteSection(sectionDetail) {
+    return this.http.post("http://localhost:8080/deleteSection", sectionDetail);
+  }
 }

@@ -57,10 +57,8 @@ export class ClassComponent implements OnInit {
 
   // function to add class
   addClass() {
-    console.log("add class");
     const classDetail = this.addClassForm.value;
     this.store.dispatch(new ClassActions.AddClass(classDetail));
-    // this.getClassWithSection();
     this.resetForm();
   }
 
@@ -82,7 +80,6 @@ export class ClassComponent implements OnInit {
 
   // function to get class with section
   getClassWithSection() {
-    console.log("cls with section")
     this.store.dispatch(new ClassWithSectionActions.FetchClassWithSection());
     this.store.select("classWithSectionList").subscribe((response) => {
       this.classWithSection = response.classWithSectionList;
