@@ -1,12 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { AdminService } from "../../+services/admin.service";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
-import { ClassService } from 'src/app/STORE/class/api/class.service';
+import { ClassService } from "src/app/STORE/class/api/class.service";
+import { SubjectService } from "src/app/STORE/subject/api/subject.service";
 
 @Component({
   selector: "app-assinged-subject",
   templateUrl: "./assinged-subject.component.html",
-  styleUrls: ["./assinged-subject.component.css"]
+  styleUrls: ["./assinged-subject.component.css"],
 })
 export class AssingedSubjectComponent implements OnInit {
   classList: object[];
@@ -17,6 +18,7 @@ export class AssingedSubjectComponent implements OnInit {
   constructor(
     private adminService: AdminService,
     private classService: ClassService,
+    private subjectService: SubjectService,
     private errorService: ErrorDialogFunctionsService
   ) {}
 
@@ -27,7 +29,7 @@ export class AssingedSubjectComponent implements OnInit {
 
   // function to get class list
   fetchClass() {
-    this.classService.fetchClass().subscribe(response => {
+    this.classService.fetchClass().subscribe((response) => {
       if (response["status"] === true) {
         this.classList = response["data"];
         this.spinner = true;
@@ -39,7 +41,7 @@ export class AssingedSubjectComponent implements OnInit {
 
   // function to get all subjects
   getSubject() {
-    this.adminService.getSubject().subscribe(response => {
+    this.subjectService.fetchSubject().subscribe((response) => {
       if (response["status"] === true) {
         this.subjectList = response["data"];
       } else {
@@ -50,7 +52,7 @@ export class AssingedSubjectComponent implements OnInit {
 
   // function to get class with subjets
   getClassWithSubject() {
-    this.adminService.getClassWithSubject().subscribe(response => {
+    this.adminService.getClassWithSubject().subscribe((response) => {
       if (response["status"] === true) {
         this.classWithSubject = response["data"];
       } else {
@@ -63,9 +65,9 @@ export class AssingedSubjectComponent implements OnInit {
   removeSubject(classId, subjectId) {
     let subjectDetail = {
       classId: classId,
-      subjectId: subjectId
+      subjectId: subjectId,
     };
-    this.adminService.removeSubject(subjectDetail).subscribe(response => {
+    this.adminService.removeSubject(subjectDetail).subscribe((response) => {
       if (response["status"] === true) {
         this.fetchClass();
         this.getClassWithSubject();

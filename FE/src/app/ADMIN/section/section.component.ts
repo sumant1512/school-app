@@ -68,14 +68,6 @@ export class SectionComponent implements OnInit {
       sectionId: sectionId,
     };
     this.store.dispatch(new SectionActions.DeleteSection(sectionDetail));
-    // this.adminService.deleteSection(sectionDetail).subscribe((response) => {
-    //   if (response["status"] === true) {
-    //     this.sectionList = response["data"];
-    //     this.errorService.openErrorDialog(response["message"]);
-    //   } else {
-    //     this.errorService.openErrorDialog(response["message"]);
-    //   }
-    // });
   }
 
   // function to assign section to class

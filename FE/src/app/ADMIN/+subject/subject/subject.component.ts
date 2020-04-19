@@ -1,21 +1,20 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  FormGroup,
-  Validators,
-  FormBuilder,
-  FormControl
-} from "@angular/forms";
-import { AdminService } from "../../+services/admin.service";
+import { FormGroup, FormControl } from "@angular/forms";
 import { MatDialog } from "@angular/material";
 import { AssignToClassType } from "src/app/COMMON/assign-dialog-common/assign-dialog.type";
 import { AssignDialogCommonComponent } from "src/app/COMMON/assign-dialog-common/assign-dialog-common.component";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
-import { ClassService } from 'src/app/STORE/class/api/class.service';
+import { SubjectService } from "src/app/STORE/subject/api/subject.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/STORE/app.state";
+import * as ClassActions from "src/app/STORE/class/class.actions";
+import * as SubjectActions from "src/app/STORE/subject/subject.actions";
+import { addSubjectForm } from "./subject.utils";
 
 @Component({
   selector: "app-subject",
   templateUrl: "./subject.component.html",
-  styleUrls: ["./subject.component.css"]
+  styleUrls: ["./subject.component.css"],
 })
 export class SubjectComponent implements OnInit {
   addSubjectForm: FormGroup;
@@ -27,26 +26,18 @@ export class SubjectComponent implements OnInit {
   assignData: AssignToClassType;
 
   constructor(
-    private adminService: AdminService,
-    private classService: ClassService,
+    private subjectService: SubjectService,
     private dialog: MatDialog,
-    private errorService: ErrorDialogFunctionsService
+    private errorService: ErrorDialogFunctionsService,
+    private store: Store<AppState>
   ) {
-    this.addSubjectForm = new FormGroup({
-      subjectName: new FormControl("", Validators.required),
-      selectedClass: new FormControl("")
-    });
+    this.addSubjectForm = addSubjectForm();
   }
 
   ngOnInit() {
     this.updateSubjectId = 0;
-    this.getSubject(); // to get subject list on page load
+    this.fetchSubject(); // to get subject list on page load
     this.fetchClass(); // to get class list on page load
-  }
-
-  // this is for form validation
-  get validation() {
-    return this.addSubjectForm.controls;
   }
 
   // function to reset subject form
@@ -57,12 +48,9 @@ export class SubjectComponent implements OnInit {
 
   // function to get class list for dropdown
   fetchClass() {
-    this.classService.fetchClass().subscribe(response => {
-      if (response["status"] === true) {
-        this.classList = response["data"];
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+    this.store.dispatch(new ClassActions.FetchClass());
+    this.store.select("classList").subscribe((response) => {
+      this.classList = response.classList;
     });
   }
 
@@ -78,24 +66,16 @@ export class SubjectComponent implements OnInit {
   // function to add subject
   addSubject() {
     var subjectDetail = this.addSubjectForm.value;
-    this.adminService.addSubject(subjectDetail).subscribe(response => {
-      if (response["status"] === true) {
-        this.subjectList = response["data"];
-        this.resetExamForm();
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.store.dispatch(new SubjectActions.AddSubject(subjectDetail));
   }
 
   // function to update subject
   updateSubject() {
     const subjectDetail = {
       subjectId: this.updateSubjectId,
-      subjectName: this.addSubjectForm.value.subjectName
+      subjectName: this.addSubjectForm.value.subjectName,
     };
-    this.adminService.updateSubject(subjectDetail).subscribe(response => {
+    this.subjectService.updateSubject(subjectDetail).subscribe((response) => {
       if (response["status"]) {
         this.subjectList = response["data"];
         this.resetExamForm();
@@ -106,31 +86,21 @@ export class SubjectComponent implements OnInit {
     });
   }
 
-  // function to get subject list
-  getSubject() {
-    this.adminService.getSubject().subscribe(response => {
-      if (response["status"] === true) {
-        this.subjectList = response["data"];
-        this.spinner = true;
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+  // function to fetch subject list
+  fetchSubject() {
+    this.store.dispatch(new SubjectActions.FetchSubject());
+    this.store.select("subjectList").subscribe((response) => {
+      this.subjectList = response.subjectList;
+      this.spinner = true;
     });
   }
 
   // function to delete subject
   deleteSubject(subjectId) {
     var subjectDetail = {
-      subjectId: subjectId
+      subjectId: subjectId,
     };
-    this.adminService.deleteSubject(subjectDetail).subscribe(response => {
-      if (response["status"] === true) {
-        this.subjectList = response["data"];
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.store.dispatch(new SubjectActions.DeleteSubject(subjectDetail));
   }
 
   // function to activate add or update
@@ -155,14 +125,14 @@ export class SubjectComponent implements OnInit {
       name_to_be_assinged: subjectName,
       property_to_be_assinged: "subject",
       table_name: "class_with_subjects",
-      row_name: "subject_id"
+      row_name: "subject_id",
     };
     const dialogRef = this.dialog.open(AssignDialogCommonComponent, {
       width: "500px",
-      data: this.assignData
+      data: this.assignData,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log("Assign dialog closed");
     });
   }

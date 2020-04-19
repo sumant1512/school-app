@@ -418,8 +418,8 @@ app.post('/updateSubject', function(request, response) {
     });
 })
 
-// Api for getting all subjects
-app.get('/getSubject', function(request, response) {
+// Api for fetching all subjects
+app.get('/fetchSubject', function(request, response) {
     con.query("SELECT * FROM subjects", function(err, rows, result) {
         if (err) {
             console.log(err);
