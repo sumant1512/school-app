@@ -1,8 +1,6 @@
 import { Component, OnInit, VERSION } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { addClassForm } from "./class.utils";
-import { AdminService } from "../+services/admin.service";
-import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { Store } from "@ngrx/store";
 import { ClassType } from "../class-section-subject-exam-chart/class-section.type";
 import * as ClassActions from "../../STORE/class/class.actions";
@@ -10,9 +8,7 @@ import * as SectionActions from "../../STORE/section/section.actions";
 import * as ClassWithSectionActions from "../../STORE/class-with-section/class-with-section.actions";
 import { AppState } from "src/app/STORE/app.state";
 import { SectionType } from "src/app/STORE/section/types/section.type";
-import { ClassWithSectionService } from "src/app/STORE/class-with-section/api/class-with-section.service";
 import { ClassWithSectionType } from "src/app/STORE/class-with-section/types/class-with-section.type";
-import { ClassService } from "src/app/STORE/class/api/class.service";
 
 @Component({
   selector: "app-class",
@@ -26,12 +22,7 @@ export class ClassComponent implements OnInit {
   classWithSection: ClassWithSectionType[];
   message: string;
   sectionList: SectionType[];
-  constructor(
-    private adminService: AdminService,
-    private classService: ClassService,
-    private errorService: ErrorDialogFunctionsService,
-    private store: Store<AppState>
-  ) {
+  constructor(private store: Store<AppState>) {
     this.addClassForm = addClassForm();
   }
 
@@ -52,6 +43,7 @@ export class ClassComponent implements OnInit {
     this.store.dispatch(new ClassActions.FetchClass());
     this.store.select("classList").subscribe((response) => {
       this.classList = response.classList;
+      this.spinner = true;
     });
   }
 
