@@ -513,6 +513,21 @@ app.post('/addCategory', function(request, response) {
     })
 })
 
+// Api to update category name
+app.post('/updateCategory', function(request, response) {
+    const categoryId = request.body.categoryId;
+    const categoryName = request.body.categoryName;
+    const updatedOn = new Date();
+    con.query("UPDATE category SET category_name = ?, last_updated_on = ? WHERE category_id = ?;", [categoryName, updatedOn, categoryId, ], function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, message: "Category name updated" });
+        }
+    });
+})
+
 // Api for fetching category list
 app.get('/fetchCategory', function(request, response) {
     con.query("SELECT * FROM category", function(err, rows, result) {
@@ -627,8 +642,7 @@ app.post('/updateHouse', function(request, response) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });
         } else {
-            response.status(200).send({ status: true, message: "Subject name updated", data: result });
-
+            response.status(200).send({ status: true, message: "Subject name updated" });
         }
     });
 })
