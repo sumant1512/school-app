@@ -14,6 +14,8 @@ export class ReligionComponent implements OnInit {
   addReligionForm: FormGroup;
   religionList: object[];
   spinner: boolean = false;
+  update: boolean = false;
+  updateReligionId: number;
 
   constructor(private store: Store<AppState>) {
     this.addReligionForm = addReligionForm();
@@ -29,10 +31,25 @@ export class ReligionComponent implements OnInit {
     this.addReligionForm.markAsUntouched();
   }
 
+  // function to call add or update
+  religion() {
+    this.update ? this.updateReligion() : this.addReligion();
+  }
+
   // function to add religion
   addReligion() {
     var religionDetail = this.addReligionForm.value;
     this.store.dispatch(new ReligionActions.AddReligion(religionDetail));
+  }
+
+  // function to update religion
+  updateReligion() {
+    const religionDetail = {
+      religionId: this.updateReligionId,
+      religionName: this.addReligionForm.value.religionName,
+    };
+    this.store.dispatch(new ReligionActions.UpdateReligion(religionDetail));
+    this.resetForm();
   }
 
   // function to fetch religion list
@@ -44,9 +61,23 @@ export class ReligionComponent implements OnInit {
     });
   }
 
-  // function to delete category
+  // function to delete religion
   deleteReligion(religionId) {
     var religionDetail = { religionId: religionId };
     this.store.dispatch(new ReligionActions.DeleteReligion(religionDetail));
+  }
+
+  // function to activate add or update
+  addReligionFormOpen() {
+    this.update = false;
+    this.resetForm();
+  }
+
+  // function to edit Religion name
+  editReligion(religionId, religionName) {
+    this.update = true;
+    console.log(this.update);
+    this.updateReligionId = religionId;
+    this.addReligionForm.get("religionName").setValue(religionName);
   }
 }

@@ -578,6 +578,21 @@ app.post('/addReligion', function(request, response) {
             });
         }
     })
+});
+
+// Api to update religion name
+app.post('/updateReligion', function(request, response) {
+    const religionId = request.body.religionId;
+    const religionName = request.body.religionName;
+    const updatedOn = new Date();
+    con.query("UPDATE religion SET religion_name = ?, last_updated_on = ? WHERE religion_id = ?;", [religionName, updatedOn, religionId, ], function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, message: "Religion name updated" });
+        }
+    });
 })
 
 // Api for fetching religion list
@@ -590,7 +605,7 @@ app.get('/fetchReligion', function(request, response) {
             response.status(200).send({ status: true, data: rows });
         }
     });
-})
+});
 
 // Api for deleting religion
 app.post('/deleteReligion', function(request, response) {
@@ -609,7 +624,7 @@ app.post('/deleteReligion', function(request, response) {
             });
         }
     });
-})
+});
 
 // Api for adding house
 app.post('/addHouse', function(request, response) {
