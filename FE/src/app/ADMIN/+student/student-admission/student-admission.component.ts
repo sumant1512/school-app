@@ -6,7 +6,7 @@ import {
   FormControl,
   FormGroupDirective,
   NgForm,
-  FormArray
+  FormArray,
 } from "@angular/forms";
 import { StudentService } from "../../+services/student.service";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -15,12 +15,16 @@ import { studentAdmissionForm, documentForm } from "./student-admission.utils";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { CONSTANTS } from "src/app/COMMON/constant";
 import { DomSanitizer } from "@angular/platform-browser";
-import { ClassService } from 'src/app/STORE/class/api/class.service';
+import { ClassService } from "src/app/STORE/class/api/class.service";
+import { AppState } from "src/app/STORE/app.state";
+import { Store } from "@ngrx/store";
+import * as HouseActions from "../../../STORE/house/house.actions";
+import * as ClassActions from "../../../STORE/class/class.actions";
 
 @Component({
   selector: "app-student-admission",
   templateUrl: "./student-admission.component.html",
-  styleUrls: ["./student-admission.component.css"]
+  styleUrls: ["./student-admission.component.css"],
 })
 export class StudentAdmissionComponent implements OnInit {
   today = new Date();
@@ -56,7 +60,8 @@ export class StudentAdmissionComponent implements OnInit {
     private router: Router,
     private activatedPath: ActivatedRoute,
     private errorService: ErrorDialogFunctionsService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private store: Store<AppState>
   ) {
     this.studentAdmissionForm = studentAdmissionForm();
   }
@@ -65,39 +70,38 @@ export class StudentAdmissionComponent implements OnInit {
     this.fetchClass();
     this.getCategory();
     this.getReligion();
-    this.getHouse();
+    this.fetchHouse();
     // this.getBusRoutes(); // to get all bus route
   }
 
   // function to get class list
   fetchClass() {
-    this.classService.fetchClass().subscribe(response => {
-      if (response["status"] === true) {
-        this.classList = response["data"];
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+    this.store.dispatch(new ClassActions.FetchClass());
+    this.store.select("classList").subscribe((response) => {
+      this.classList = response.classList;
     });
   }
 
   getSectionForClass(classId) {
     var selectedClass = {
-      classId: classId
+      classId: classId,
     };
-    this.adminService.getSectionForClass(selectedClass).subscribe(response => {
-      if (response["status"] === true) {
-        if (response["data"] == "") {
-          this.errorService.openErrorDialog(
-            "Sections for this class is not added.Please add Sections"
-          );
-          this.router.navigate(["section"]);
+    this.adminService
+      .getSectionForClass(selectedClass)
+      .subscribe((response) => {
+        if (response["status"] === true) {
+          if (response["data"] == "") {
+            this.errorService.openErrorDialog(
+              "Sections for this class is not added.Please add Sections"
+            );
+            this.router.navigate(["section"]);
+          } else {
+            this.sectionForSelectedClass = response["data"];
+          }
         } else {
-          this.sectionForSelectedClass = response["data"];
+          this.errorService.openErrorDialog(response["message"]);
         }
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+      });
     // this.checkFeeStructureByClass(selectedClass);
   }
 
@@ -122,7 +126,7 @@ export class StudentAdmissionComponent implements OnInit {
 
   // function to get category list
   getCategory() {
-    this.adminService.getCategory().subscribe(response => {
+    this.adminService.getCategory().subscribe((response) => {
       if (response["status"] === true) {
         this.categoryList = response["data"];
       } else {
@@ -133,7 +137,7 @@ export class StudentAdmissionComponent implements OnInit {
 
   // function to get religion list
   getReligion() {
-    this.adminService.getReligion().subscribe(response => {
+    this.adminService.getReligion().subscribe((response) => {
       if (response["status"] === true) {
         this.religionList = response["data"];
       } else {
@@ -142,14 +146,11 @@ export class StudentAdmissionComponent implements OnInit {
     });
   }
 
-  // function to get house list
-  getHouse() {
-    this.adminService.getHouse().subscribe(response => {
-      if (response["status"] === true) {
-        this.houseList = response["data"];
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+  // function to fetch house list
+  fetchHouse() {
+    this.store.dispatch(new HouseActions.FetchHouse());
+    this.store.select("houseList").subscribe((response) => {
+      this.houseList = response.houseList;
     });
   }
 
@@ -271,12 +272,14 @@ export class StudentAdmissionComponent implements OnInit {
     this.studentAdmissionForm.value.studentFatherImage = this.studentFatherImageUrl;
     this.studentAdmissionForm.value.studentMotherImage = this.studentMotherImageUrl;
     this.studentAdmissionForm.value.guardianImage = this.guardianImageUrl;
-    this.studentService.studentAdmission(studentDetail).subscribe(response => {
-      if (response["status"] === true) {
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.studentService
+      .studentAdmission(studentDetail)
+      .subscribe((response) => {
+        if (response["status"] === true) {
+          this.errorService.openErrorDialog(response["message"]);
+        } else {
+          this.errorService.openErrorDialog(response["message"]);
+        }
+      });
   }
 }

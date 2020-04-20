@@ -41,7 +41,7 @@ export class SubjectComponent implements OnInit {
   }
 
   // function to reset subject form
-  resetExamForm() {
+  resetForm() {
     this.addSubjectForm.reset();
     this.addSubjectForm.markAsUntouched();
   }
@@ -56,11 +56,7 @@ export class SubjectComponent implements OnInit {
 
   // function to call add or update
   subject() {
-    if (this.update) {
-      this.updateSubject();
-    } else {
-      this.addSubject();
-    }
+    this.update ? this.updateSubject() : this.addSubject();
   }
 
   // function to add subject
@@ -76,16 +72,7 @@ export class SubjectComponent implements OnInit {
       subjectName: this.addSubjectForm.value.subjectName,
     };
     this.store.dispatch(new SubjectActions.UpdateSubject(subjectDetail));
-    this.resetExamForm();
-    // this.subjectService.updateSubject(subjectDetail).subscribe((response) => {
-    //   if (response["status"]) {
-    //     this.subjectList = response["data"];
-    //     this.resetExamForm();
-    //     this.errorService.openErrorDialog(response["message"]);
-    //   } else {
-    //     this.errorService.openErrorDialog(response["message"]);
-    //   }
-    // });
+    this.resetForm();
   }
 
   // function to fetch subject list
@@ -106,9 +93,9 @@ export class SubjectComponent implements OnInit {
   }
 
   // function to activate add or update
-  addSubjectFormOpenOrClose() {
+  addSubjectFormOpen() {
     this.update = false;
-    this.resetExamForm();
+    this.resetForm();
     this.addSubjectForm.addControl("selectedClass", new FormControl(""));
   }
 

@@ -6,6 +6,7 @@ import { sectionReducer } from "./section/section.reducers";
 import { classWithSectionReducer } from "./class-with-section/class-with-section.reducers";
 import { subjectReducer } from "./subject/subject.reducers";
 import { examReducer } from "./exam/exam.reducers";
+import { houseReducer } from "./house/house.reducers";
 
 export const appReducers: ActionReducerMap<AppState> = {
   classList: classReducer,
@@ -13,4 +14,5 @@ export const appReducers: ActionReducerMap<AppState> = {
   classWithSectionList: classWithSectionReducer,
   subjectList: subjectReducer,
   examList: examReducer,
+  houseList: houseReducer,
 };

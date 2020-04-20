@@ -3,10 +3,12 @@ import { SectionActionsUnion } from "./section/section.actions";
 import { ClassWithSectionActionsUnion } from "./class-with-section/class-with-section.actions";
 import { SubjectActionsUnion } from "./subject/subject.actions";
 import { ExamActionsUnion } from "./exam/exam.actions";
+import { HouseActionsUnion } from "./house/house.actions";
 
 export type AppActionsUnion =
   | ClassActionsUnion
   | SectionActionsUnion
   | ClassWithSectionActionsUnion
   | SubjectActionsUnion
-  | ExamActionsUnion;
+  | ExamActionsUnion
+  | HouseActionsUnion;

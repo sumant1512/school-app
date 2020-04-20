@@ -14,7 +14,7 @@
         </div>
 
         <div class="mt-1 mr-0 mr-xs-0 mr-sm-3 mr-md-3 mr-lg-3  text-center text-xs-right text-sm-right text-md-right text-lg-right">
-            <button [disabled]='!update' class="ml-1" (click)="addSubjectFormOpenOrClose()" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
+            <button [disabled]='!update' class="ml-1" (click)="addSubjectFormOpen()" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
         </div>
 
         <div class="row m-0 justify-content-center">
@@ -43,13 +43,11 @@
                             <div class="row m-0">
                                 <div class="col-12 col-sm-12 text-md-center text-right text-lg-right">
                                     <div *ngIf="update; else add">
-                                        <mat-error *ngIf="addSubjectForm.get('subjectName').invalid && addSubjectForm.get('subjectName').touched">
-                                            <div> Subject Name is <strong>required*</strong></div>
-                                        </mat-error>
                                         <button mat-raised-button color="primary"><mat-icon class="mr-1">update</mat-icon>Update</button>
                                     </div>
                                     <ng-template #add>
-                                        <button [disabled]="addSubjectForm.invalid" mat-raised-button color="primary"><mat-icon>add</mat-icon>Add</button> </ng-template>
+                                        <button [disabled]="addSubjectForm.invalid" mat-raised-button color="primary"><mat-icon>add</mat-icon>Add</button>
+                                    </ng-template>
                                 </div>
                             </div>
                         </form>

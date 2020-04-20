@@ -87,21 +87,6 @@ export class AdminService {
     );
   }
 
-  // service for adding house
-  addHouse(houseDetail) {
-    return this.http.post("http://localhost:8080/addHouse", houseDetail);
-  }
-
-  // service for getting House list
-  getHouse() {
-    return this.http.get("http://localhost:8080/getHouse");
-  }
-
-  // service for deleting House
-  deleteHouse(houseDetail) {
-    return this.http.post("http://localhost:8080/deleteHouse", houseDetail);
-  }
-
   // service for adding Bus
   addBus(busDetail) {
     return this.http.post("http://localhost:8080/addBus", busDetail);
