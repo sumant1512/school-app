@@ -75,15 +75,17 @@ export class SubjectComponent implements OnInit {
       subjectId: this.updateSubjectId,
       subjectName: this.addSubjectForm.value.subjectName,
     };
-    this.subjectService.updateSubject(subjectDetail).subscribe((response) => {
-      if (response["status"]) {
-        this.subjectList = response["data"];
-        this.resetExamForm();
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.store.dispatch(new SubjectActions.UpdateSubject(subjectDetail));
+    this.resetExamForm();
+    // this.subjectService.updateSubject(subjectDetail).subscribe((response) => {
+    //   if (response["status"]) {
+    //     this.subjectList = response["data"];
+    //     this.resetExamForm();
+    //     this.errorService.openErrorDialog(response["message"]);
+    //   } else {
+    //     this.errorService.openErrorDialog(response["message"]);
+    //   }
+    // });
   }
 
   // function to fetch subject list

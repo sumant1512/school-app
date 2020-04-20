@@ -158,20 +158,14 @@ app.post('/updateExam', function(request, response) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });
         } else {
-            con.query("select * from exam", function(err, result, fields) {
-                if (err) {
-                    console.log(err);
-                    response.status(200).send({ status: false, message: err.sqlMessage });
-                } else {
-                    response.status(200).send({ status: true, message: "Exam name updated", data: result });
-                }
-            });
+            response.status(200).send({ status: true, message: "Exam name updated", data: result });
+
         }
     });
 })
 
-// Api to get all exam
-app.get('/getExam', function(request, response) {
+// Api to fetch all exam
+app.get('/fetchExam', function(request, response) {
     con.query("select * from exam", function(err, result, fields) {
         if (err) {
             console.log(err);

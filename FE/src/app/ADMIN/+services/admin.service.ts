@@ -7,26 +7,6 @@ import { HttpClient } from "@angular/common/http";
 export class AdminService {
   constructor(private http: HttpClient) {}
 
-  // service for adding exam
-  addExam(examDetail) {
-    return this.http.post("http://localhost:8080/addExam", examDetail);
-  }
-
-  // service for adding exam
-  updateExam(examDetail) {
-    return this.http.post("http://localhost:8080/updateExam", examDetail);
-  }
-
-  // service for getting exam
-  getExam() {
-    return this.http.get("http://localhost:8080/getExam");
-  }
-
-  // service for deleting exam
-  deleteExam(examDetail) {
-    return this.http.post("http://localhost:8080/deleteExam", examDetail);
-  }
-
   // service for getting class with exam
   getClassWithExam() {
     return this.http.get("http://localhost:8080/getClassWithExam");
