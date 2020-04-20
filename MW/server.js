@@ -617,8 +617,24 @@ app.post('/addHouse', function(request, response) {
     })
 })
 
-// Api for getting House list
-app.get('/getHouse', function(request, response) {
+// Api to update house name
+app.post('/updateHouse', function(request, response) {
+    const houseId = request.body.houseId;
+    const houseName = request.body.houseName;
+    const updatedOn = new Date();
+    con.query("UPDATE house SET house_name = ?, last_updated_on = ? WHERE house_id = ?;", [houseName, updatedOn, houseId, ], function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, message: "Subject name updated", data: result });
+
+        }
+    });
+})
+
+// Api for fetching House list
+app.get('/fetchHouse', function(request, response) {
     con.query("SELECT * FROM house", function(err, rows, result) {
         if (err) {
             console.log(err);

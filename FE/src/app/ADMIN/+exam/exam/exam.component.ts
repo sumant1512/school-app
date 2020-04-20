@@ -59,11 +59,7 @@ export class ExamComponent implements OnInit {
 
   // function to call add or update
   exam() {
-    if (this.update) {
-      this.updateExam();
-    } else {
-      this.addExam();
-    }
+    this.update ? this.updateExam() : this.addExam();
   }
 
   // function to reset exam

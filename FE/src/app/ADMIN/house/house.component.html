@@ -13,14 +13,18 @@
             </mat-toolbar>
         </div>
 
+        <div class="my-1 mr-0 mr-xs-0 mr-sm-1 mr-md-2 mr-lg-3  text-center text-xs-right text-sm-right text-md-right text-lg-right">
+            <button [disabled]='!update' class="ml-1" (click)="addHouseFormOpen()" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
+        </div>
+
         <div class="row m-0 justify-content-center">
             <div class="p-0 col-md-6 col-lg-4">
-                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
+                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3 m-md-2 mb-lg-3 ml-lg-3 mr-lg-3 mt-lg-0">
                     <div>
                         <mat-toolbar color="primary" class="form-toolbar">Add House</mat-toolbar>
                     </div>
                     <div class="p-3">
-                        <form [formGroup]="addHouseForm" (ngSubmit)="addHouse()">
+                        <form [formGroup]="addHouseForm" (ngSubmit)="house()">
                             <div>
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>House name*</mat-label>
@@ -32,7 +36,12 @@
                             </div>
                             <div class="row">
                                 <div class="col-12 col-sm-12 text-md-center text-right text-lg-right">
-                                    <button [disabled]="addHouseForm.invalid" mat-raised-button color="primary"><mat-icon>add</mat-icon>Add</button>
+                                    <div *ngIf="update; else add">
+                                        <button [disabled]="addHouseForm.invalid" mat-raised-button color="primary"><mat-icon class="mr-1">update</mat-icon>Update</button>
+                                    </div>
+                                    <ng-template #add>
+                                        <button [disabled]="addHouseForm.invalid" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
+                                    </ng-template>
                                 </div>
                             </div>
                         </form>
@@ -40,7 +49,7 @@
                 </mat-card>
             </div>
             <div class="p-0 col-12 col-lg-8">
-                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
+                <mat-card class="card-border-top p-0 mat-elevation-z8 m-1 m-md-2 mt-lg-0 mr-lg-3 mb-lg-3 ml-lg-0">
                     <div>
                         <mat-toolbar color="primary" class="form-toolbar">All House</mat-toolbar>
                     </div>
@@ -54,6 +63,7 @@
                         </div>
                         <div class="col-6">
                             <mat-icon matTooltip="Delete" matTooltipPosition="left" matTooltipClass="bg-danger" (click)="deleteHouse(house.house_id)">delete</mat-icon>
+                            <mat-icon matTooltip="Edit" matTooltipPosition="right" matTooltipClass="bg-primary" (click)="editHouse(house.house_id,house.house_name)">edit</mat-icon>
                         </div>
                     </div>
                 </mat-card>
