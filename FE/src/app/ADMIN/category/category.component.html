@@ -13,51 +13,62 @@
                 <span>Add Category</span>
             </mat-toolbar>
         </div>
-
-        <div class="row m-0 justify-content-center">
-            <div class="p-0 col-md-6 col-lg-4">
-                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
-                    <div>
-                        <mat-toolbar color="primary" class="form-toolbar">Add Category</mat-toolbar>
-                    </div>
-                    <div class="p-3">
-                        <form [formGroup]="addCategoryForm" (ngSubmit)="addCategory()">
-                            <div class="formStyle">
-                                <mat-form-field class="w-100" appearance="outline">
-                                    <mat-label>Category name*</mat-label>
-                                    <input formControlName="categoryName" matInput placeholder="Category name*">
-                                    <mat-error *ngIf="addCategoryForm.get('categoryName').invalid && addCategoryForm.get('categoryName').touched">
-                                        <div> Category is <strong>required*</strong></div>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-12 text-md-center text-right text-lg-right">
-                                    <button [disabled]="addCategoryForm.invalid" mat-raised-button color="primary"><mat-icon>add</mat-icon>Add</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </mat-card>
+        <div class="my-2">
+            <div class="my-1 mr-0 mr-xs-0 mr-sm-1 mr-md-2 mr-lg-3  text-center text-xs-right text-sm-right text-md-right text-lg-right">
+                <button [disabled]='!update' class="ml-1" (click)="addCategoryFormOpen()" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
             </div>
-            <div class="p-0 col-12 col-lg-8">
-                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
-                    <div>
-                        <mat-toolbar color="primary" class="form-toolbar">All Category</mat-toolbar>
-                    </div>
-                    <div class="row mx-0 pt-3">
-                        <div class="col-6"><b> Category </b></div>
-                        <div class="col-6"><b> Action </b></div>
-                    </div>
-                    <div class="row mx-0" *ngFor="let category of categoryList">
-                        <div class="col-6">
-                            {{category.category_name}}
+
+            <div class="row m-0 justify-content-center">
+                <div class="p-0 col-md-6 col-lg-4">
+                    <mat-card class="card-border-top p-0 mat-elevation-z8 m-1 m-md-2 mb-lg-3 ml-lg-3 mr-lg-3 mt-lg-0">
+                        <div>
+                            <mat-toolbar color="primary" class="form-toolbar">Add Category</mat-toolbar>
                         </div>
-                        <div class="col-6">
-                            <mat-icon matTooltip="Delete" matTooltipPosition="left" matTooltipClass="bg-danger" (click)="deleteCategory(category.category_id)">delete</mat-icon>
+                        <div class="p-3">
+                            <form [formGroup]="addCategoryForm" (ngSubmit)="category()">
+                                <div class="formStyle">
+                                    <mat-form-field class="w-100" appearance="outline">
+                                        <mat-label>Category name*</mat-label>
+                                        <input formControlName="categoryName" matInput placeholder="Category name*">
+                                        <mat-error *ngIf="addCategoryForm.get('categoryName').invalid && addCategoryForm.get('categoryName').touched">
+                                            <div> Category is <strong>required*</strong></div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 text-md-center text-right text-lg-right">
+                                        <div *ngIf="update; else add">
+                                            <button [disabled]="addCategoryForm.invalid" mat-raised-button color="primary"><mat-icon class="mr-1">update</mat-icon>Update</button>
+                                        </div>
+                                        <ng-template #add>
+                                            <button [disabled]="addCategoryForm.invalid" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </div>
-                </mat-card>
+                    </mat-card>
+                </div>
+                <div class="p-0 col-12 col-lg-8">
+                    <mat-card class="card-border-top p-0 mat-elevation-z8 m-1 m-md-2 mt-lg-0 mr-lg-3 mb-lg-3 ml-lg-0">
+                        <div>
+                            <mat-toolbar color="primary" class="form-toolbar">All Category</mat-toolbar>
+                        </div>
+                        <div class="row mx-0 pt-3">
+                            <div class="col-6"><b> Category </b></div>
+                            <div class="col-6"><b> Action </b></div>
+                        </div>
+                        <div class="row mx-0" *ngFor="let category of categoryList">
+                            <div class="col-6">
+                                {{category.category_name}}
+                            </div>
+                            <div class="col-6">
+                                <mat-icon matTooltip="Delete" matTooltipPosition="left" matTooltipClass="bg-danger" (click)="deleteCategory(category.category_id)">delete</mat-icon>
+                                <mat-icon matTooltip="Edit" matTooltipPosition="right" matTooltipClass="bg-primary" (click)="editCategory(category.category_id,category.category_name)">edit</mat-icon>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
             </div>
         </div>
     </mat-card>

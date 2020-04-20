@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormControl } from "@angular/forms";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/STORE/app.state";
 import * as ReligionActions from "../../STORE/religion/religion.actions";
+import { addReligionForm } from "./religion.utils";
 
 @Component({
   selector: "app-religion",
@@ -15,9 +16,7 @@ export class ReligionComponent implements OnInit {
   spinner: boolean = false;
 
   constructor(private store: Store<AppState>) {
-    this.addReligionForm = new FormGroup({
-      religionName: new FormControl("", Validators.required),
-    });
+    this.addReligionForm = addReligionForm();
   }
 
   ngOnInit() {
