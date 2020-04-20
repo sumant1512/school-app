@@ -1,29 +1,27 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, Validators, FormControl } from "@angular/forms";
-import { AdminService } from "../+services/admin.service";
-import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/STORE/app.state";
+import * as ReligionActions from "../../STORE/religion/religion.actions";
 
 @Component({
   selector: "app-religion",
   templateUrl: "./religion.component.html",
-  styleUrls: ["./religion.component.css"]
+  styleUrls: ["./religion.component.css"],
 })
 export class ReligionComponent implements OnInit {
   addReligionForm: FormGroup;
   religionList: object[];
   spinner: boolean = false;
 
-  constructor(
-    private adminService: AdminService,
-    private errorService: ErrorDialogFunctionsService
-  ) {
+  constructor(private store: Store<AppState>) {
     this.addReligionForm = new FormGroup({
-      religionName: new FormControl("", Validators.required)
+      religionName: new FormControl("", Validators.required),
     });
   }
 
   ngOnInit() {
-    this.getReligion(); // to get category list on load page
+    this.fetchReligion(); // to fetch religion list on load page
   }
 
   // function to reset religion form
@@ -35,41 +33,21 @@ export class ReligionComponent implements OnInit {
   // function to add religion
   addReligion() {
     var religionDetail = this.addReligionForm.value;
-    this.adminService.addReligion(religionDetail).subscribe(response => {
-      if (response["status"] === true) {
-        this.religionList = response["data"];
-        this.resetForm();
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+    this.store.dispatch(new ReligionActions.AddReligion(religionDetail));
+  }
+
+  // function to fetch religion list
+  fetchReligion() {
+    this.store.dispatch(new ReligionActions.FetchReligion());
+    this.store.select("religionList").subscribe((response) => {
+      this.religionList = response.religionList;
+      this.spinner = true;
     });
   }
 
-  // function to get religion list
-  getReligion() {
-    this.adminService.getReligion().subscribe(response => {
-      if (response["status"] === true) {
-        this.religionList = response["data"];
-        this.spinner = true;
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
-  }
-
-  // function to delete religion
+  // function to delete category
   deleteReligion(religionId) {
-    var religionDetail = {
-      religionId: religionId
-    };
-    this.adminService.deleteReligion(religionDetail).subscribe(response => {
-      if (response["status"] === true) {
-        this.religionList = response["data"];
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    var religionDetail = { religionId: religionId };
+    this.store.dispatch(new ReligionActions.DeleteReligion(religionDetail));
   }
 }
