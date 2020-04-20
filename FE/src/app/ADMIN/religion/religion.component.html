@@ -12,51 +12,62 @@
                 <span>Add Religion</span>
             </mat-toolbar>
         </div>
-
-        <div class="row m-0 justify-content-center">
-            <div class="p-0 col-md-6 col-lg-4">
-                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
-                    <div>
-                        <mat-toolbar color="primary" class="form-toolbar">Add Religion</mat-toolbar>
-                    </div>
-                    <div class="p-3">
-                        <form [formGroup]="addReligionForm" (ngSubmit)="addReligion()">
-                            <div>
-                                <mat-form-field class="w-100" appearance="outline">
-                                    <mat-label>Religion name*</mat-label>
-                                    <input formControlName="religionName" matInput placeholder="Religion name*">
-                                    <mat-error *ngIf="addReligionForm.get('religionName').invalid && addReligionForm.get('religionName').touched">
-                                        <div> Religion is <strong>required*</strong></div>
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 col-sm-12 text-md-center text-right text-lg-right">
-                                    <button [disabled]="addReligionForm.invalid" mat-raised-button color="primary"><mat-icon>add</mat-icon>Add</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </mat-card>
+        <div class="my-2">
+            <div class="my-1 mr-0 mr-xs-0 mr-sm-1 mr-md-2 mr-lg-3  text-center text-xs-right text-sm-right text-md-right text-lg-right">
+                <button [disabled]='!update' class="ml-1" (click)="addReligionFormOpen()" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
             </div>
-            <div class="p-0 col-12 col-lg-8">
-                <mat-card class="card-border-top p-0 mat-elevation-z8 m-3">
-                    <div>
-                        <mat-toolbar color="primary" class="form-toolbar">All Religion</mat-toolbar>
-                    </div>
-                    <div class="row mx-0 pt-3">
-                        <div class="col-6"><b> Religion </b></div>
-                        <div class="col-6"><b> Action </b></div>
-                    </div>
-                    <div class="row mx-0" *ngFor="let religion of religionList">
-                        <div class="col-6">
-                            {{religion.religion_name}}
+
+            <div class="row m-0 justify-content-center">
+                <div class="p-0 col-md-6 col-lg-4">
+                    <mat-card class="card-border-top p-0 mat-elevation-z8 m-1 m-md-2 mb-lg-3 ml-lg-3 mr-lg-3 mt-lg-0">
+                        <div>
+                            <mat-toolbar color="primary" class="form-toolbar">Add Religion</mat-toolbar>
                         </div>
-                        <div class="col-6">
-                            <mat-icon matTooltip="Delete" matTooltipPosition="left" matTooltipClass="bg-danger" (click)="deleteReligion(religion.religion_id)">delete</mat-icon>
+                        <div class="p-3">
+                            <form [formGroup]="addReligionForm" (ngSubmit)="religion()">
+                                <div>
+                                    <mat-form-field class="w-100" appearance="outline">
+                                        <mat-label>Religion name*</mat-label>
+                                        <input formControlName="religionName" matInput placeholder="Religion name*">
+                                        <mat-error *ngIf="addReligionForm.get('religionName').invalid && addReligionForm.get('religionName').touched">
+                                            <div> Religion is <strong>required*</strong></div>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 text-md-center text-right text-lg-right">
+                                        <div *ngIf="update; else add">
+                                            <button [disabled]="addReligionForm.invalid" mat-raised-button color="primary"><mat-icon class="mr-1">update</mat-icon>Update</button>
+                                        </div>
+                                        <ng-template #add>
+                                            <button [disabled]="addReligionForm.invalid" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </div>
-                </mat-card>
+                    </mat-card>
+                </div>
+                <div class="p-0 col-12 col-lg-8">
+                    <mat-card class="card-border-top p-0 mat-elevation-z8 m-1 m-md-2 mt-lg-0 mr-lg-3 mb-lg-3 ml-lg-0">
+                        <div>
+                            <mat-toolbar color="primary" class="form-toolbar">All Religion</mat-toolbar>
+                        </div>
+                        <div class="row mx-0 pt-3">
+                            <div class="col-6"><b> Religion </b></div>
+                            <div class="col-6"><b> Action </b></div>
+                        </div>
+                        <div class="row mx-0" *ngFor="let religion of religionList">
+                            <div class="col-6">
+                                {{religion.religion_name}}
+                            </div>
+                            <div class="col-6">
+                                <mat-icon matTooltip="Delete" matTooltipPosition="left" matTooltipClass="bg-danger" (click)="deleteReligion(religion.religion_id)">delete</mat-icon>
+                                <mat-icon matTooltip="Edit" matTooltipPosition="right" matTooltipClass="bg-primary" (click)="editReligion(religion.religion_id,religion.religion_name)">edit</mat-icon>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
             </div>
         </div>
     </mat-card>
