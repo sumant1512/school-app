@@ -1,13 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  FormArray,
-} from "@angular/forms";
+import { FormGroup, FormArray } from "@angular/forms";
 import { StudentService } from "../../+services/student.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AdminService } from "../../+services/admin.service";
@@ -20,6 +12,8 @@ import { AppState } from "src/app/STORE/app.state";
 import { Store } from "@ngrx/store";
 import * as HouseActions from "../../../STORE/house/house.actions";
 import * as ClassActions from "../../../STORE/class/class.actions";
+import * as CategoryActions from "../../../STORE/category/category.actions";
+import * as ReligionActions from "../../../STORE/religion/religion.actions";
 
 @Component({
   selector: "app-student-admission",
@@ -68,8 +62,8 @@ export class StudentAdmissionComponent implements OnInit {
 
   ngOnInit() {
     this.fetchClass();
-    this.getCategory();
-    this.getReligion();
+    this.fetchCategory();
+    this.fetchReligion();
     this.fetchHouse();
     // this.getBusRoutes(); // to get all bus route
   }
@@ -124,25 +118,19 @@ export class StudentAdmissionComponent implements OnInit {
   //   });
   // }
 
-  // function to get category list
-  getCategory() {
-    this.adminService.getCategory().subscribe((response) => {
-      if (response["status"] === true) {
-        this.categoryList = response["data"];
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+  // function to fetch category list
+  fetchCategory() {
+    this.store.dispatch(new CategoryActions.FetchCategory());
+    this.store.select("categoryList").subscribe((response) => {
+      this.categoryList = response.categoryList;
     });
   }
 
-  // function to get religion list
-  getReligion() {
-    this.adminService.getReligion().subscribe((response) => {
-      if (response["status"] === true) {
-        this.religionList = response["data"];
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+  // function to fetch religion list
+  fetchReligion() {
+    this.store.dispatch(new ReligionActions.FetchReligion());
+    this.store.select("religionList").subscribe((response) => {
+      this.religionList = response.religionList;
     });
   }
 

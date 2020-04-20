@@ -4,6 +4,8 @@ import { ClassWithSectionEffects } from "./class-with-section/class-with-section
 import { SubjectEffects } from "./subject/subject.effects";
 import { ExamEffects } from "./exam/exam.effects";
 import { HouseEffects } from "./house/house.effects";
+import { CategoryEffects } from "./category/category.effects";
+import { ReligionEffects } from "./religion/religion.effects";
 
 export const AppEffects = [
   ClassEffects,
@@ -12,4 +14,6 @@ export const AppEffects = [
   SubjectEffects,
   ExamEffects,
   HouseEffects,
+  CategoryEffects,
+  ReligionEffects,
 ];

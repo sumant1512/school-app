@@ -4,6 +4,8 @@ import { ClassWithSectionListType } from "./class-with-section/types/class-with-
 import { SubjectListType } from "./subject/types/subject.type";
 import { ExamListType } from "./exam/types/exam.type";
 import { HouseListType } from "./house/types/house.type";
+import { CategoryListType } from "./category/types/category.type";
+import { ReligionListType } from "./religion/types/religion.type";
 
 export type AppState = Partial<{
   classList: ClassListType;
@@ -12,4 +14,6 @@ export type AppState = Partial<{
   subjectList: SubjectListType;
   examList: ExamListType;
   houseList: HouseListType;
+  categoryList: CategoryListType;
+  religionList: ReligionListType;
 }>;

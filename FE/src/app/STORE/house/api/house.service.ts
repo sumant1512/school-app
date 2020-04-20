@@ -12,6 +12,11 @@ export class HouseService {
     return this.http.post("http://localhost:8080/addHouse", houseDetail);
   }
 
+  // service for updating house
+  updateHouse(houseDetail) {
+    return this.http.post("http://localhost:8080/updateHouse", houseDetail);
+  }
+
   // service for fetching House list
   fetchHouse() {
     return this.http.get("http://localhost:8080/fetchHouse");
@@ -20,10 +25,5 @@ export class HouseService {
   // service for deleting House
   deleteHouse(houseDetail) {
     return this.http.post("http://localhost:8080/deleteHouse", houseDetail);
-  }
-
-  // service for updating house
-  updateHouse(houseDetail) {
-    return this.http.post("http://localhost:8080/updateHouse", houseDetail);
   }
 }

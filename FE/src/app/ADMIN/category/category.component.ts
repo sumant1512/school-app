@@ -2,11 +2,14 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, Validators, FormControl } from "@angular/forms";
 import { AdminService } from "../+services/admin.service";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/STORE/app.state";
+import * as CategoryActions from "../../STORE/category/category.actions";
 
 @Component({
   selector: "app-category",
   templateUrl: "./category.component.html",
-  styleUrls: ["./category.component.css"]
+  styleUrls: ["./category.component.css"],
 })
 export class CategoryComponent implements OnInit {
   addCategoryForm: FormGroup;
@@ -15,15 +18,16 @@ export class CategoryComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
+    private store: Store<AppState>,
     private errorService: ErrorDialogFunctionsService
   ) {
     this.addCategoryForm = new FormGroup({
-      categoryName: new FormControl("", Validators.required)
+      categoryName: new FormControl("", Validators.required),
     });
   }
 
   ngOnInit() {
-    this.getCategory(); // to get category list on load page
+    this.fetchCategory(); // to fetch category list on load page
   }
 
   // function to reset category form
@@ -35,41 +39,21 @@ export class CategoryComponent implements OnInit {
   // function to add category
   addCategory() {
     var categoryDetail = this.addCategoryForm.value;
-    this.adminService.addCategory(categoryDetail).subscribe(response => {
-      if (response["status"] === true) {
-        this.categoryList = response["data"];
-        this.resetForm();
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.store.dispatch(new CategoryActions.AddCategory(categoryDetail));
   }
 
-  // function to get category list
-  getCategory() {
-    this.adminService.getCategory().subscribe(response => {
-      if (response["status"] === true) {
-        this.categoryList = response["data"];
-        this.spinner = true;
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+  // function to fetch category list
+  fetchCategory() {
+    this.store.dispatch(new CategoryActions.FetchCategory());
+    this.store.select("categoryList").subscribe((response) => {
+      this.categoryList = response.categoryList;
+      this.spinner = true;
     });
   }
 
   // function to delete category
   deleteCategory(categoryId) {
-    var categoryDetail = {
-      categoryId: categoryId
-    };
-    this.adminService.deleteCategory(categoryDetail).subscribe(response => {
-      if (response["status"] === true) {
-        this.categoryList = response["data"];
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    var categoryDetail = { categoryId: categoryId };
+    this.store.dispatch(new CategoryActions.DeleteCategory(categoryDetail));
   }
 }

@@ -513,8 +513,8 @@ app.post('/addCategory', function(request, response) {
     })
 })
 
-// Api for getting category list
-app.get('/getCategory', function(request, response) {
+// Api for fetching category list
+app.get('/fetchCategory', function(request, response) {
     con.query("SELECT * FROM category", function(err, rows, result) {
         if (err) {
             console.log(err);
@@ -565,8 +565,8 @@ app.post('/addReligion', function(request, response) {
     })
 })
 
-// Api for getting religion list
-app.get('/getReligion', function(request, response) {
+// Api for fetching religion list
+app.get('/fetchReligion', function(request, response) {
     con.query("SELECT * FROM religion", function(err, rows, result) {
         if (err) {
             console.log(err);

@@ -51,42 +51,6 @@ export class AdminService {
     );
   }
 
-  // service for adding category
-  addCategory(categoryDetail) {
-    return this.http.post("http://localhost:8080/addCategory", categoryDetail);
-  }
-
-  // service for getting category list
-  getCategory() {
-    return this.http.get("http://localhost:8080/getCategory");
-  }
-
-  // service for deleting category
-  deleteCategory(categoryDetail) {
-    return this.http.post(
-      "http://localhost:8080/deleteCategory",
-      categoryDetail
-    );
-  }
-
-  // service for adding religion
-  addReligion(religionDetail) {
-    return this.http.post("http://localhost:8080/addReligion", religionDetail);
-  }
-
-  // service for getting religion list
-  getReligion() {
-    return this.http.get("http://localhost:8080/getReligion");
-  }
-
-  // service for deleting religion
-  deleteReligion(religionDetail) {
-    return this.http.post(
-      "http://localhost:8080/deleteReligion",
-      religionDetail
-    );
-  }
-
   // service for adding Bus
   addBus(busDetail) {
     return this.http.post("http://localhost:8080/addBus", busDetail);
