@@ -11,6 +11,12 @@ import { AssignToClassType } from "src/app/COMMON/assign-dialog-common/assign-di
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { MatDialog } from "@angular/material";
 import { ClassService } from "src/app/STORE/class/api/class.service";
+import { addExamForm } from "./exam.utils";
+import { ExamService } from "src/app/STORE/exam/api/exam.service";
+import * as ClassActions from "src/app/STORE/class/class.actions";
+import * as ExamActions from "src/app/STORE/exam/exam.actions";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/STORE/app.state";
 
 @Component({
   selector: "app-exam",
@@ -28,36 +34,26 @@ export class ExamComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private adminService: AdminService,
     private classService: ClassService,
+    private examService: ExamService,
     private dialog: MatDialog,
-    private errorService: ErrorDialogFunctionsService
+    private errorService: ErrorDialogFunctionsService,
+    private store: Store<AppState>
   ) {
-    this.addExamForm = this.fb.group({
-      examName: new FormControl("", Validators.required),
-      selectedClass: new FormControl(""),
-    });
+    this.addExamForm = addExamForm();
   }
 
   ngOnInit() {
     this.updateExamId = 0;
     this.fetchClass(); // to get class list on page load
-    this.getExam(); // to get exam list on page load
+    this.fetchExam(); // to get exam list on page load
   }
 
-  // this is for form validation
-  get validation() {
-    return this.addExamForm.controls;
-  }
-
-  // function to get class list for dropdown
+  // function to fetch class list for dropdown
   fetchClass() {
-    this.classService.fetchClass().subscribe((response) => {
-      if (response["status"] === true) {
-        this.classList = response["data"];
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+    this.store.dispatch(new ClassActions.FetchClass());
+    this.store.select("classList").subscribe((response) => {
+      this.classList = response.classList;
     });
   }
 
@@ -80,14 +76,15 @@ export class ExamComponent implements OnInit {
   addExam() {
     this.updateExamId = 0;
     var examDetail = this.addExamForm.value;
-    this.adminService.addExam(examDetail).subscribe((response) => {
-      if (response["status"] === true) {
-        this.examList = response["data"];
-        this.resetForm();
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+    this.store.dispatch(new ExamActions.AddExam(examDetail));
+  }
+
+  // function to fetch exam list
+  fetchExam() {
+    this.store.dispatch(new ExamActions.FetchExam());
+    this.store.select("examList").subscribe((response) => {
+      this.examList = response.examList;
+      this.spinner = true;
     });
   }
 
@@ -97,46 +94,17 @@ export class ExamComponent implements OnInit {
       examId: this.updateExamId,
       examName: this.addExamForm.value.examName,
     };
-    this.adminService.updateExam(examDetail).subscribe((response) => {
-      if (response["status"]) {
-        this.examList = response["data"];
-        this.resetForm();
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
-  }
-
-  // function to get exam list
-  getExam() {
-    this.adminService.getExam().subscribe((response) => {
-      if (response["status"] === true) {
-        this.examList = response["data"];
-        this.spinner = true;
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.store.dispatch(new ExamActions.UpdateExam(examDetail));
   }
 
   // function to delete exam
   deleteExam(examId) {
-    var examDetail = {
-      examId: examId,
-    };
-    this.adminService.deleteExam(examDetail).subscribe((response) => {
-      if (response["status"] === true) {
-        this.examList = response["data"];
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    var examDetail = { examId: examId };
+    this.store.dispatch(new ExamActions.DeleteExam(examDetail));
   }
 
-  // function to activate add or update
-  addExamFormOpenOrClose() {
+  // function to activate add exam form
+  addExamFormOpen() {
     this.update = false;
     this.resetForm();
     this.addExamForm.addControl("selectedClass", new FormControl(""));

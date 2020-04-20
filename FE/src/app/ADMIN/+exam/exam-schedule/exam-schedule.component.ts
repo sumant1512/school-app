@@ -5,6 +5,7 @@ import { SubjectWithClassType } from "./exam-schedule.type";
 import { scheduleExamForm, paperDetailsForm } from "./exam-schedule.utils";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { ClassService } from "src/app/STORE/class/api/class.service";
+import { ExamService } from 'src/app/STORE/exam/api/exam.service';
 
 @Component({
   selector: "app-exam-schedule",
@@ -38,6 +39,7 @@ export class ExamScheduleComponent implements OnInit {
   constructor(
     private adminService: AdminService,
     private classService: ClassService,
+    private examService: ExamService,
     public errorService: ErrorDialogFunctionsService
   ) {}
 
@@ -138,9 +140,9 @@ export class ExamScheduleComponent implements OnInit {
     });
   }
 
-  // function to get all exam
+  // function to fetch all exam
   getExam() {
-    this.adminService.getExam().subscribe((response) => {
+    this.examService.fetchExam().subscribe((response) => {
       if (response["status"] === true) {
         this.examList = response["data"];
       } else {

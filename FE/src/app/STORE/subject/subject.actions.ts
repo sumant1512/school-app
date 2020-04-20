@@ -6,6 +6,7 @@ export enum SubjectActions {
   FETCH_SUBJECT = "[Subject] Fetch Subject",
   FETCHED_SUBJECT = "[Subject] Fetched Subject",
   DELETE_SUBJECT = "[Subject] Delete Subject",
+  UPDATE_SUBJECT = "[Subject] Update Subject",
 }
 
 export class AddSubject implements Action {
@@ -27,8 +28,14 @@ export class DeleteSubject implements Action {
   constructor(public payload: object) {}
 }
 
+export class UpdateSubject implements Action {
+  readonly type = SubjectActions.UPDATE_SUBJECT;
+  constructor(public payload: object) {}
+}
+
 export type SubjectActionsUnion =
   | AddSubject
   | FetchSubject
   | FetchedSubject
-  | DeleteSubject;
+  | DeleteSubject
+  | UpdateSubject;

@@ -60,4 +60,19 @@ export class SubjectEffects {
       );
     })
   );
+
+  @Effect()
+  updateSubject$ = this.action$.pipe(
+    ofType(SubjectActions.UPDATE_SUBJECT),
+    map((action) => {
+      return this.subjectService.updateSubject(action.payload);
+    }),
+    mergeMap((response) => {
+      return response.pipe(
+        map((res) => {
+          return new FetchSubject();
+        })
+      );
+    })
+  );
 }

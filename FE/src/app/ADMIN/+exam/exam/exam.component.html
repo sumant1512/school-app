@@ -14,7 +14,7 @@
         </div>
 
         <div class="mt-1 mr-0 mr-xs-0 mr-sm-3 mr-md-3 mr-lg-3  text-center text-xs-right text-sm-right text-md-right text-lg-right">
-            <button [disabled]='!update' class="ml-1" (click)="addExamFormOpenOrClose()" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
+            <button [disabled]='!update' class="ml-1" (click)="addExamFormOpen()" mat-raised-button color="primary"><mat-icon class="mr-1">add</mat-icon>Add</button>
         </div>
 
         <div class="row m-0 justify-content-center">
@@ -29,8 +29,8 @@
                                 <mat-form-field class="w-100" appearance="outline">
                                     <mat-label>Exam Name*</mat-label>
                                     <input formControlName="examName" matInput placeholder="Exam Name*">
-                                    <mat-error *ngIf="(examFormSubmit && validation.examName.errors) || (validation.examName.touched && validation.examName.errors)">
-                                        <div *ngIf="validation.examName.errors.required"> Exam Name is <strong>required</strong></div>
+                                    <mat-error *ngIf="addExamForm.get('examName').invalid && addExamForm.get('examName').touched">
+                                        <div> Exam Name is <strong>required*</strong></div>
                                     </mat-error>
                                 </mat-form-field>
                                 <mat-form-field *ngIf="!update" class="w-100" appearance="outline">
