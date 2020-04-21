@@ -46,22 +46,7 @@ export class ClassEffects {
     mergeMap((response) => {
       return response.pipe(
         map((res) => {
-          return new FetchedClass(res['data']);
-        })
-      );
-    })
-  );
-
-  @Effect()
-  fetchClassWithSection$ = this.action$.pipe(
-    ofType(ClassActions.FETCHED_CLASS),
-    map((action) => {
-      return this.classWithSectionService.fetchClassWithSection();
-    }),
-    mergeMap((response) => {
-      return response.pipe(
-        map((res) => {
-          return new FetchedClassWithSection(res["data"]);
+          return new FetchedClass(res["data"]);
         })
       );
     })

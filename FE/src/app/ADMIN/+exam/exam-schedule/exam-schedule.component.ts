@@ -4,10 +4,11 @@ import { FormGroup, FormArray, FormControl, Validators } from "@angular/forms";
 import { SubjectWithClassType } from "./exam-schedule.type";
 import { scheduleExamForm, paperDetailsForm } from "./exam-schedule.utils";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
-import { ClassService } from "src/app/STORE/class/api/class.service";
-import { ExamService } from "src/app/STORE/exam/api/exam.service";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/STORE/app.state";
+import * as ExamActions from "src/app/STORE/exam/exam.actions";
+import * as ClassActions from "src/app/STORE/class/class.actions";
+import * as ClassWithExamActions from "src/app/STORE/class-with-exam/class-with-exam.actions";
 
 @Component({
   selector: "app-exam-schedule",
@@ -40,8 +41,6 @@ export class ExamScheduleComponent implements OnInit {
   examId: number;
   constructor(
     private adminService: AdminService,
-    private classService: ClassService,
-    private examService: ExamService,
     private store: Store<AppState>,
     public errorService: ErrorDialogFunctionsService
   ) {}
@@ -49,14 +48,42 @@ export class ExamScheduleComponent implements OnInit {
   ngOnInit() {
     this.scheduleExamForm = scheduleExamForm();
     this.fetchClass();
-    this.getClassWithExam();
+    this.fetchClassWithExam();
   }
 
   // function to get class list
   fetchClass() {
+    this.store.dispatch(new ClassActions.FetchClass());
     this.store.select("classList").subscribe((response) => {
       this.classList = response.classList;
     });
+  }
+
+  // function to fetch class with exam
+  fetchClassWithExam() {
+    console.log("fetch");
+    this.store.dispatch(new ClassWithExamActions.FetchClassWithExam());
+    this.store.select("classWithExamList").subscribe((response) => {
+      this.classWithExam = response.classWithExamList;
+    });
+  }
+
+  // function to remove exam from class
+  removeExam(classId, examId) {
+    let examDetail = {
+      classId: classId,
+      examId: examId,
+    };
+    this.store.dispatch(new ClassWithExamActions.RemoveExam(examDetail));
+    // this.adminService.removeExam(examDetail).subscribe((response) => {
+    //   if (response["status"] === true) {
+    //     this.fetchClass();
+    //     this.getClassWithExam();
+    //     this.errorService.openErrorDialog(response["message"]);
+    //   } else {
+    //     this.errorService.openErrorDialog(response["message"]);
+    //   }
+    // });
   }
 
   scheduleExamFormOpen(classId, examId) {
@@ -139,41 +166,11 @@ export class ExamScheduleComponent implements OnInit {
   }
 
   // function to fetch all exam
-  getExam() {
-    this.examService.fetchExam().subscribe((response) => {
-      if (response["status"] === true) {
-        this.examList = response["data"];
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
-  }
-
-  // function to get class with exam
-  getClassWithExam() {
-    this.adminService.getClassWithExam().subscribe((response) => {
-      if (response["status"] === true) {
-        this.classWithExam = response["data"];
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
-  }
-
-  // function to remove exam from class
-  removeExam(classId, examId) {
-    let examDetail = {
-      classId: classId,
-      examId: examId,
-    };
-    this.adminService.removeExam(examDetail).subscribe((response) => {
-      if (response["status"] === true) {
-        this.fetchClass();
-        this.getClassWithExam();
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+  fetchExam() {
+    this.store.dispatch(new ExamActions.FetchExam());
+    this.store.select("examList").subscribe((response) => {
+      this.examList = response.examList;
+      this.spinner = true;
     });
   }
 }

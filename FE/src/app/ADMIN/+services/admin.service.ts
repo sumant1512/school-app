@@ -7,16 +7,6 @@ import { HttpClient } from "@angular/common/http";
 export class AdminService {
   constructor(private http: HttpClient) {}
 
-  // service for getting class with exam
-  getClassWithExam() {
-    return this.http.get("http://localhost:8080/getClassWithExam");
-  }
-
-  // service for removing exam from class
-  removeExam(examDetails) {
-    return this.http.post("http://localhost:8080/removeExam", examDetails);
-  }
-
   // common service for assigning to class
   assignToClass(assignDetails) {
     return this.http.post("http://localhost:8080/assignToClass", assignDetails);
@@ -27,19 +17,6 @@ export class AdminService {
     return this.http.post(
       "http://localhost:8080/getSectionForClass",
       classDetail
-    );
-  }
-
-  // service for getting class with subject
-  getClassWithSubject() {
-    return this.http.get("http://localhost:8080/getClassWithSubject");
-  }
-
-  // service for removing subject to class
-  removeSubject(subjectDetails) {
-    return this.http.post(
-      "http://localhost:8080/removeSubject",
-      subjectDetails
     );
   }
 

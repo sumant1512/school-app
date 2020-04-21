@@ -196,8 +196,9 @@ app.post('/deleteExam', function(request, response) {
     });
 })
 
-// Api to get class with exam
-app.get('/getClassWithExam', function(request, response) {
+// Api to fetch class with exam
+app.get('/fetchClassWithExam', function(request, response) {
+    console.log("class with exam called")
     con.query("select class.class_id,\
     exam.exam_name,class_with_exam.* \
     from class,class_with_exam,exam where \
@@ -444,8 +445,8 @@ app.post('/deleteSubject', function(request, response) {
 })
 
 
-// Api to get class with subject
-app.get('/getClassWithSubject', function(request, response) {
+// Api to fetch class with subject
+app.get('/fetchClassWithSubject', function(request, response) {
     con.query("select class.class_id,\
     subjects.subject_name,class_with_subjects.* \
     from class,class_with_subjects,subjects where \
