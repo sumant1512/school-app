@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { AdminService } from "../../+services/admin.service";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
-import { FEES_CHART } from './fees-chart.constants';
-import { ClassService } from 'src/app/STORE/class/api/class.service';
+import { FEES_CHART } from "./fees-chart.constants";
+import { ClassService } from "src/app/STORE/class/api/class.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/STORE/app.state";
 
 @Component({
   selector: "app-fees-chart",
@@ -17,7 +19,7 @@ export class FeesChartComponent implements OnInit {
   message: string;
   constructor(
     private adminService: AdminService,
-    private classService: ClassService,
+    private store: Store<AppState>,
     private errorService: ErrorDialogFunctionsService
   ) {}
 
@@ -28,13 +30,8 @@ export class FeesChartComponent implements OnInit {
 
   // function to get class list
   fetchClass() {
-    this.classService.fetchClass().subscribe((response) => {
-      if (response["status"] === true) {
-        this.classList = response["data"];
-        this.spinner = true;
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+    this.store.select("classList").subscribe((response) => {
+      this.classList = response.classList;
     });
   }
 
@@ -55,14 +52,16 @@ export class FeesChartComponent implements OnInit {
       classId: classId,
       installmentId: installmentId,
     };
-    this.adminService.removeInstallment(installmentDetail).subscribe((response) => {
-      if (response["status"] === true) {
-        this.fetchClass();
-        this.getClassWithInstallment();
-        this.errorService.openErrorDialog(response["message"]);
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.adminService
+      .removeInstallment(installmentDetail)
+      .subscribe((response) => {
+        if (response["status"] === true) {
+          this.fetchClass();
+          this.getClassWithInstallment();
+          this.errorService.openErrorDialog(response["message"]);
+        } else {
+          this.errorService.openErrorDialog(response["message"]);
+        }
+      });
   }
 }

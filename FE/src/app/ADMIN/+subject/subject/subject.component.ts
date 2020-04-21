@@ -48,7 +48,6 @@ export class SubjectComponent implements OnInit {
 
   // function to get class list for dropdown
   fetchClass() {
-    this.store.dispatch(new ClassActions.FetchClass());
     this.store.select("classList").subscribe((response) => {
       this.classList = response.classList;
     });

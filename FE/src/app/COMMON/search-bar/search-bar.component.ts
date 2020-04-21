@@ -6,6 +6,8 @@ import { AdminService } from "src/app/ADMIN/+services/admin.service";
 import { Router } from "@angular/router";
 import { ErrorDialogFunctionsService } from "../error-message-dialog/error-dialog-functions.service";
 import { ClassService } from "src/app/STORE/class/api/class.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/STORE/app.state";
 
 @Component({
   selector: "app-search-bar",
@@ -20,7 +22,7 @@ export class SearchBarComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    private classService: ClassService,
+    private store: Store<AppState>,
     private router: Router,
     private errorService: ErrorDialogFunctionsService
   ) {}
@@ -32,12 +34,8 @@ export class SearchBarComponent implements OnInit {
 
   // function to get class list
   fetchClass() {
-    this.classService.fetchClass().subscribe((response) => {
-      if (response["status"] === true) {
-        this.classList = response["data"];
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+    this.store.select("classList").subscribe((response) => {
+      this.classList = response.classList;
     });
   }
 
