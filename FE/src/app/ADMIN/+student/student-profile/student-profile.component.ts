@@ -1,13 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { StudentService } from "src/app/ADMIN/+services/student.service";
 import { ActivatedRoute } from "@angular/router";
 import { ErrorDialogFunctionsService } from "../../../COMMON/error-message-dialog/error-dialog-functions.service";
 import { Location } from "@angular/common";
+import { StudentService } from "src/app/STORE/student-list/api/student.service";
 
 @Component({
   selector: "app-student-profile",
   templateUrl: "./student-profile.component.html",
-  styleUrls: ["./student-profile.component.css"]
+  styleUrls: ["./student-profile.component.css"],
 })
 export class StudentProfileComponent implements OnInit {
   studentDetailParams: any;
@@ -35,7 +35,7 @@ export class StudentProfileComponent implements OnInit {
   }
 
   getDataFromQueryParams() {
-    this.activatedPath.queryParams.subscribe(params => {
+    this.activatedPath.queryParams.subscribe((params) => {
       this.studentDetailParams = params;
       this.getStudentProfile();
     });
@@ -43,17 +43,19 @@ export class StudentProfileComponent implements OnInit {
 
   getStudentProfile() {
     var studentDetail = this.studentDetailParams;
-    this.studentService.getStudentProfile(studentDetail).subscribe(response => {
-      if (response["status"] === true) {
-        this.studentDetail = response["data"];
-        this.selectedStudentDetail = {
-          classId: this.studentDetail[0].class_id,
-          studentId: this.studentDetailParams.studentId
-        };
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
-    });
+    this.studentService
+      .getStudentProfile(studentDetail)
+      .subscribe((response) => {
+        if (response["status"] === true) {
+          this.studentDetail = response["data"];
+          this.selectedStudentDetail = {
+            classId: this.studentDetail[0].class_id,
+            studentId: this.studentDetailParams.studentId,
+          };
+        } else {
+          this.errorService.openErrorDialog(response["message"]);
+        }
+      });
   }
 
   // getInstallmentsByClass() {

@@ -11,6 +11,7 @@ import { categoryReducer } from "./category/category.reducers";
 import { religionReducer } from "./religion/religion.reducers";
 import { classWithSubjectReducer } from "./class-with-subject/class-with-subject.reducers";
 import { classWithExamReducer } from "./class-with-exam/class-with-exam.reducers";
+import { studentListReducer } from "./student-list/student-list.reducers";
 
 export const appReducers: ActionReducerMap<AppState> = {
   classList: classReducer,
@@ -23,4 +24,5 @@ export const appReducers: ActionReducerMap<AppState> = {
   religionList: religionReducer,
   classWithSubjectList: classWithSubjectReducer,
   classWithExamList: classWithExamReducer,
+  studentList: studentListReducer,
 };

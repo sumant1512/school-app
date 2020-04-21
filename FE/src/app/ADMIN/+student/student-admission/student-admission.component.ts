@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormArray } from "@angular/forms";
-import { StudentService } from "../../+services/student.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AdminService } from "../../+services/admin.service";
 import { studentAdmissionForm, documentForm } from "./student-admission.utils";
@@ -14,6 +13,7 @@ import * as HouseActions from "../../../STORE/house/house.actions";
 import * as ClassActions from "../../../STORE/class/class.actions";
 import * as CategoryActions from "../../../STORE/category/category.actions";
 import * as ReligionActions from "../../../STORE/religion/religion.actions";
+import { StudentService } from 'src/app/STORE/student-list/api/student.service';
 
 @Component({
   selector: "app-student-admission",
