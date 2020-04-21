@@ -967,27 +967,32 @@ app.post('/studentAdmission', function(request, response) {
     })
 })
 
-// Api to get student list
-app.get('/getStudentList', function(request, response) {
-    con.query("select\
-    student_admission_details.*,\
+// Api to fetch student list
+app.get('/fetchStudentList', function(request, response) {
+    const sql = "select\
+    student_admission_details.student_id,\
+    student_admission_details.first_name,\
+    student_admission_details.last_name,\
+    student_admission_details.father_name,\
+    student_admission_details.student_image,\
     class.class_name,\
-    section.section_name, \
-    category.category_name, \
-    religion.religion_name, \
-    house.house_name \
-  from student_admission_details, \
-    class, \
-    section, \
-    category, \
-    religion, \
-    house \
-  where \
-    class.class_id = student_admission_details.class_id AND \
-    section.section_id = student_admission_details.section_id AND \
-    category.category_id = student_admission_details.category_id AND \
-    religion.religion_id = student_admission_details.religion_id AND \
-    house.house_id = student_admission_details.house_id;", function(err, result, fields) {
+    section.section_name,\
+    category.category_name,\
+    religion.religion_name,\
+    house.house_name\
+  from student_admission_details,\
+    class,\
+    section,\
+    category,\
+    religion,\
+    house\
+  where\
+    class.class_id = student_admission_details.class_id\
+    AND section.section_id = student_admission_details.section_id\
+    AND category.category_id = student_admission_details.category_id\
+    AND religion.religion_id = student_admission_details.religion_id\
+    AND house.house_id = student_admission_details.house_id;"
+    con.query(sql, function(err, result, fields) {
         if (err) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });
