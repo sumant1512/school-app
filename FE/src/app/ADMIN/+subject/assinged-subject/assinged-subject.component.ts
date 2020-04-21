@@ -3,6 +3,8 @@ import { AdminService } from "../../+services/admin.service";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { ClassService } from "src/app/STORE/class/api/class.service";
 import { SubjectService } from "src/app/STORE/subject/api/subject.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/STORE/app.state";
 
 @Component({
   selector: "app-assinged-subject",
@@ -17,7 +19,7 @@ export class AssingedSubjectComponent implements OnInit {
   subjectList: object[];
   constructor(
     private adminService: AdminService,
-    private classService: ClassService,
+    private store: Store<AppState>,
     private subjectService: SubjectService,
     private errorService: ErrorDialogFunctionsService
   ) {}
@@ -29,13 +31,8 @@ export class AssingedSubjectComponent implements OnInit {
 
   // function to get class list
   fetchClass() {
-    this.classService.fetchClass().subscribe((response) => {
-      if (response["status"] === true) {
-        this.classList = response["data"];
-        this.spinner = true;
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+    this.store.select("classList").subscribe((response) => {
+      this.classList = response.classList;
     });
   }
 

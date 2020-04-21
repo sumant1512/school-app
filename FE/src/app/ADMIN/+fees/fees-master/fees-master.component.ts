@@ -13,6 +13,8 @@ import { MatDialog } from "@angular/material";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { addInstallmentForm } from "./fees-master.utils";
 import { ClassService } from "src/app/STORE/class/api/class.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/STORE/app.state";
 
 @Component({
   selector: "app-fees-master",
@@ -31,7 +33,7 @@ export class FeesMasterComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    private classService: ClassService,
+    private store: Store<AppState>,
     private dialog: MatDialog,
     private errorService: ErrorDialogFunctionsService
   ) {
@@ -46,12 +48,8 @@ export class FeesMasterComponent implements OnInit {
 
   // function to get class list for dropdown
   fetchClass() {
-    this.classService.fetchClass().subscribe((response) => {
-      if (response["status"] === true) {
-        this.classList = response["data"];
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+    this.store.select("classList").subscribe((response) => {
+      this.classList = response.classList;
     });
   }
 

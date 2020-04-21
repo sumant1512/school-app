@@ -19,7 +19,7 @@ export class ClassWithSectionEffects {
   @Effect()
   fetchClassWithSection$ = this.action$.pipe(
     ofType(ClassWithSectionActions.FETCH_CLASS_WITH_SECTION),
-    map((action) => {
+    map(() => {
       return this.classWithSectionService.fetchClassWithSection();
     }),
     mergeMap((response) => {

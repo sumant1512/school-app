@@ -5,7 +5,9 @@ import { SubjectWithClassType } from "./exam-schedule.type";
 import { scheduleExamForm, paperDetailsForm } from "./exam-schedule.utils";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
 import { ClassService } from "src/app/STORE/class/api/class.service";
-import { ExamService } from 'src/app/STORE/exam/api/exam.service';
+import { ExamService } from "src/app/STORE/exam/api/exam.service";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/STORE/app.state";
 
 @Component({
   selector: "app-exam-schedule",
@@ -40,6 +42,7 @@ export class ExamScheduleComponent implements OnInit {
     private adminService: AdminService,
     private classService: ClassService,
     private examService: ExamService,
+    private store: Store<AppState>,
     public errorService: ErrorDialogFunctionsService
   ) {}
 
@@ -51,13 +54,8 @@ export class ExamScheduleComponent implements OnInit {
 
   // function to get class list
   fetchClass() {
-    this.classService.fetchClass().subscribe((response) => {
-      if (response["status"] === true) {
-        this.classList = response["data"];
-        this.spinner = true;
-      } else {
-        this.errorService.openErrorDialog(response["message"]);
-      }
+    this.store.select("classList").subscribe((response) => {
+      this.classList = response.classList;
     });
   }
 
