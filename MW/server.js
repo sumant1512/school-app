@@ -819,7 +819,9 @@ app.post('/deleteExamSchedule', function(request, response) {
 app.post('/studentAdmission', function(request, response) {
     let length = 6;
     let studentPassword = parseInt(Math.random(length) * 1000000);
-    let studentDetail = request.body;
+    const currentYear = new Date().getFullYear();
+    const nextYear = new Date().getFullYear() + 1;
+    let session = currentYear + "-" + nextYear;
     let documents = request.body.documents;
 
     let folderName = request.body.firstName + "_" + request.body.admissionNumber + "_" + request.body.fatherName;
@@ -860,6 +862,7 @@ app.post('/studentAdmission', function(request, response) {
         mobile_number,\
         email,\
         admission_date,\
+        session,\
         blood_group,\
         house_id,\
         height,\
@@ -892,7 +895,6 @@ app.post('/studentAdmission', function(request, response) {
         rte,\
         previous_school_detail,\
         note,\
-        session_year,\
         student_password)\
      VALUES\
      ('" + parseInt(request.body.rollNumber) + "',\
@@ -908,6 +910,7 @@ app.post('/studentAdmission', function(request, response) {
      '" + request.body.mobileNumber + "',\
      '" + request.body.email + "',\
      '" + request.body.admissionDate + "',\
+     '" + session + "',\
      '" + request.body.bloodGroup + "',\
      '" + request.body.studentHouse + "',\
      '" + request.body.height + "',\
@@ -940,7 +943,6 @@ app.post('/studentAdmission', function(request, response) {
      '" + request.body.rte + "',\
      '" + request.body.previousSchoolDetail + "',\
      '" + request.body.note + "',\
-     '" + request.body.session + "',\
     '" + studentPassword + "'  )", (err, rows, fields) => {
         if (err) {
             console.log(err);
@@ -975,6 +977,9 @@ app.get('/fetchStudentList', function(request, response) {
     student_admission_details.last_name,\
     student_admission_details.father_name,\
     student_admission_details.student_image,\
+    student_admission_details.class_id,\
+    student_admission_details.section_id,\
+    student_admission_details.session,\
     class.class_name,\
     section.section_name,\
     category.category_name,\
@@ -1105,14 +1110,16 @@ app.post('/saveStudentResult', function(request, response) {
 
 // Api to get student academic record
 app.post('/getAcademicRecord', function(request, response) {
-    con.query("select student_result.*,class.class_name,exam.exam_name, \
+    con.query("SELECT DISTINCT class_id FROM student_result where student_result.student_id=?;\
+    SELECT DISTINCT exam_id FROM student_result where student_result.student_id=?;\
+    select student_result.*,class.class_name,exam.exam_name, \
     subjects.subject_name,exam_schedule.total_marks,exam_schedule.passing_marks\
     from student_result,class,exam,subjects,exam_schedule where \
     student_result.class_id = class.class_id AND \
     student_result.exam_id = exam.exam_id AND \
     student_result.subject_id = subjects.subject_id AND \
     student_result.paper_id = exam_schedule.paper_id AND \
-    student_result.student_id =? ", [request.body.studentId], function(err, result, fields) {
+    student_result.student_id =? ", [request.body.studentId, request.body.studentId, request.body.studentId], function(err, result, fields) {
         if (err) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });
@@ -1252,8 +1259,8 @@ app.post('/removeInstallment', function(request, response) {
 
 // Api to get installment on selecting class
 app.post('/getInstallmentForClass', function(request, response) {
-    con.query("select installment.installment_name,installment.installment_amount,\
-    installment.fee_due_date,class_with_installment.installment_id \
+    con.query("select class_with_installment.installment_id, installment.installment_name,installment.installment_amount,\
+    installment.fee_due_date \
     from class,class_with_installment,installment where \
     class.class_id = class_with_installment.class_id AND \
     class_with_installment.installment_id = installment.installment_id AND \
@@ -1310,8 +1317,9 @@ app.post('/collectFee', function(request, response) {
     const classId = request.body.classId;
     const installmentId = request.body.installmentId;
     const installmentAmount = request.body.installmentAmount;
-    con.query("INSERT INTO collected_fee (student_id, class_id,installment_id,fee_paid_amount,paid_on) VALUES\
-                ('" + parseInt(studentId) + "','" + classId + "','" + installmentId + "','" + installmentAmount + "','" + paidOn + "')", (err, rows, fields) => {
+    const paymentMode = request.body.paymentMode;
+    con.query("INSERT INTO collected_fee (student_id, class_id,installment_id,fee_paid_amount,payment_mode,paid_on) VALUES\
+                ('" + parseInt(studentId) + "','" + classId + "','" + installmentId + "','" + installmentAmount + "','" + paymentMode + "','" + paidOn + "')", (err, rows, fields) => {
         if (err) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });

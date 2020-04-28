@@ -4,6 +4,12 @@ import { FEES_CHART_COLUMN_NAME } from "./fee-details.constants";
 import { MatDialog } from "@angular/material";
 import { FeeCollectDialogComponent } from "../fee-collect-dialog/fee-collect-dialog.component";
 import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog/error-dialog-functions.service";
+import { feeStatusUpdate, feeTypeUpdate } from "./fee-detail.transform";
+import {
+  InstallmentListType,
+  FeeDetailType,
+  InstallmentWithFeeDetailTransform,
+} from "./fee-details.type";
 
 @Component({
   selector: "app-fee-details",
@@ -13,8 +19,9 @@ import { ErrorDialogFunctionsService } from "src/app/COMMON/error-message-dialog
 export class FeeDetailsComponent implements OnInit {
   feeChartColumns = FEES_CHART_COLUMN_NAME;
   @Input() selectedStudentDetail: string;
-  installmentList: object[];
-  feeDetails: object[];
+  installmentList: InstallmentListType[];
+  feeDetails: FeeDetailType[];
+  installmentWithFeeDetail: InstallmentWithFeeDetailTransform[];
   constructor(
     private adminService: AdminService,
     private dialog: MatDialog,
@@ -34,6 +41,7 @@ export class FeeDetailsComponent implements OnInit {
       .subscribe((response) => {
         if (response["status"]) {
           this.installmentList = response["data"];
+          this.installmentWithFeeDetail = feeTypeUpdate(this.installmentList);
         }
       });
   }
@@ -48,7 +56,10 @@ export class FeeDetailsComponent implements OnInit {
       .subscribe((response) => {
         if (response["status"]) {
           this.feeDetails = response["data"];
-          console.log(this.feeDetails);
+          this.installmentWithFeeDetail = feeStatusUpdate(
+            this.installmentWithFeeDetail,
+            this.feeDetails
+          );
         }
       });
   }
@@ -67,12 +78,13 @@ export class FeeDetailsComponent implements OnInit {
       installmentAmount: installmentAmount,
     };
     const dialogRef = this.dialog.open(FeeCollectDialogComponent, {
-      width: "500px",
+      width: "550px",
       data: feeDetails,
     });
 
     dialogRef.afterClosed().subscribe((response) => {
       if (response["status"]) {
+        this.getInstallmentForClass();
         this.getStudentFeeDetails();
         this.errorService.openErrorDialog(response["message"]);
       } else {
@@ -91,6 +103,7 @@ export class FeeDetailsComponent implements OnInit {
     };
     this.adminService.returnFee(feeDetails).subscribe((response) => {
       if (response["status"]) {
+        this.getInstallmentForClass();
         this.getStudentFeeDetails();
         this.errorService.openErrorDialog(response["message"]);
       } else {

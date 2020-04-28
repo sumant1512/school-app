@@ -1,6 +1,6 @@
 <div>
     <div class="m-1 my-2 m-md-2 m-lg-3 time-table">
-        <table mat-table [dataSource]="installmentList" class="w-100 table-width mat-elevation-z8">
+        <table mat-table [dataSource]="installmentWithFeeDetail" class="w-100 table-width mat-elevation-z8">
 
             <!-- installmentName Column -->
             <ng-container matColumnDef="installmentName">
@@ -17,7 +17,11 @@
             <!-- feeStatus Column -->
             <ng-container matColumnDef="feeStatus">
                 <th mat-header-cell *matHeaderCellDef> Status </th>
-                <td mat-cell *matCellDef="let element"> {{element.fee_status}} </td>
+                <td mat-cell *matCellDef="let element">
+                    <span *ngIf="element.fee_paid_amount == 0">Unpaid</span>
+                    <span *ngIf="element.fee_paid_amount == element.installment_amount">Paid</span>
+                    <span *ngIf="element.fee_paid_amount != 0 && element.fee_paid_amount != element.installment_amount">Partial</span>
+                </td>
             </ng-container>
 
             <!-- installmentAmount Column -->
@@ -28,26 +32,29 @@
 
             <!-- paymentId Column -->
             <ng-container matColumnDef="paymentId">
-                <th mat-header-cell *matHeaderCellDef> Payment Id </th>
-                <td mat-cell *matCellDef="let element"> {{element.payment_id}} </td>
+                <th mat-header-cell *matHeaderCellDef> Pay Id </th>
+                <td mat-cell *matCellDef="let element">
+                    <span *ngIf="element.receipt_id < 0; else receiptId"></span>
+                    <ng-template #receiptId>{{element.receipt_id}}</ng-template>
+                </td>
             </ng-container>
 
             <!-- paymentMode Column -->
             <ng-container matColumnDef="paymentMode">
-                <th mat-header-cell *matHeaderCellDef> Payment Mode </th>
+                <th mat-header-cell *matHeaderCellDef> Pay Mode </th>
                 <td mat-cell *matCellDef="let element"> {{element.payment_mode}} </td>
             </ng-container>
 
             <!-- paymentDate Column -->
             <ng-container matColumnDef="paymentDate">
-                <th mat-header-cell *matHeaderCellDef> Payment Date </th>
-                <td mat-cell *matCellDef="let element"> {{element.payment_date}} </td>
+                <th mat-header-cell *matHeaderCellDef> Pay Date </th>
+                <td mat-cell *matCellDef="let element"> {{element.paid_on | date}} </td>
             </ng-container>
 
             <!-- paidAmount Column -->
             <ng-container matColumnDef="paidAmount">
                 <th mat-header-cell *matHeaderCellDef> Paid </th>
-                <td mat-cell *matCellDef="let element"> {{element.paid_amount}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.fee_paid_amount}} </td>
             </ng-container>
 
             <!-- remainingAmount Column -->

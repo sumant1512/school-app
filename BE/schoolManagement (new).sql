@@ -19,6 +19,7 @@ CREATE TABLE student_admission_details (
   mobile_number varchar(255),
   email varchar(255),
   admission_date varchar(255),
+  session VARCHAR(255), 
   blood_group varchar(255),
   house_id INT NOT NULL,
   FOREIGN KEY (house_id) REFERENCES house(house_id),
@@ -53,7 +54,6 @@ CREATE TABLE student_admission_details (
   rte varchar(255),
   previous_school_detail varchar(255),
   note varchar(255),
-  session_year varchar(255),
   student_password varchar(255)
 );
 create table student_document (
@@ -90,8 +90,8 @@ create table class_with_section(
   class_id INT NOT NULL,
   section_id INT NOT NULL,
   assinged_on varchar(255),
-  FOREIGN KEY (class_id) REFERENCES class(class_id) ON DELETE CASCADE,
-  FOREIGN KEY (section_id) REFERENCES section(section_id) ON DELETE CASCADE
+  FOREIGN KEY (class_id) REFERENCES class(class_id),
+  FOREIGN KEY (section_id) REFERENCES section(section_id)
 );
 create table class_with_exam(
   class_id INT NOT NULL,
@@ -187,5 +187,6 @@ create table collected_fee (
   installment_id INT NOT NULL,
   FOREIGN KEY (installment_id) REFERENCES installment(installment_id),
   fee_paid_amount INT NOT NULL,
+  payment_mode VARCHAR(255),
   paid_on varchar(255) NOT NULL
 );
