@@ -3,17 +3,30 @@
         <mat-toolbar color="primary" class="form-toolbar justify-content-center">{{LABELS.HEADER}}</mat-toolbar>
     </div>
     <div class="p-1 p-md-2 p-lg-3 text-center">
-        <div>
-            <span>{{feeCollectData.installmentName}} : </span>
-            <span>{{feeCollectData.installmentAmount}} </span>
-        </div>
-        <div class="row">
-            <div class="col-6 text-left">
-                <button (click)="dialogRef.close({status:false, message: 'cancelled'})" mat-raised-button color="warn">Cancel</button>
+        <form [formGroup]="feeCollectForm">
+            <div>
+                <span>{{feeCollectData.installmentName}} : </span>
+                <span>{{feeCollectData.installmentAmount}} </span>
             </div>
-            <div class="col-6 text-right">
-                <button (click)="collectFee()" mat-raised-button color="primary">Collect</button>
+            <div class="row mt-2">
+                <div class="col-12 col-md-6 text-center text-md-right">
+                    <label>{{LABELS.SELECT_PAYMENT_LABEL}}</label>
+                </div>
+                <div class="col-12 col-md-6 text-center text-md-left">
+                    <mat-radio-group aria-label="Select payment mode" formControlName="paymentMode">
+                        <mat-radio-button value="Cash">Cash</mat-radio-button>
+                        <mat-radio-button value="Cheque">Cheque</mat-radio-button>
+                    </mat-radio-group>
+                </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-6 text-left">
+                    <button (click)="dialogRef.close({status:false, message: 'cancelled'})" mat-raised-button color="warn">Cancel</button>
+                </div>
+                <div class="col-6 text-right">
+                    <button (click)="collectFee()" mat-raised-button color="primary">Collect</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

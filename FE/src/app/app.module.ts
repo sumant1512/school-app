@@ -34,6 +34,7 @@ import { FeeDetailsComponent } from "./ADMIN/+student/student-profile/fee-detail
 import { FeeCollectDialogComponent } from "./ADMIN/+student/student-profile/fee-collect-dialog/fee-collect-dialog.component";
 import { StudentCredentialsComponent } from "./ADMIN/+student/student-credentials/student-credentials.component";
 import { SearchBarComponent } from "./COMMON/search-bar/search-bar.component";
+import { StudentPromoteDialogComponent } from "./COMMON/student-promote-dialog/student-promote-dialog.component";
 import { appReducers } from "./STORE/app.reducers";
 import { EffectsModule } from "@ngrx/effects";
 import { AppEffects } from "./STORE/app.effects";
@@ -42,6 +43,8 @@ import { AppEffects } from "./STORE/app.effects";
   declarations: [
     ErrorMessageDialogComponent,
     AssignDialogCommonComponent,
+    StudentPromoteDialogComponent,
+    FeeCollectDialogComponent,
     AppComponent,
     HeaderComponent,
     ClassComponent,
@@ -63,7 +66,6 @@ import { AppEffects } from "./STORE/app.effects";
     FeesMasterComponent,
     FeesChartComponent,
     FeeDetailsComponent,
-    FeeCollectDialogComponent,
     StudentCredentialsComponent,
     SearchBarComponent,
   ],
@@ -71,6 +73,7 @@ import { AppEffects } from "./STORE/app.effects";
     ErrorMessageDialogComponent,
     AssignDialogCommonComponent,
     FeeCollectDialogComponent,
+    StudentPromoteDialogComponent,
   ],
   imports: [
     BrowserModule,

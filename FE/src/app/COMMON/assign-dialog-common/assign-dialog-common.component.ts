@@ -4,7 +4,6 @@ import { AdminService } from "src/app/ADMIN/+services/admin.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { AssignToClassType } from "./assign-dialog.type";
 import { ErrorDialogFunctionsService } from "../error-message-dialog/error-dialog-functions.service";
-import { ClassService } from "src/app/STORE/class/api/class.service";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/STORE/app.state";
 
