@@ -8,11 +8,3 @@
         width: 1024px !important;
     }
 }
-
-.test {
-    pointer-events: none;
-}
-
-.test-test {
-    cursor: not-allowed;
-}

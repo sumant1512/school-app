@@ -1,7 +1,27 @@
+export interface StudentClassListType {
+  class_id: number;
+  class_name: string;
+}
+
+export interface StudentResultType {
+  student_id: number;
+  class_id: number;
+  exam_id: number;
+  paper_id: number;
+  subject_id: number;
+  marks_obtained: number;
+  created_on: string;
+  last_updated_on: string;
+  exam_name: string;
+  subject_name: string;
+  total_marks: number;
+  passing_marks: number;
+}
+
 export interface TransformedAcademicRecord {
   class_id: number;
   class_name: string;
-  exams: ExamResultType[];
+  exams: StudentResultType[];
 }
 
 export interface ExamResultType {
@@ -37,9 +57,9 @@ const test = {
           last_updated_on: null,
           subject_name: "English 2",
           total_marks: 100,
-          passing_marks: 33
-        }
-      ]
-    }
-  ]
+          passing_marks: 33,
+        },
+      ],
+    },
+  ],
 };

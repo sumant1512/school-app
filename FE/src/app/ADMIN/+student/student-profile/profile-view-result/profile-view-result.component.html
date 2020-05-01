@@ -1,1 +1,69 @@
-<p>profile-view-result works!</p>
+<div>
+    <div class="my-2 time-table">
+        <table mat-table [dataSource]="transformedStudentAcademicRecord" class="w-100 table-width mat-elevation-z8">
+
+            <!-- className Column -->
+            <ng-container matColumnDef="className">
+                <th mat-header-cell *matHeaderCellDef>Class</th>
+                <td mat-cell *matCellDef="let element"> {{element.class_name}} </td>
+            </ng-container>
+
+            <!-- result Column -->
+            <ng-container matColumnDef="result">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td class="p-0" mat-cell *matCellDef="let element">
+                    <table mat-table [dataSource]="element.exams" class="result-table w-100 table-width">
+                        <!-- examName Column -->
+                        <ng-container matColumnDef="examName">
+                            <th mat-header-cell *matHeaderCellDef> Exam name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.exam_name}} </td>
+                        </ng-container>
+
+                        <!-- subjectName Column -->
+                        <ng-container matColumnDef="subjectName">
+                            <th mat-header-cell *matHeaderCellDef> Subject Name </th>
+                            <td mat-cell *matCellDef="let element"> {{element.subject_name}} </td>
+                        </ng-container>
+
+                        <!-- totalMarks Column -->
+                        <ng-container matColumnDef="totalMarks">
+                            <th mat-header-cell *matHeaderCellDef> Total Marks </th>
+                            <td mat-cell *matCellDef="let element"> {{element.subject_name}} </td>
+                        </ng-container>
+
+                        <!-- passingMarks Column -->
+                        <ng-container matColumnDef="passingMarks">
+                            <th mat-header-cell *matHeaderCellDef> Passing Marks </th>
+                            <td mat-cell *matCellDef="let element"> {{element.passing_marks}}
+                            </td>
+                        </ng-container>
+
+                        <!-- obtainedMarks Column -->
+                        <ng-container matColumnDef="obtainedMarks">
+                            <th mat-header-cell *matHeaderCellDef> Obtained Marks </th>
+                            <td mat-cell *matCellDef="let element"> {{element.marks_obtained}} </td>
+                        </ng-container>
+
+                        <!-- status Column -->
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef> Status </th>
+                            <td mat-cell *matCellDef="let element">
+                                <span *ngIf="element.marks_obtained > element.passing_marks; else fail">Pass</span>
+                                <ng-template #fail>Fail</ng-template>
+                            </td>
+                        </ng-container>
+
+
+                        <tr class="table-header form-toolbar" mat-header-row *matHeaderRowDef="academicRecordColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: academicRecordColumns;"></tr>
+                    </table>
+
+
+                </td>
+            </ng-container>
+
+            <tr class="table-header form-toolbar" mat-header-row *matHeaderRowDef="classColumn"></tr>
+            <tr mat-row *matRowDef="let row; columns: classColumn;"></tr>
+        </table>
+    </div>
+</div>
