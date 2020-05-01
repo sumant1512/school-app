@@ -1110,16 +1110,15 @@ app.post('/saveStudentResult', function(request, response) {
 
 // Api to get student academic record
 app.post('/getAcademicRecord', function(request, response) {
-    con.query("SELECT DISTINCT class_id FROM student_result where student_result.student_id=?;\
-    SELECT DISTINCT exam_id FROM student_result where student_result.student_id=?;\
-    select student_result.*,class.class_name,exam.exam_name, \
+    con.query("SELECT DISTINCT student_result.class_id, class.class_name FROM student_result, class where \
+    student_result.class_id = class.class_id AND  student_result.student_id=?;\
+    select student_result.*,exam.exam_name, \
     subjects.subject_name,exam_schedule.total_marks,exam_schedule.passing_marks\
-    from student_result,class,exam,subjects,exam_schedule where \
-    student_result.class_id = class.class_id AND \
+    from student_result,exam,subjects,exam_schedule where \
     student_result.exam_id = exam.exam_id AND \
     student_result.subject_id = subjects.subject_id AND \
     student_result.paper_id = exam_schedule.paper_id AND \
-    student_result.student_id =? ", [request.body.studentId, request.body.studentId, request.body.studentId], function(err, result, fields) {
+    student_result.student_id =? ", [request.body.studentId, request.body.studentId], function(err, result, fields) {
         if (err) {
             console.log(err);
             response.status(200).send({ status: false, message: err.sqlMessage });

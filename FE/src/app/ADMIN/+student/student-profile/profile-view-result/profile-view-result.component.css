@@ -1,0 +1,14 @@
+.result-table {
+    margin-top: -41px;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {}
+
+@media only screen and (min-width: 0px) and (max-width: 767px) {
+    .time-table {
+        overflow-x: scroll;
+    }
+    .table-width {
+        width: 1024px !important;
+    }
+}
