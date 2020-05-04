@@ -1,12 +1,15 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { AdminService } from "src/app/ADMIN/+services/admin.service";
-import { studentAcademicRecordTransform } from "./profile-view-result.transform";
 import {
-  StudentClassListType,
-  StudentResultType,
-  TransformedAcademicRecord,
-} from "./profile-view-result.type";
-import { ACADEMIC_RECORD_COLUMN_NAME, CLASS_COLUMN } from './profile-view-result.constants';
+  studentAcademicRecordTransform,
+  testFun,
+} from "./profile-view-result.transform";
+import { TransformedAcademicRecord } from "./profile-view-result.type";
+import {
+  ACADEMIC_RECORD_COLUMN_NAME,
+  RESULT_COLUMN,
+  LABELS,
+} from "./profile-view-result.constants";
 
 @Component({
   selector: "app-profile-view-result",
@@ -16,9 +19,8 @@ import { ACADEMIC_RECORD_COLUMN_NAME, CLASS_COLUMN } from './profile-view-result
 export class ProfileViewResultComponent implements OnInit {
   @Input() selectedStudentDetail: string;
   academicRecordColumns = ACADEMIC_RECORD_COLUMN_NAME;
-  classColumn = CLASS_COLUMN;
-  studentClassList: TransformedAcademicRecord[];
-  studentAcademicRecord: StudentResultType[];
+  resultColumn = RESULT_COLUMN;
+  labels = LABELS;
   transformedStudentAcademicRecord: TransformedAcademicRecord[];
 
   constructor(private adminService: AdminService) {}
@@ -35,13 +37,12 @@ export class ProfileViewResultComponent implements OnInit {
     };
     this.adminService.getAcademicRecord(studentDetail).subscribe((response) => {
       if (response["status"]) {
-        this.studentClassList = response["data"][0];
-        this.studentAcademicRecord = response["data"][1];
+        const studentClassList = response["data"][0];
+        const studentAcademicRecord = response["data"][1];
         this.transformedStudentAcademicRecord = studentAcademicRecordTransform(
-          this.studentClassList,
-          this.studentAcademicRecord
+          studentClassList,
+          studentAcademicRecord
         );
-        console.log(this.transformedStudentAcademicRecord);
       }
     });
   }
