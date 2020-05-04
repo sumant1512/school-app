@@ -1,69 +1,95 @@
 <div>
-    <div class="my-2 time-table">
-        <table mat-table [dataSource]="transformedStudentAcademicRecord" class="w-100 table-width mat-elevation-z8">
+    <div class="my-3" *ngFor="let class of transformedStudentAcademicRecord">
+        <mat-toolbar class="justify-content-center form-toolbar mat-elevation-z8" color="primary">
+            <span>{{labels.ACADEMIC_RECORD_CLASS_LABEL}} {{class.class_name}}</span>
+        </mat-toolbar>
 
-            <!-- className Column -->
-            <ng-container matColumnDef="className">
-                <th mat-header-cell *matHeaderCellDef>Class</th>
-                <td mat-cell *matCellDef="let element"> {{element.class_name}} </td>
-            </ng-container>
+        <div class="my-4" *ngFor="let exam of class.exams">
+            <mat-toolbar class="exam-name-head justify-content-center form-toolbar w-25 m-auto" color="primary">
+                <span>{{exam.exam_name}}</span>
+            </mat-toolbar>
 
-            <!-- result Column -->
-            <ng-container matColumnDef="result">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td class="p-0" mat-cell *matCellDef="let element">
-                    <table mat-table [dataSource]="element.exams" class="result-table w-100 table-width">
-                        <!-- examName Column -->
-                        <ng-container matColumnDef="examName">
-                            <th mat-header-cell *matHeaderCellDef> Exam name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.exam_name}} </td>
-                        </ng-container>
+            <div class="time-table mat-elevation-z8">
 
-                        <!-- subjectName Column -->
-                        <ng-container matColumnDef="subjectName">
-                            <th mat-header-cell *matHeaderCellDef> Subject Name </th>
-                            <td mat-cell *matCellDef="let element"> {{element.subject_name}} </td>
-                        </ng-container>
+                <table mat-table [dataSource]="exam.result" class="w-100 table-width">
+                    <!-- subjectName Column -->
+                    <ng-container matColumnDef="subjectName">
+                        <th mat-header-cell *matHeaderCellDef> Subject Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.subject_name}} </td>
+                    </ng-container>
 
-                        <!-- totalMarks Column -->
-                        <ng-container matColumnDef="totalMarks">
-                            <th mat-header-cell *matHeaderCellDef> Total Marks </th>
-                            <td mat-cell *matCellDef="let element"> {{element.subject_name}} </td>
-                        </ng-container>
+                    <!-- totalMarks Column -->
+                    <ng-container matColumnDef="totalMarks">
+                        <th mat-header-cell *matHeaderCellDef> Total Marks </th>
+                        <td mat-cell *matCellDef="let element"> {{element.total_marks}} </td>
+                    </ng-container>
 
-                        <!-- passingMarks Column -->
-                        <ng-container matColumnDef="passingMarks">
-                            <th mat-header-cell *matHeaderCellDef> Passing Marks </th>
-                            <td mat-cell *matCellDef="let element"> {{element.passing_marks}}
-                            </td>
-                        </ng-container>
+                    <!-- passingMarks Column -->
+                    <ng-container matColumnDef="passingMarks">
+                        <th mat-header-cell *matHeaderCellDef> Passing Marks </th>
+                        <td mat-cell *matCellDef="let element"> {{element.passing_marks}}
+                        </td>
+                    </ng-container>
 
-                        <!-- obtainedMarks Column -->
-                        <ng-container matColumnDef="obtainedMarks">
-                            <th mat-header-cell *matHeaderCellDef> Obtained Marks </th>
-                            <td mat-cell *matCellDef="let element"> {{element.marks_obtained}} </td>
-                        </ng-container>
+                    <!-- obtainedMarks Column -->
+                    <ng-container matColumnDef="obtainedMarks">
+                        <th mat-header-cell *matHeaderCellDef> Obtained Marks </th>
+                        <td mat-cell *matCellDef="let element"> {{element.marks_obtained}} </td>
+                    </ng-container>
 
-                        <!-- status Column -->
-                        <ng-container matColumnDef="status">
-                            <th mat-header-cell *matHeaderCellDef> Status </th>
-                            <td mat-cell *matCellDef="let element">
-                                <span *ngIf="element.marks_obtained > element.passing_marks; else fail">Pass</span>
-                                <ng-template #fail>Fail</ng-template>
-                            </td>
-                        </ng-container>
+                    <!-- status Column -->
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef> Status </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button [ngClass]="element.student_status === 'Pass' ? 'pass-btn':'fail-btn'" class="text-white" [disabled]='true' mat-flat-button>{{element.student_status}}</button>
+                        </td>
+                    </ng-container>
+                    <tr class="table-header form-toolbar" mat-header-row *matHeaderRowDef="academicRecordColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: academicRecordColumns;"></tr>
+                </table>
+
+                <div class="table-width">
+                    <div class="row m-0 p-0">
+                        <div class="col-3 m-0 p-0">
+                            <mat-toolbar class="form-toolbar" color="primary">
+                                <span>{{labels.GRAND_TOTAL_LABEL}}</span>
+                            </mat-toolbar>
+                        </div>
+                        <div class="m-auto text-center col-3 m-0 p-0">
+                            <div>{{exam.total_marks_out_of}}</div>
+                        </div>
+                        <div class="col-3 m-0 p-0">
+                            <mat-toolbar class="form-toolbar" color="primary">
+                                <span>{{labels.TOTAL_MARKS_OBTAINED_LABEL}}</span>
+                            </mat-toolbar>
+                        </div>
+                        <div class="m-auto text-center col-3 m-0 p-0">
+                            <div>{{exam.total_marks_obtained}}</div>
+                        </div>
+                    </div>
+
+                    <div class="row m-0 p-0">
+                        <div class="col-3 m-0 p-0">
+                            <mat-toolbar class="form-toolbar" color="primary">
+                                <span>{{labels.PERCENTAGE_LABEL}}</span>
+                            </mat-toolbar>
+                        </div>
+                        <div class="m-auto text-center col-3 m-0 p-0">
+                            <div>{{exam.percentage | number : '1.2-2'}} {{labels.PERCENTAGE}}</div>
+                        </div>
+                        <div class="col-3 m-0 p-0">
+                            <mat-toolbar class="form-toolbar" color="primary">
+                                <span>{{labels.STATUS_LABEL}}</span>
+                            </mat-toolbar>
+                        </div>
+                        <div class="m-auto text-center col-3 m-0 p-0">
+                            <button [ngClass]="exam.status === 'Pass' ? 'pass-btn':'fail-btn'" class="text-white" [disabled]='true' mat-flat-button>{{exam.status}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
-                        <tr class="table-header form-toolbar" mat-header-row *matHeaderRowDef="academicRecordColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: academicRecordColumns;"></tr>
-                    </table>
-
-
-                </td>
-            </ng-container>
-
-            <tr class="table-header form-toolbar" mat-header-row *matHeaderRowDef="classColumn"></tr>
-            <tr mat-row *matRowDef="let row; columns: classColumn;"></tr>
-        </table>
+        </div>
     </div>
 </div>

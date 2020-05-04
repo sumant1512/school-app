@@ -1,8 +1,3 @@
-export interface StudentClassListType {
-  class_id: number;
-  class_name: string;
-}
-
 export interface StudentResultType {
   student_id: number;
   class_id: number;
@@ -21,13 +16,17 @@ export interface StudentResultType {
 export interface TransformedAcademicRecord {
   class_id: number;
   class_name: string;
-  exams: StudentResultType[];
+  exams: ExamResultType[];
 }
 
 export interface ExamResultType {
   exam_id: number;
   exam_name: string;
-  result: SubjectResultType[];
+  result?: SubjectResultType[];
+  total_marks_obtained?: number;
+  total_marks_out_of?: number;
+  percentage?: number;
+  status?: string;
 }
 
 export interface SubjectResultType {
@@ -40,26 +39,3 @@ export interface SubjectResultType {
   total_marks: number;
   passing_marks: number;
 }
-
-const test = {
-  class_id: 23,
-  class_name: "2",
-  exams: [
-    {
-      exam_id: 27,
-      exam_name: "Test 1",
-      result: [
-        {
-          paper_id: 16,
-          subject_id: 6,
-          marks_obtained: 5,
-          created_on: "Thu Apr 02 2020 17:57:27 GMT+0530 (India Standard Time)",
-          last_updated_on: null,
-          subject_name: "English 2",
-          total_marks: 100,
-          passing_marks: 33,
-        },
-      ],
-    },
-  ],
-};
