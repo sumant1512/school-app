@@ -17,6 +17,7 @@ import { StudentProfileComponent } from "./ADMIN/+student/student-profile/studen
 import { FeesMasterComponent } from "./ADMIN/+fees/fees-master/fees-master.component";
 import { FeesChartComponent } from "./ADMIN/+fees/fees-chart/fees-chart.component";
 import { StudentCredentialsComponent } from './ADMIN/+student/student-credentials/student-credentials.component';
+import { SupplimentryExamComponent } from './ADMIN/+exam/supplimentry-exam/supplimentry-exam.component';
 
 const routes: Routes = [
   { path: "", redirectTo: "class", pathMatch: "full" },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: "subject", component: SubjectComponent },
   { path: "assinged-subject", component: AssingedSubjectComponent },
   { path: "exam", component: ExamComponent },
+  { path: "supp-exam", component: SupplimentryExamComponent },
   { path: "exam-schedule", component: ExamScheduleComponent },
   { path: "student-admission", component: StudentAdmissionComponent },
   { path: "students-list", component: StudentsListComponent },

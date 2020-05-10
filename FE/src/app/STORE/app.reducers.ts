@@ -12,6 +12,7 @@ import { religionReducer } from "./religion/religion.reducers";
 import { classWithSubjectReducer } from "./class-with-subject/class-with-subject.reducers";
 import { classWithExamReducer } from "./class-with-exam/class-with-exam.reducers";
 import { studentListReducer } from "./student-list/student-list.reducers";
+import { suppExamReducer } from './supp-exam/supp-exam.reducers';
 
 export const appReducers: ActionReducerMap<AppState> = {
   classList: classReducer,
@@ -19,6 +20,7 @@ export const appReducers: ActionReducerMap<AppState> = {
   classWithSectionList: classWithSectionReducer,
   subjectList: subjectReducer,
   examList: examReducer,
+  suppExamList: suppExamReducer,
   houseList: houseReducer,
   categoryList: categoryReducer,
   religionList: religionReducer,

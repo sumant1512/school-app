@@ -19,7 +19,7 @@ CREATE TABLE student_admission_details (
   mobile_number varchar(255),
   email varchar(255),
   admission_date varchar(255),
-  session VARCHAR(255), 
+  session VARCHAR(255),
   blood_group varchar(255),
   house_id INT NOT NULL,
   FOREIGN KEY (house_id) REFERENCES house(house_id),
@@ -80,6 +80,12 @@ create table exam (
   created_on varchar(255) NOT NULL,
   last_updated_on varchar(255)
 );
+create table supp_exam (
+  supp_exam_id INT UNIQUE PRIMARY KEY AUTO_INCREMENT,
+  supp_exam_name varchar(255) UNIQUE NOT NULL,
+  created_on varchar(255) NOT NULL,
+  last_updated_on varchar(255)
+);
 create table subjects (
   subject_id INT UNIQUE PRIMARY KEY AUTO_INCREMENT,
   subject_name varchar(255) UNIQUE NOT NULL,
@@ -99,6 +105,15 @@ create table class_with_exam(
   assinged_on varchar(255),
   FOREIGN KEY (class_id) REFERENCES class(class_id),
   FOREIGN KEY (exam_id) REFERENCES exam(exam_id)
+);
+create table class_and_exam_with_supp_exam(
+  class_id INT NOT NULL,
+  exam_id INT NOT NULL,
+  supp_exam_id INT NOT NULL,
+  assinged_on varchar(255),
+  FOREIGN KEY (class_id) REFERENCES class(class_id),
+  FOREIGN KEY (exam_id) REFERENCES exam(exam_id),
+  FOREIGN KEY (supp_exam_id) REFERENCES supp_exam(supp_exam_id)
 );
 create table exam_schedule (
   paper_id INT UNIQUE PRIMARY KEY AUTO_INCREMENT,
@@ -189,4 +204,4 @@ create table collected_fee (
   fee_paid_amount INT NOT NULL,
   payment_mode VARCHAR(255),
   paid_on varchar(255) NOT NULL
-);
+);                    

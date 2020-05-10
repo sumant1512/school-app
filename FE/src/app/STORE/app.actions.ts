@@ -9,6 +9,7 @@ import { ReligionActionsUnion } from "./religion/religion.actions";
 import { ClassWithSubjectActionsUnion } from "./class-with-subject/class-with-subject.actions";
 import { ClassWithExamActionsUnion } from "./class-with-exam/class-with-exam.actions";
 import { StudentListActionsUnion } from "./student-list/student-list.actions";
+import { SuppExamActionsUnion } from './supp-exam/supp-exam.actions';
 
 export type AppActionsUnion =
   | ClassActionsUnion
@@ -16,6 +17,7 @@ export type AppActionsUnion =
   | ClassWithSectionActionsUnion
   | SubjectActionsUnion
   | ExamActionsUnion
+  | SuppExamActionsUnion
   | HouseActionsUnion
   | CategoryActionsUnion
   | ReligionActionsUnion

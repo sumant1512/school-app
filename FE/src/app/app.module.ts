@@ -38,6 +38,7 @@ import { StudentPromoteDialogComponent } from "./COMMON/student-promote-dialog/s
 import { appReducers } from "./STORE/app.reducers";
 import { EffectsModule } from "@ngrx/effects";
 import { AppEffects } from "./STORE/app.effects";
+import { SupplimentryExamComponent } from './ADMIN/+exam/supplimentry-exam/supplimentry-exam.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { AppEffects } from "./STORE/app.effects";
     FeeDetailsComponent,
     StudentCredentialsComponent,
     SearchBarComponent,
+    SupplimentryExamComponent,
   ],
   entryComponents: [
     ErrorMessageDialogComponent,

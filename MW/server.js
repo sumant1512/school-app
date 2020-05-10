@@ -1343,3 +1343,55 @@ app.post('/returnFee', function(request, response) {
         }
     })
 })
+
+
+// Api to add supp exam
+app.post('/addSuppExam', function(request, response) {
+    const createdOn = new Date();
+    const suppExamName = request.body.suppExamName;
+    const selectedClass = request.body.selectedClass;
+    const selectedExam = request.body.selectedExam;
+    con.query("INSERT INTO supp_exam (supp_exam_name, created_on) VALUES\
+                ('" + suppExamName + "','" + createdOn + "')", (err, rows, fields) => {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            if (selectedClass != '' && selectedExam != '') {
+                con.query("INSERT INTO class_and_exam_with_supp_exam\
+                     (class_id,\
+                        exam_id,\
+                        supp_exam_id,\
+                     assinged_on)\
+                     \
+                 VALUES\
+                 ('" + selectedClass + "',\
+                 '" + selectedExam + "',\
+                 '" + rows.insertId + "',\
+                '" + createdOn + "'  )", (err, rows, fields) => {
+                    if (err) {
+                        console.log(err);
+                        response.status(200).send({ status: false, message: err.sqlMessage });
+                    } else {
+                        response.status(200).send({ status: true, message: "Exam Added" });
+                    }
+                });
+            } else {
+                response.status(200).send({ status: true, message: "Exam Added" });
+            }
+        }
+    })
+})
+
+// Api to fetch all supp exam
+app.get('/fetchSuppExam', function(request, response) {
+    const sql = "select * from supp_exam"
+    con.query(sql, function(err, result, fields) {
+        if (err) {
+            console.log(err);
+            response.status(200).send({ status: false, message: err.sqlMessage });
+        } else {
+            response.status(200).send({ status: true, data: result });
+        }
+    });
+})

@@ -9,6 +9,7 @@ import { ReligionEffects } from "./religion/religion.effects";
 import { ClassWithSubjectEffects } from "./class-with-subject/class-with-subject.effects";
 import { ClassWithExamEffects } from "./class-with-exam/class-with-exam.effects";
 import { StudentListEffects } from "./student-list/student-list.effects";
+import { SuppExamEffects } from './supp-exam/supp-exam.effects';
 
 export const AppEffects = [
   ClassEffects,
@@ -16,6 +17,7 @@ export const AppEffects = [
   ClassWithSectionEffects,
   SubjectEffects,
   ExamEffects,
+  SuppExamEffects,
   HouseEffects,
   CategoryEffects,
   ReligionEffects,
